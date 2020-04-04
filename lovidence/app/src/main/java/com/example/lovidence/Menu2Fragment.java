@@ -10,12 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class Menu2Fragment extends Fragment {
-    ViewGroup viewGroup;
+    View viewGroup;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_menu2, container, false);
+        viewGroup = inflater.inflate(R.layout.fragment_menu2, container, false);
         return viewGroup;
     }
 }

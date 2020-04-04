@@ -11,5 +11,6 @@
         android:text="Fragment3"
         android:textColor="#668899FF"
         android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:id="@+id/showDate"/>
 </LinearLayout>
