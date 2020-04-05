@@ -2,8 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.lovidence">
-    <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--To setting android label(application : inner file name,
+    There's the android:label for the application, and the android:label for the launch activity.
+     The former is what you see under Settings -> Applications -> Manage Applications on your device.
+     The latter is what you see under Applications, and by extension in any shortcut to your application
+     즉 application 의 label은 default, 이떄 Main,LAUNCH 가 있는 activity에 label 등록시 app이름이 activity의 label로 변경-->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,18 +17,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <!--android:usesCleartextTraffic : access http-->
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".ui.login.LoginActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <!-- android:usesCleartextTraffic : access http -->
+        <activity
+            android:name=".MainActivity"
+            android:label="mainActivity">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="http"/>
-            </intent-filter>
 
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="http" />
+            </intent-filter>
         </activity>
     </application>
 
