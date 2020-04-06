@@ -1,16 +1,34 @@
 package com.example.lovidence;
 import com.example.lovidence.*;
+
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.widget.DatePicker;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+public class MainActivity extends AppCompatActivity{
     BottomNavigationView bottomNavigationView;
+
+    public Calendar the_date;
 
     Menu1Fragment menu1Fragment = new Menu1Fragment();
     Menu2Fragment menu2Fragment = new Menu2Fragment();
@@ -21,15 +39,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         menu1Fragment = new Menu1Fragment();
         menu2Fragment = new Menu2Fragment();
         menu3Fragment = new Menu3Fragment();
         menu4Fragment = new Menu4Fragment();
         // 첫 화면 지정
         getSupportFragmentManager().beginTransaction().replace(R.id.main_layout,menu1Fragment).commitAllowingStateLoss();
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem){
