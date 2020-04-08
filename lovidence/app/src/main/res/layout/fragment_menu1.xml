@@ -1,29 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <WebView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/webView">
+    <RelativeLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:layout_marginBottom="?attr/actionBarSize">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:background="@drawable/main_back">
+        </ImageView>
         <Button
             android:id="@+id/btn_set"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="161dp"
-            android:layout_y="26dp"
-            android:text="Setting" />
+            android:layout_alignParentTop="false"
+            android:text="Date setting" />
 
         <TextView
             android:id="@+id/main_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="176dp"
-            android:layout_y="249dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:textSize="@android:dimen/app_icon_size"
+            android:layout_marginRight="40dp"
+            android:textStyle="bold"
             android:text="Date" />
-    </WebView>
-</LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/main_back2" >
+        </ImageView>
+
+    </RelativeLayout>
+<!--
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_gravity="bottom"
+        android:background="@color/pinky"
+        app:menu="@menu/menu_bottom"
+        app:labelVisibilityMode="labeled"
+        app:itemBackground="@color/cardview_dark_background"
+        app:itemIconTint="@drawable/item_color"
+        app:itemTextColor="@drawable/item_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+        !-->
+
+    <!--@color is in colors.. or default-->
+    <!--This bottom bar is no margin so, u wanna change color modify itemBackground!!-->
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

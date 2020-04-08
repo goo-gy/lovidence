@@ -6,11 +6,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"/>
+        android:background="#ffffff"
+        android:layout_marginBottom="?attr/actionBarSize">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:background="@drawable/main_back">
+        </ImageView>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/main_back2" >
+        </ImageView>
+    </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -24,7 +39,9 @@
         app:itemIconTint="@drawable/item_color"
         app:itemTextColor="@drawable/item_color"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
     <!--@color is in colors.. or default-->
 <!--This bottom bar is no margin so, u wanna change color modify itemBackground!!-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
