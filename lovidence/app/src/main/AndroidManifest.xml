@@ -26,8 +26,7 @@
         </activity>
         <!-- android:usesCleartextTraffic : access http -->
         <activity
-            android:name=".MainActivity"
-            android:label="mainActivity">
+            android:name=".MainActivity">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

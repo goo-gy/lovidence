@@ -26,7 +26,6 @@ import java.util.Calendar;
 
 public class Menu1Fragment extends Fragment {
     ViewGroup viewGroup;
-    WebView wView;
 
     // ---------------------------------------- googy
     Context menu1_context;
@@ -34,32 +33,10 @@ public class Menu1Fragment extends Fragment {
     public Calendar the_date;
     TextView text_date;
     // ---------------------------------------- googy
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-       /* wView = (WebView)getView().findViewById(R.id.webView);
-        Intent intent = getActivity().getIntent();
-        Uri data = intent.getData();
-        wView.setWebViewClient(new WebViewClient());
-
-        if(data!=null) wView.loadUrl(data.toString());
-        else wView.loadUrl("http://google.com/");*/
-    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewGroup =(ViewGroup) inflater.inflate(R.layout.fragment_menu1, container, false);
-        /*
-        wView = (WebView) viewGroup.findViewById(R.id.webView);
-        Intent intent = getActivity().getIntent();
-        Uri data = intent.getData();
-        wView.getSettings().setJavaScriptEnabled(true);
-        wView.setWebViewClient(new WebViewClient());
-
-        if(data!=null) wView.loadUrl(data.toString());
-        else wView.loadUrl("http://google.com/");
-         */
-
         // ---------------------------------------- googy
         menu1_context = getContext();
         View view = (View)inflater.inflate(R.layout.fragment_menu1, container, false);
