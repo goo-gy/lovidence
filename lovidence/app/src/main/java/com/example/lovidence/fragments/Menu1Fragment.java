@@ -1,4 +1,4 @@
-package com.example.lovidence;
+package com.example.lovidence.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.example.lovidence.R;
 
 import java.net.URI;
 import java.text.ParseException;
