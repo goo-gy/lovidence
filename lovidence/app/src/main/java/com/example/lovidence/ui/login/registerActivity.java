@@ -60,15 +60,6 @@ public class registerActivity extends AppCompatActivity {
                 else
                     _sex = "female";
                 //appended 0425
-
-                /*  original
-                if(_pw.equals(_chk)){
-                    builderSetting(builder);
-                    builder.setTitle("알림");
-                    builder.setMessage("성공적으로 등록되었습니다.");
-                    builder.setCancelable(true);
-                    Async_Prepare(_id, _pw);
-                }*/
                 if (_pw.equals(_chk)) {
                     builderSetting(builder);
                     builder.setTitle("알림");
@@ -94,11 +85,11 @@ public class registerActivity extends AppCompatActivity {
     }
 
     public void Async_Prepare(String id, String pw, String sex) {  /*appended 0425 add sex*/
-        Async_test async_test = new Async_test();
-        async_test.execute(id, pw, sex);//요렇게 스트링값들을 넘겨줍시다. 저번시간에 포스팅을 보시면 Data Type을 어떻게 할지 결정 할 수 있습니다. 힘내봅시다.
+        registAsync registAsync = new registAsync();
+        registAsync.execute(id, pw, sex);
     }
 
-    class Async_test extends AsyncTask<String, Void, String> {
+    class registAsync extends AsyncTask<String, Void, String> {
 
         int cnt = 0;
 
@@ -111,8 +102,6 @@ public class registerActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Toast.makeText(registerActivity.this, s, Toast.LENGTH_LONG).show();
-            //textView.setText("I got Msg from Server! : "+s);// TextView에 보여줍니다.
-//            Toast.makeText(getApplicationContext(),"i got a msg from server :"+s,Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -121,6 +110,8 @@ public class registerActivity extends AppCompatActivity {
             Log.d("onProgress update", "" + cnt++);
         }
 
+
+
         @Override
         protected String doInBackground(String... params) {
             HttpURLConnection httpURLConnection = null;
@@ -128,38 +119,34 @@ public class registerActivity extends AppCompatActivity {
                 String tmsg = params[0];
                 String tmsg2 = params[1];
                 String tmsg3 = params[2];   /*appended 0425*/
-                String data = URLEncoder.encode("u_id", "UTF-8") + "=" + URLEncoder.encode(tmsg, "UTF-8");// UTF-8로  설정 실제로 string 상으로 봤을땐, tmsg="String" 요런식으로 설정 된다.
 
+                String data = URLEncoder.encode("u_id", "UTF-8") + "=" + URLEncoder.encode(tmsg, "UTF-8");
                 data += "&" + URLEncoder.encode("u_pw", "UTF-8") + "=" + URLEncoder.encode(tmsg2, "UTF-8");
                 data += "&" + URLEncoder.encode("u_sex", "UTF-8") + "=" + URLEncoder.encode(tmsg3, "UTF-8");
 
-                //                String data2 = "tmsg="+testMsg+"&tmsg2="+testMsg2;
-                String link = "https://test-yetvm.run.goorm.io/test/" + "test.php";// 요청하는 url 설정 ex)192.168.0.1/httpOnlineTest.php
+                String link = "https://test-yetvm.run.goorm.io/test/" + "userRegist.php";
 
                 URL url = new URL(link);
-                httpURLConnection = (HttpURLConnection) url.openConnection();//httpURLConnection은 url.openconnection을 통해서 만 생성 가능 직접생성은 불가능하다.
-                httpURLConnection.setRequestMethod("POST");//post방식으로 설정
-                httpURLConnection.setDoInput(true);// server와의 통신에서 입력 가능한 상태로 만든다.
-                httpURLConnection.setDoOutput(true);//server와의 통신에서 출력 가능한 상태로 ㅏㄴ든다.
-//                httpURLConnection.setConnectTimeout(30);// 타임 아웃 설정 default는 무제한 unlimit이다.
-                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());//서버로 뿅 쏴줄라구용
-                wr.write(data);//아까 String값을 쓱삭쓱삭 넣어서 보내주고!
-                wr.flush();//flush!
-                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream(), "UTF-8"));//자 이제 받아옵시다.
-                StringBuilder sb = new StringBuilder();// String 값을 이제 스슥스슥 넣을 껍니다.
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
+                wr.write(data);
+                wr.flush();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream(), "UTF-8"));
+                StringBuilder sb = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    sb.append(line);//
+                    sb.append(line);
                 }
-                httpURLConnection.disconnect();//이거 꼭해주세요. 보통은 별일 없는데, 특정상황에서 문제가 생기는 경우가 있다고 합니다.
-                return sb.toString();//자 이렇게 리턴이되면 이제 post로 가겠습니다.
+                httpURLConnection.disconnect();
+                return sb.toString();
             } catch (Exception e) {
                 Log.d("ya", "ho", e);
                 httpURLConnection.disconnect();
                 return new String("Exception Occure" + e.getMessage());
-            }//try catch end
-        }//doInbackground end
-
-
-    }//asynctask  end
+            }
+        }
+    }
 }
