@@ -16,8 +16,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="280dp"
-            android:background="@drawable/main_back">
-        </ImageView>
+            android:layout_marginBottom="135dp"
+            android:background="@drawable/main_back"></ImageView>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="260dp"

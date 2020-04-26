@@ -3,6 +3,9 @@
     android:opacity="opaque">
     <item android:drawable="@android:color/white"/>
     <item
-        android:drawable="@drawable/splash_image"
+        android:width="180dp"
+        android:height="35dp"
+        android:bottom="300dp"
+        android:drawable="@drawable/lovidence"
         android:gravity="center"/>
 </layer-list>
