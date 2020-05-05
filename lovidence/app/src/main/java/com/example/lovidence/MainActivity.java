@@ -1,15 +1,24 @@
 package com.example.lovidence;
 import com.example.lovidence.*;
+
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.example.lovidence.fragments.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.security.MessageDigest;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -23,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         menu1Fragment = new Menu1Fragment();
@@ -30,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         menu3Fragment = new Menu3Fragment();
         menu4Fragment = new Menu4Fragment();
         // 첫 화면 지정
+
         getSupportFragmentManager().beginTransaction().replace(R.id.main_layout,menu1Fragment).commitAllowingStateLoss();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
