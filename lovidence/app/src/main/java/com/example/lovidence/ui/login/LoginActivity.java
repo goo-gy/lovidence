@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         final Button registerButton = findViewById(R.id.register);
+        final Button adminButton = findViewById(R.id.admin);              //added to testing.. local login
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -129,6 +130,15 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this,registerActivity.class);
                 startActivity(intent);
 
+            }
+        });
+        adminButton.setOnClickListener(new View.OnClickListener(){  //added to local login
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "admin login!", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
     }
