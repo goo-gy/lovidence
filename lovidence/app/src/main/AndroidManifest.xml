@@ -5,6 +5,8 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -13,14 +15,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+
         android:usesCleartextTraffic="true">
-        <activity android:name=".Matching"></activity>
 
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="68349899766b1a1b65deb6297df54789"/>
 
-        <activity android:name=".GenerateQrCode" />
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <activity android:name=".GenerateQrCode"></activity>
         <activity
             android:name=".splash.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -30,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.login.registerActivity" />
+        <activity android:name=".ui.login.registerActivity"/>
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".MainActivity" />
         <activity
