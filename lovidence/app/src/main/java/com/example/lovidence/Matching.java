@@ -1,7 +1,12 @@
 package com.example.lovidence;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,16 +32,33 @@ public class Matching extends AppCompatActivity {
     Button  matchingButton;
     Button  outButton;
     EditText matchingId;
+    private Button createQRBtn;
+    private Button scanQRBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityCompat.requestPermissions(Matching.this,new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
         setContentView(R.layout.activity_matching);
-        //matching = findViewById(R.id.matching);
+
         matchingButton = findViewById(R.id.domatching);
         outButton = findViewById(R.id.exit);
         matchingId = findViewById(R.id.loveperson);
-        //matching.setText("hello?");
+        createQRBtn = findViewById(R.id.gQR);
+        scanQRBtn = findViewById(R.id.sQR);
 
+        createQRBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(Matching.this, GenerateQrCode.class);
+                startActivity(intent);
+            }
+        });
+
+        scanQRBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                ScanButton(v);
+            }
+        });
         outButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { finish(); }
@@ -55,6 +81,25 @@ public class Matching extends AppCompatActivity {
             sendMessage = loginAsync.execute(id).get();
         }catch(Exception e){e.printStackTrace();}
         return sendMessage;
+    }
+    public void ScanButton(View view){
+        IntentIntegrator integrator = new IntentIntegrator(Matching.this);
+        integrator.initiateScan();
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if (intentResult != null) {
+            if (intentResult.getContents() == null) {
+                Toast.makeText(Matching.this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                matchingId.setText(intentResult.getContents());
+                Toast.makeText(Matching.this, intentResult.getContents(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
     //서버에서 매칭할 아이디를 찾아서 매칭시켜주는 통신class
     //결과값은 성공적으로 받아왔는지 확인하면됨
