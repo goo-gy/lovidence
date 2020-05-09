@@ -5,7 +5,9 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -14,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -29,7 +32,7 @@ import com.example.lovidence.ui.login.LoginViewModel;
 import com.example.lovidence.ui.login.LoginViewModelFactory;
 
 public class LoginActivity extends AppCompatActivity {
-
+    SharedPreferences sharedPref;
     private LoginViewModel loginViewModel;
 
     @Override
@@ -44,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         final Button registerButton = findViewById(R.id.register);
-        final Button adminButton = findViewById(R.id.admin);              //added to testing.. local login
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -72,7 +74,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResult.getError() != null) {
                     showLoginError(loginResult.getError());
                 }
+                //로그인 성공시...
+                //로그인 아이디 기억
                 if (loginResult.getSuccess() != null) {
+                    sharedPref = LoginActivity.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    //key and value
+                    editor.putString("USERID",usernameEditText.getText().toString());
+                    editor.commit();
                     updateUiWithUser(loginResult.getSuccess());
                 }
                 if(loginResult.getFail() != false){
@@ -130,15 +139,6 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this,registerActivity.class);
                 startActivity(intent);
 
-            }
-        });
-        adminButton.setOnClickListener(new View.OnClickListener(){  //added to local login
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(), "admin login!", Toast.LENGTH_LONG).show();
-                finish();
             }
         });
     }
