@@ -12,6 +12,19 @@
     android:orientation="vertical"
    android:background="#ffffff"
     tools:context=".ui.login.LoginActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity ="center"
+        android:fillViewport="true"
+        android:layout_marginTop="0dp"
+        android:id="@+id/scrollView">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +52,9 @@
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
-     />
+        >
+        <requestFocus />
+    </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -90,5 +105,7 @@
         android:layout_marginBottom="64dp"
         android:visibility="gone"
 />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
