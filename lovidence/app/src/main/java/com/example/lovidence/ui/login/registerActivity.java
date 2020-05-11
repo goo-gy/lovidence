@@ -30,6 +30,7 @@ public class registerActivity extends AppCompatActivity {
     EditText id;
     EditText pw;
     EditText pw_chk;
+    EditText name;
     Button btn;
     RadioButton rg_btn1, rg_btn2;    /*appended it 0425*/
 
@@ -41,6 +42,7 @@ public class registerActivity extends AppCompatActivity {
         id = (EditText) findViewById(R.id.et_id);
         pw = (EditText) findViewById(R.id.et_Password);
         pw_chk = (EditText) findViewById(R.id.et_Password_chk);
+        name = (EditText)findViewById(R.id.et_Name);
         btn = (Button) findViewById(R.id.bt_Join);
         rg_btn1 = (RadioButton) findViewById(R.id.rg_btn1);
         rg_btn2 = (RadioButton) findViewById(R.id.rg_btn2);   /*appended it 0425*/
@@ -53,6 +55,7 @@ public class registerActivity extends AppCompatActivity {
                 String _id = id.getText().toString();
                 String _pw = pw.getText().toString();
                 String _chk = pw_chk.getText().toString();
+                String _name = name.getText().toString();
                 //appended 0425
                 String _sex = "";
                 if (rg_btn1.isChecked())
@@ -65,7 +68,7 @@ public class registerActivity extends AppCompatActivity {
                     builder.setTitle("알림");
                     builder.setMessage("성공적으로 등록되었습니다.");
                     builder.setCancelable(true);
-                    Async_Prepare(_id, _pw, _sex);
+                    Async_Prepare(_id, _pw, _sex, _name);
                 }
             }
         });
@@ -84,9 +87,9 @@ public class registerActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public void Async_Prepare(String id, String pw, String sex) {  /*appended 0425 add sex*/
+    public void Async_Prepare(String id, String pw, String sex,String name) {  /*appended 0425 add sex*/
         registAsync registAsync = new registAsync();
-        registAsync.execute(id, pw, sex);
+        registAsync.execute(id, pw, sex, name);
     }
 
     class registAsync extends AsyncTask<String, Void, String> {
@@ -119,11 +122,11 @@ public class registerActivity extends AppCompatActivity {
                 String tmsg = params[0];
                 String tmsg2 = params[1];
                 String tmsg3 = params[2];   /*appended 0425*/
-
+                String tmsg4 = params[3];
                 String data = URLEncoder.encode("u_id", "UTF-8") + "=" + URLEncoder.encode(tmsg, "UTF-8");
                 data += "&" + URLEncoder.encode("u_pw", "UTF-8") + "=" + URLEncoder.encode(tmsg2, "UTF-8");
                 data += "&" + URLEncoder.encode("u_sex", "UTF-8") + "=" + URLEncoder.encode(tmsg3, "UTF-8");
-
+                data += "&" + URLEncoder.encode("u_name", "UTF-8") + "=" + URLEncoder.encode(tmsg4, "UTF-8");
                 String link = "https://test-yetvm.run.goorm.io/test/" + "userRegist.php";
 
                 URL url = new URL(link);
