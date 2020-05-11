@@ -6,8 +6,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.lovidence.data.model.LoggedInUser;
-import com.example.lovidence.ui.login.LoginActivity;
-import com.example.lovidence.ui.login.registerActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
