@@ -37,7 +37,7 @@ public class Menu1Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        viewGroup =(ViewGroup) inflater.inflate(R.layout.fragment_menu1, container, false);
+        //viewGroup =(ViewGroup) inflater.inflate(R.layout.fragment_menu1, container, false);
         // ---------------------------------------- googy
         menu1_context = getContext();
         View view = (View)inflater.inflate(R.layout.fragment_menu1, container, false);

@@ -5,17 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lovidence.ui.login.LoginActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -25,13 +30,15 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Matching extends AppCompatActivity {
-
-    TextView matching;
+    SharedPreferences sharedPref;
     Button  matchingButton;
     Button  outButton;
     EditText matchingId;
+    public Calendar the_date;
     private Button createQRBtn;
     private Button scanQRBtn;
 
@@ -53,7 +60,6 @@ public class Matching extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         scanQRBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 ScanButton(v);
@@ -61,24 +67,37 @@ public class Matching extends AppCompatActivity {
         });
         outButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { finish(); }
+            public void onClick(View v) {
+                Intent intent = new Intent(Matching.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
         });
         matchingButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Log.e("communication",commnuicate(matchingId.getText().toString()));
-                //매칭한후의 처리.
-                //애니메이션을 넣던지 약간 분위기있게?
+                if(commnuicate(matchingId.getText().toString()).equals("matched")){ //아이디가 존재하는경우
+                    Toast.makeText(Matching.this, "언제부터 1일?", Toast.LENGTH_LONG).show();
+                    the_date = Calendar.getInstance();
+                    DatePickerDialog dialog = new DatePickerDialog(Matching.this, listener, //달력가져와서 입력함(listner로)
+                            the_date.get(Calendar.YEAR), the_date.get(Calendar.MONTH), the_date.get(Calendar.DAY_OF_MONTH));
+                    dialog.show();
+
+                }
+                else{
+                    Toast.makeText(Matching.this, "Fail matching... not exists Id", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }
     public String commnuicate(String id) {  /*appended 0425 add sex*/
-        matchingAsync loginAsync = new matchingAsync();
+        MatchingAsync matchingAsync = new MatchingAsync();
         //성공적으로 매칭시 그아이디값 그외에는 오류
         String sendMessage="";
         try {
             Log.e("communicate",id);
-            sendMessage = loginAsync.execute(id).get();
+            sendMessage = matchingAsync.execute("matchcheck.php",id).get();
         }catch(Exception e){e.printStackTrace();}
         return sendMessage;
     }
@@ -86,6 +105,7 @@ public class Matching extends AppCompatActivity {
         IntentIntegrator integrator = new IntentIntegrator(Matching.this);
         integrator.initiateScan();
     }
+    //scan값 받아올때 onActivityResult사용
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -101,10 +121,51 @@ public class Matching extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+    private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            the_date = Calendar.getInstance();    // 현재 입력된 시간을 받음.
+            the_date.set(Calendar.YEAR, year);
+            the_date.set(Calendar.MONTH, month);
+            the_date.set(Calendar.DAY_OF_MONTH, day);
+
+
+            SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd");
+            String str_the_date = date_format.format(the_date.getTime());
+            //--------------------------------------------------------
+            SharedPreferences pref = Matching.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);  //입력한 값을저장
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("date",str_the_date );
+            editor.commit();
+            //Toast.makeText(Matching.this, , Toast.LENGTH_SHORT).show();
+            //preference에 저장했으니 서버로 보내는코드
+            MatchingAsync matchingAsync = new MatchingAsync();
+            //성공적으로 매칭시 그아이디값 그외에는 오류
+            sharedPref = Matching.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+            String myId = sharedPref.getString("USERID","");
+            if(myId.equals("")){
+                Log.e("ERROR!!","INVALID ID");
+            }
+            String partnerId = matchingId.getText().toString();
+            String sendMessage="";
+            try {
+                sendMessage = matchingAsync.execute("matching.php",myId + partnerId,myId,partnerId,
+                        String.valueOf(the_date.get(Calendar.MONTH)+1),String.valueOf(the_date.get(Calendar.DATE))).get();
+            }catch(Exception e){e.printStackTrace();}
+            if(sendMessage.equals("matching info query success")){
+                Intent intent = new Intent(Matching.this, MainActivity.class);
+                startActivity(intent);
+                Toast.makeText(Matching.this, "매칭 성공!!!", Toast.LENGTH_SHORT).show();
+                finish();
+
+            }
+        }
+    };
+
     //서버에서 매칭할 아이디를 찾아서 매칭시켜주는 통신class
     //결과값은 성공적으로 받아왔는지 확인하면됨
 
-    class matchingAsync extends AsyncTask<String, Void, String> {
+    class MatchingAsync extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -124,14 +185,27 @@ public class Matching extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             HttpURLConnection httpURLConnection = null;
+            String data="";
+            String link="";
             try {
-                String matchingUserId = params[0];
-                //매칭할 유저아이디와 서버url
-                String data = URLEncoder.encode("u_id", "UTF-8") + "=" + URLEncoder.encode(matchingUserId, "UTF-8");
-                String link = "https://www.naver.com";
-                Log.e("matchingId", matchingUserId);
-                Log.e("data", data);
-                Log.e("link", link);
+                if(params[0].equals("matchcheck.php")) {
+                    String matchingUserId = params[1];
+                    //매칭할 유저아이디와 서버url
+                    data = URLEncoder.encode("u_id1", "UTF-8") + "=" + URLEncoder.encode(matchingUserId, "UTF-8");
+                }
+                else if(params[0].equals("matching.php")){
+                    String coupleID = params[1];
+                    String usr1     = params[2];
+                    String usr2     = params[3];
+                    String month    = params[4];
+                    String date     = params[5];
+                    data = URLEncoder.encode("u_id1", "UTF-8") + "=" + URLEncoder.encode(usr1, "UTF-8");
+                    data += "&" + URLEncoder.encode("u_id2", "UTF-8") + "=" + URLEncoder.encode(usr2, "UTF-8");
+                    data += "&" + URLEncoder.encode("u_couple", "UTF-8") + "=" + URLEncoder.encode(coupleID, "UTF-8");
+                    data += "&" + URLEncoder.encode("u_month", "UTF-8") + "=" + URLEncoder.encode(month, "UTF-8");
+                    data += "&" + URLEncoder.encode("u_day", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8");
+                }
+                link = "https://test-yetvm.run.goorm.io/test/"+params[0];
                 URL url = new URL(link);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
