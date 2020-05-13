@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.ui.login.LoginActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -92,12 +93,14 @@ public class Matching extends AppCompatActivity {
         });
     }
     public String commnuicate(String id) {  /*appended 0425 add sex*/
-        MatchingAsync matchingAsync = new MatchingAsync();
+        PostAsync matchingAsync = new PostAsync();
         //성공적으로 매칭시 그아이디값 그외에는 오류
+        String data="";
         String sendMessage="";
         try {
+            data = URLEncoder.encode("u_id1", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
             Log.e("communicate",id);
-            sendMessage = matchingAsync.execute("matchcheck.php",id).get();
+            sendMessage = matchingAsync.execute("matchcheck.php",data).get();
         }catch(Exception e){e.printStackTrace();}
         return sendMessage;
     }
@@ -139,7 +142,7 @@ public class Matching extends AppCompatActivity {
             editor.commit();
             //Toast.makeText(Matching.this, , Toast.LENGTH_SHORT).show();
             //preference에 저장했으니 서버로 보내는코드
-            MatchingAsync matchingAsync = new MatchingAsync();
+            PostAsync matchingAsync = new PostAsync();
             //성공적으로 매칭시 그아이디값 그외에는 오류
             sharedPref = Matching.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
             String myId = sharedPref.getString("USERID","");
@@ -147,88 +150,31 @@ public class Matching extends AppCompatActivity {
                 Log.e("ERROR!!","INVALID ID");
             }
             String partnerId = matchingId.getText().toString();
+            String data="";
             String sendMessage="";
             try {
-                sendMessage = matchingAsync.execute("matching.php",myId + partnerId,myId,partnerId,
-                        String.valueOf(the_date.get(Calendar.MONTH)+1),String.valueOf(the_date.get(Calendar.DATE))).get();
+                data = URLEncoder.encode("u_id1", "UTF-8") + "=" + URLEncoder.encode(myId, "UTF-8");
+                data += "&" + URLEncoder.encode("u_id2", "UTF-8") + "=" + URLEncoder.encode(partnerId, "UTF-8");
+                data += "&" + URLEncoder.encode("u_couple", "UTF-8") + "=" + URLEncoder.encode(myId+partnerId, "UTF-8");
+                data += "&" + URLEncoder.encode("u_month", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(the_date.get(Calendar.MONTH)+1), "UTF-8");
+                data += "&" + URLEncoder.encode("u_day", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(the_date.get(Calendar.DATE)), "UTF-8");
+                sendMessage = matchingAsync.execute("matching.php",data).get();
+                Log.e("mathing..",sendMessage);
             }catch(Exception e){e.printStackTrace();}
-            if(sendMessage.equals("matching info query success")){
+            if(sendMessage.equals("matching info query successbuffer update")){
                 Intent intent = new Intent(Matching.this, MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(Matching.this, "매칭 성공!!!", Toast.LENGTH_SHORT).show();
                 finish();
-
+            }
+            else{
+                Intent intent = new Intent(Matching.this, MainActivity.class);
+                startActivity(intent);
+                Toast.makeText(Matching.this, sendMessage, Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     };
 
-    //서버에서 매칭할 아이디를 찾아서 매칭시켜주는 통신class
-    //결과값은 성공적으로 받아왔는지 확인하면됨
-
-    class MatchingAsync extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpURLConnection httpURLConnection = null;
-            String data="";
-            String link="";
-            try {
-                if(params[0].equals("matchcheck.php")) {
-                    String matchingUserId = params[1];
-                    //매칭할 유저아이디와 서버url
-                    data = URLEncoder.encode("u_id1", "UTF-8") + "=" + URLEncoder.encode(matchingUserId, "UTF-8");
-                }
-                else if(params[0].equals("matching.php")){
-                    String coupleID = params[1];
-                    String usr1     = params[2];
-                    String usr2     = params[3];
-                    String month    = params[4];
-                    String date     = params[5];
-                    data = URLEncoder.encode("u_id1", "UTF-8") + "=" + URLEncoder.encode(usr1, "UTF-8");
-                    data += "&" + URLEncoder.encode("u_id2", "UTF-8") + "=" + URLEncoder.encode(usr2, "UTF-8");
-                    data += "&" + URLEncoder.encode("u_couple", "UTF-8") + "=" + URLEncoder.encode(coupleID, "UTF-8");
-                    data += "&" + URLEncoder.encode("u_month", "UTF-8") + "=" + URLEncoder.encode(month, "UTF-8");
-                    data += "&" + URLEncoder.encode("u_day", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8");
-                }
-                link = "https://test-yetvm.run.goorm.io/test/"+params[0];
-                URL url = new URL(link);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoInput(true);
-                httpURLConnection.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
-                wr.write(data); //data 전송
-                wr.flush();
-                //결과 받음
-                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream(), "UTF-8"));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-                httpURLConnection.disconnect();
-                return sb.toString();
-            } catch (Exception e) {
-                Log.d("ya", "ho", e);
-                httpURLConnection.disconnect();
-                return new String("Exception Occure" + e.getMessage());
-            }
-        }
-    }
 }
 

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.data.model.LoggedInUser;
 
 import java.io.BufferedReader;
@@ -43,70 +44,19 @@ public class LoginDataSource {
         // TODO: revoke authentication
     }
     public void loginCheck(String id, String pw) {  /*appended 0425 add sex*/
-        loginAsync loginAsync = new loginAsync();
-        String sendMessage="";
+        String data;
+        PostAsync loginAsync = new PostAsync();
+        String sendMessage = "";
         try {
-            sendMessage = loginAsync.execute(id, pw).get();
-        }catch(Exception e){e.printStackTrace();}
-        if(sendMessage.equals("success")){
+            data = URLEncoder.encode("u_id", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
+            data += "&" + URLEncoder.encode("u_pw", "UTF-8") + "=" + URLEncoder.encode(pw, "UTF-8");
+            sendMessage = loginAsync.execute("login.php", data).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (sendMessage.equals("success")) {
 
             isuserExist = true;
-        }
-    }
-    class loginAsync extends AsyncTask<String, Void, String> {
-
-        int cnt = 0;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-            Log.d("onProgress update", "" + cnt++);
-        }
-
-
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpURLConnection httpURLConnection = null;
-            try {
-                String userId = params[0];
-                String userPw = params[1];
-
-                String data = URLEncoder.encode("u_id", "UTF-8") + "=" + URLEncoder.encode(userId, "UTF-8");
-                data += "&" + URLEncoder.encode("u_pw", "UTF-8") + "=" + URLEncoder.encode(userPw, "UTF-8");
-                String link = "https://test-yetvm.run.goorm.io/test/" + "login.php";
-
-                URL url = new URL(link);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoInput(true);
-                httpURLConnection.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
-                wr.write(data);
-                wr.flush();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream(), "UTF-8"));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-                httpURLConnection.disconnect();
-                return sb.toString();
-            } catch (Exception e) {
-                Log.d("ya", "ho", e);
-                httpURLConnection.disconnect();
-                return new String("Exception Occure" + e.getMessage());
-            }
         }
     }
 }

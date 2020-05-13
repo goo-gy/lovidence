@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.R;
 
 import java.io.BufferedReader;
@@ -88,68 +89,19 @@ public class registerActivity extends AppCompatActivity {
     }
 
     public void Async_Prepare(String id, String pw, String sex,String name) {  /*appended 0425 add sex*/
-        registAsync registAsync = new registAsync();
-        registAsync.execute(id, pw, sex, name);
-    }
+        String data="";
+        PostAsync registAsync = new PostAsync();
+        try {
+            data = URLEncoder.encode("u_id", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
+            data += "&" + URLEncoder.encode("u_pw", "UTF-8") + "=" + URLEncoder.encode(pw, "UTF-8");
+            data += "&" + URLEncoder.encode("u_sex", "UTF-8") + "=" + URLEncoder.encode(sex, "UTF-8");
+            data += "&" + URLEncoder.encode("u_name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8");
 
-    class registAsync extends AsyncTask<String, Void, String> {
-
-        int cnt = 0;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Toast.makeText(registerActivity.this, s, Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-            Log.d("onProgress update", "" + cnt++);
-        }
-
-
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpURLConnection httpURLConnection = null;
-            try {
-                String tmsg = params[0];
-                String tmsg2 = params[1];
-                String tmsg3 = params[2];   /*appended 0425*/
-                String tmsg4 = params[3];
-                String data = URLEncoder.encode("u_id", "UTF-8") + "=" + URLEncoder.encode(tmsg, "UTF-8");
-                data += "&" + URLEncoder.encode("u_pw", "UTF-8") + "=" + URLEncoder.encode(tmsg2, "UTF-8");
-                data += "&" + URLEncoder.encode("u_sex", "UTF-8") + "=" + URLEncoder.encode(tmsg3, "UTF-8");
-                data += "&" + URLEncoder.encode("u_name", "UTF-8") + "=" + URLEncoder.encode(tmsg4, "UTF-8");
-                String link = "https://test-yetvm.run.goorm.io/test/" + "userRegist.php";
-
-                URL url = new URL(link);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoInput(true);
-                httpURLConnection.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
-                wr.write(data);
-                wr.flush();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream(), "UTF-8"));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-                httpURLConnection.disconnect();
-                return sb.toString();
-            } catch (Exception e) {
-                Log.d("ya", "ho", e);
-                httpURLConnection.disconnect();
-                return new String("Exception Occure" + e.getMessage());
-            }
+            registAsync.execute("userRegist.php",data).get();
+        }catch (Exception e){e.printStackTrace();}
+        finally {
+            finish();
         }
     }
+
 }

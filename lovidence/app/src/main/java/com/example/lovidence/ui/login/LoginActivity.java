@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.lovidence.MainActivity;
 import com.example.lovidence.R;
+import com.example.lovidence.splash.SplashActivity;
 import com.example.lovidence.ui.login.LoginViewModel;
 import com.example.lovidence.ui.login.LoginViewModelFactory;
 
@@ -145,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience(로그인시 수행할 코드)
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         finish();
