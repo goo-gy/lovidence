@@ -156,6 +156,7 @@ public class Matching extends AppCompatActivity {
                 data = URLEncoder.encode("u_id1", "UTF-8") + "=" + URLEncoder.encode(myId, "UTF-8");
                 data += "&" + URLEncoder.encode("u_id2", "UTF-8") + "=" + URLEncoder.encode(partnerId, "UTF-8");
                 data += "&" + URLEncoder.encode("u_couple", "UTF-8") + "=" + URLEncoder.encode(myId+partnerId, "UTF-8");
+                data += "&" + URLEncoder.encode("u_year", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(the_date.get(Calendar.YEAR)), "UTF-8");
                 data += "&" + URLEncoder.encode("u_month", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(the_date.get(Calendar.MONTH)+1), "UTF-8");
                 data += "&" + URLEncoder.encode("u_day", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(the_date.get(Calendar.DATE)), "UTF-8");
                 sendMessage = matchingAsync.execute("matching.php",data).get();

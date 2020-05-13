@@ -49,6 +49,7 @@ public class Menu4Fragment extends Fragment {
                 SharedPreferences sharedPref =getActivity().getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.remove("USERID").commit();
+                editor.remove("date").commit();
                 getActivity().finish();
             }
         });
