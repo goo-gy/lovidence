@@ -176,6 +176,12 @@ public class Matching extends AppCompatActivity {
             }
         }
     };
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Matching.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
 }
 

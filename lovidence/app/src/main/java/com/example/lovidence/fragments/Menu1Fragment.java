@@ -51,9 +51,16 @@ public class Menu1Fragment extends Fragment {
         button_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(menu1_context, Matching.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
+        String btnVisibleSetting = "";
+        btnVisibleSetting = sharedPref.getString("date","");
+        if(!btnVisibleSetting.equals("") && !btnVisibleSetting.equals("fail")){
+            button_set.setVisibility(View.INVISIBLE);
+        }
         // ---------------------------------------- googy
         return view;
     }

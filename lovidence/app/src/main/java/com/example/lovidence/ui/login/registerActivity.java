@@ -99,9 +99,6 @@ public class registerActivity extends AppCompatActivity {
 
             registAsync.execute("userRegist.php",data).get();
         }catch (Exception e){e.printStackTrace();}
-        finally {
-            finish();
-        }
     }
 
 }
