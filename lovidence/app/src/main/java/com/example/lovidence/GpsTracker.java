@@ -55,7 +55,7 @@ public class GpsTracker extends Service implements LocationListener {
                         Manifest.permission.ACCESS_COARSE_LOCATION);
 
 
-                /*----*/           if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
                         hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED)
                 {
                     //두 권한 모두 허가 된 상태일떄 처리
@@ -66,7 +66,7 @@ public class GpsTracker extends Service implements LocationListener {
 
 // GPS와 NETWORK가 켜져있지않다면 킬수있도록 만들어줘야함
 
-            /*----*/          if (isNetworkEnabled) {
+            if (isNetworkEnabled) {
 
                 //위치업데이트요청(manager, 받을 최소 시간간격(ms), 위치가 업데이트될 최소 거리(m), listener(현재 class가 상속받고있으므로 this)
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
@@ -80,10 +80,10 @@ public class GpsTracker extends Service implements LocationListener {
                         longitude = location.getLongitude();
                     }
                 }
-                /*####*/        }
+            }
 
 
-            /*----*/      if (isGPSEnabled)
+            if (isGPSEnabled)
             {
                 if (location == null)
                 {

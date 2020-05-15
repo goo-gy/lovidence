@@ -36,12 +36,18 @@ dependencies {
     implementation 'com.google.gms:google-services:4.3.3'
     implementation 'com.google.firebase:firebase-core:17.4.0'
     implementation 'com.google.firebase:firebase-functions:19.0.2'
-    //implementation 'com.google.firebase:firebase-core:17.0.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'com.android.support:design:29.0.3'
-    //implementation files('libs\\libDaumMapAndroid.jar')
+    implementation ('androidx.work:work-runtime:2.3.4'){
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+    implementation 'android.arch.work:work-runtime:1.0.1'
+    implementation 'com.google.guava:guava:27.0.1-android'
+
+    //implementation 'com.google.guava:listenablefuture:1.0'
+
     implementation files('libs\\libDaumMapAndroid.jar')
 }

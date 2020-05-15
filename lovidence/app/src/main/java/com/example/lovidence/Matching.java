@@ -3,6 +3,11 @@ package com.example.lovidence;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -28,11 +33,13 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.DatagramPacket;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class Matching extends AppCompatActivity {
     SharedPreferences sharedPref;
@@ -43,12 +50,12 @@ public class Matching extends AppCompatActivity {
     private Button createQRBtn;
     private Button scanQRBtn;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityCompat.requestPermissions(Matching.this,new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
         setContentView(R.layout.activity_matching);
-
         matchingButton = findViewById(R.id.domatching);
         outButton = findViewById(R.id.exit);
         matchingId = findViewById(R.id.loveperson);
@@ -119,6 +126,7 @@ public class Matching extends AppCompatActivity {
             } else {
                 matchingId.setText(intentResult.getContents());
                 Toast.makeText(Matching.this, intentResult.getContents(), Toast.LENGTH_LONG).show();
+                matchingButton.performClick();
             }
         }
 
@@ -136,8 +144,8 @@ public class Matching extends AppCompatActivity {
             SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd");
             String str_the_date = date_format.format(the_date.getTime());
             //--------------------------------------------------------
-            SharedPreferences pref = Matching.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);  //입력한 값을저장
-            SharedPreferences.Editor editor = pref.edit();
+            sharedPref = Matching.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);  //입력한 값을저장
+            SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("date",str_the_date );
             editor.commit();
             //Toast.makeText(Matching.this, , Toast.LENGTH_SHORT).show();
@@ -168,7 +176,7 @@ public class Matching extends AppCompatActivity {
                 Toast.makeText(Matching.this, "매칭 성공!!!", Toast.LENGTH_SHORT).show();
                 finish();
             }
-            else{
+            else{//매칭실패시...
                 Intent intent = new Intent(Matching.this, MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(Matching.this, sendMessage, Toast.LENGTH_SHORT).show();

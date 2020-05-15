@@ -2,8 +2,10 @@ package com.example.lovidence;
 import com.example.lovidence.*;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -21,6 +23,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.work.Data;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -32,8 +39,10 @@ import java.security.MessageDigest;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
+
     public class Address_gps
     {
         public double latitude;
@@ -45,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public Vector<Address_gps> address_vector;
+    PeriodicWorkRequest periodicRequest;
+    SharedPreferences sharedPref;
 
     BottomNavigationView bottomNavigationView;
     Menu1Fragment menu1Fragment = new Menu1Fragment();
@@ -58,6 +69,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         address_vector = new Vector(100);
+        sharedPref = MainActivity.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+        String myId = sharedPref.getString("USERID","");
+        if(!myId.equals("")) {
+            get_GPS();
+            Data workData = new Data.Builder()
+                    .putDouble("latitude", gpsTracker.getLatitude())
+                    .putDouble("longitude", gpsTracker.getLongitude())
+                    .putString("myId", myId)
+                    .build();
+
+            periodicRequest = new PeriodicWorkRequest.Builder(MeetCheck.class, 15, TimeUnit.MINUTES)
+                    .setInputData(workData).build();
+            WorkManager.getInstance(MainActivity.this)
+                    .enqueueUniquePeriodicWork("transfer Location", ExistingPeriodicWorkPolicy.REPLACE, periodicRequest);
+        }
+
         //현재 서비스 상태 check,GPS와network연결
         if (!checkLocationServicesStatus()) {
             showDialogForLocationServiceSetting();          //로케이션세팅을위한 dialog열기
