@@ -7,21 +7,16 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/createQR"
+        <TextView
+            android:id="@+id/showsDB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="QR Create" />
-
-        <Button
-            android:id="@+id/scanQR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="QR Scan" />
+            android:textSize="20sp"
+            android:text="work status:"/>
 
     </LinearLayout>
 </RelativeLayout>
