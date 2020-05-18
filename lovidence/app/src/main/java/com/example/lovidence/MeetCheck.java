@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -66,20 +68,21 @@ public class MeetCheck extends Worker {
                 sb.append(line);
             }
             httpURLConnection.disconnect();
-            Log.e("work",sb.toString());
+            Log.e("work1",sb.toString());
             if(sb.toString().equals("fail")){
                 return Result.failure();
             }
             else {
                 String[] locations = sb.toString().split("-");
-                Log.e("work",locations[0]);
-                //Log.e("work",locations[1]);
+
+                Log.e("latitude",locations[0]);
+                Log.e("logitude",locations[1]);
                 MyDatabase db = MyDatabase.getAppDatabase(context);
                 db.todoDao().insert(new Couple_Location(Double.parseDouble(locations[0]),Double.parseDouble(locations[1])));
                 return Result.success();
             }
         } catch (Exception e) {
-            Log.d("ya", data, e);
+            Log.d("Exception occur...", data, e);
             httpURLConnection.disconnect();
             return Result.failure();
         }

@@ -23,8 +23,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -78,9 +80,14 @@ public class MainActivity extends AppCompatActivity {
                     .putDouble("longitude", gpsTracker.getLongitude())
                     .putString("myId", myId)
                     .build();
-
+            Constraints constraints = new Constraints.Builder()
+                    .setRequiresDeviceIdle(true)
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build();
             periodicRequest = new PeriodicWorkRequest.Builder(MeetCheck.class, 15, TimeUnit.MINUTES)
-                    .setInputData(workData).build();
+                    .setInputData(workData)
+                    .setConstraints(constraints)
+                    .build();
             WorkManager.getInstance(MainActivity.this)
                     .enqueueUniquePeriodicWork("transfer Location", ExistingPeriodicWorkPolicy.REPLACE, periodicRequest);
         }
