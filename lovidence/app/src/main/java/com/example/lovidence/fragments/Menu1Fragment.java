@@ -47,21 +47,7 @@ public class Menu1Fragment extends Fragment {
         text_date = (TextView)(view.findViewById(R.id.main_date));
         the_date = Calendar.getInstance();
         update();// update
-        Button button_set = (Button)view.findViewById(R.id.btn_set);
-        button_set.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(menu1_context, Matching.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        });
-        String btnVisibleSetting = "";
-        btnVisibleSetting = sharedPref.getString("date","");
-        if(!btnVisibleSetting.equals("") && !btnVisibleSetting.equals("fail")){
-            button_set.setVisibility(View.INVISIBLE);
-        }
-        // ---------------------------------------- googy
+
         return view;
     }
 

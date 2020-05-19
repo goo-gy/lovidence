@@ -10,19 +10,15 @@
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff">
+        android:background="#faf8be">
+
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="370dp"
-            android:background="@drawable/main_back">
-        </ImageView>
-        <Button
-            android:id="@+id/btn_set"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="false"
-            android:text="Date setting" />
+            android:layout_height="440dp"
+            android:layout_marginBottom="135dp"
+            android:background="@drawable/test"></ImageView>
+
 
         <TextView
             android:id="@+id/main_date"
@@ -31,20 +27,15 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
-            android:textSize="@android:dimen/app_icon_size"
+            android:textSize="35dp"
             android:layout_marginRight="40dp"
-            android:textStyle="bold"
+            android:textStyle="italic"
+            android:textColor="#ff8fd4"
             android:text="Date" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:layout_centerInParent="true"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/main_back2" >
-        </ImageView>
 
     </RelativeLayout>
+
 
     <!--@color is in colors.. or default-->
     <!--This bottom bar is no margin so, u wanna change color modify itemBackground!!-->
