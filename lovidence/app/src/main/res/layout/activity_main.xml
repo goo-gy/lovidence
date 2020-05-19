@@ -10,21 +10,16 @@
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
+        android:background="#faf8be"
         android:layout_marginBottom="?attr/actionBarSize">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="440dp"
             android:layout_marginBottom="135dp"
-            android:background="@drawable/main_back"></ImageView>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="260dp"
-            android:layout_centerInParent="true"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/main_back2" >
-        </ImageView>
+            android:background="@drawable/test"></ImageView>
+
+
     </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,10 +27,9 @@
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
         android:layout_gravity="bottom"
-        android:background="@color/pinky"
+        android:background="#faf8be"
         app:menu="@menu/menu_bottom"
         app:labelVisibilityMode="labeled"
-        app:itemBackground="@color/cardview_dark_background"
         app:itemIconTint="@drawable/item_color"
         app:itemTextColor="@drawable/item_color"
         android:layout_width="match_parent"

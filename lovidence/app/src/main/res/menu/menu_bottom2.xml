@@ -2,32 +2,27 @@
     <menu xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/tab2"
+        android:id="@+id/tab1"
         app:showAsAction="always"
-        android:icon="@drawable/main_home"
+        android:icon="@drawable/main_list_icon"
         android:enabled="true"
         android:checked="true"
-        android:title="Home" />
-    <item android:id="@+id/tab1"
+        android:title="리스트" />
+    <item android:id="@+id/tab2"
         app:showAsAction="always"
-        android:icon="@drawable/main_land"
+        android:icon="@drawable/main_record_icon"
         android:enabled="true"
-        android:title="Landmark"/>
+        android:title="기록"/>
     <item android:id="@+id/tab3"
         app:showAsAction="always"
-        android:icon="@drawable/main_map"
+        android:icon="@drawable/main_more_icon"
         android:enabled="true"
-        android:title="Map"/>
+        android:title="더보기"/>
     <item android:id="@+id/tab4"
+        android:tooltipText="다른거"
         app:showAsAction="always"
         android:enabled="true"
-        android:icon="@drawable/main_community"
-        android:title="Community"/>
-    <item android:id="@+id/tab5"
-        app:showAsAction="always"
-        android:enabled="true"
-        android:icon="@drawable/main_record_icon"
-        android:title="Statistic"/>
+        android:title="다른거"/>
 </menu>
     <!--하단에 텍스트도 넣고싶으면 labelVisibilityMode (labeled)-->
     <!--title is label that show text-->
