@@ -11,31 +11,69 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#faf8be">
-
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="450dp"
+        android:layout_marginLeft="220dp"
+        android:fontFamily="@font/namu"
+        android:textSize="15dp"
+        android:text="우리의 현재 온도는 36.5 "></TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="450dp"
+            android:layout_marginLeft="325dp"
+            android:fontFamily="@font/namu"
+            android:textSize="15dp"
+            android:text="°"></TextView>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="440dp"
             android:layout_marginBottom="135dp"
             android:background="@drawable/test"></ImageView>
-
-
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:textSize="35dp"
+            android:fontFamily="@font/namu"
+            android:text="우리의 "
+            ></TextView>
         <TextView
             android:id="@+id/main_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:textSize="35dp"
-            android:layout_marginRight="40dp"
-            android:textStyle="italic"
+            android:fontFamily="@font/namu"
             android:textColor="#ff8fd4"
             android:text="Date" />
-
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="10dp"
+                android:textSize="35dp"
+                android:fontFamily="@font/namu"
+                android:text=" 일간의 lovidence  "
+                ></TextView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="400dp"
+            android:src="@drawable/main_back22">
+        </ImageView>
     </RelativeLayout>
-
 
     <!--@color is in colors.. or default-->
     <!--This bottom bar is no margin so, u wanna change color modify itemBackground!!-->
