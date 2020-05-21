@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.lovidence.MainActivity;
 import com.example.lovidence.R;
 
+import net.daum.mf.map.api.MapCircle;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
@@ -69,6 +70,15 @@ public class Menu3Fragment extends Fragment {
             double latitude = main_activity.address_vector.elementAt(i).latitude;
             double longitude = main_activity.address_vector.elementAt(i).longitude;
             polyline.addPoint(MapPoint.mapPointWithGeoCoord(latitude, longitude));  // Polyline 좌표 지정.
+
+            MapCircle new_circle = new MapCircle(
+                    MapPoint.mapPointWithGeoCoord(latitude, longitude), // center
+                    30, // radius
+                    Color.argb(128, 0xDD, 0xEE, 0), // strokeColor
+                    Color.argb(128, 55, 0xFF, 0xEE) // fillColor
+            );
+            new_circle.setTag(circle_count);
+            mapView.addCircle(new_circle);
         }
         mapView.addPolyline(polyline);
         address_number = main_activity.address_vector.size();
