@@ -75,18 +75,15 @@ public class MainActivity extends AppCompatActivity {
         String myId = sharedPref.getString("USERID","");
         if(!myId.equals("")) {
             get_GPS();
+            Log.e("??","GPS");
             Data workData = new Data.Builder()
                     .putDouble("latitude", gpsTracker.getLatitude())
                     .putDouble("longitude", gpsTracker.getLongitude())
                     .putString("myId", myId)
                     .build();
-            Constraints constraints = new Constraints.Builder()
-                    .setRequiresDeviceIdle(true)
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build();
+
             periodicRequest = new PeriodicWorkRequest.Builder(MeetCheck.class, 15, TimeUnit.MINUTES)
                     .setInputData(workData)
-                    .setConstraints(constraints)
                     .build();
             WorkManager.getInstance(MainActivity.this)
                     .enqueueUniquePeriodicWork("transfer Location", ExistingPeriodicWorkPolicy.REPLACE, periodicRequest);

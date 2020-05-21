@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lovidence.PostAsync.PostAsync;
+import com.example.lovidence.splash.SplashActivity;
 import com.example.lovidence.ui.login.LoginActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -76,7 +77,7 @@ public class Matching extends AppCompatActivity {
         outButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Matching.this, MainActivity.class);
+                Intent intent = new Intent(Matching.this, SplashActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -171,24 +172,26 @@ public class Matching extends AppCompatActivity {
                 Log.e("mathing..",sendMessage);
             }catch(Exception e){e.printStackTrace();}
             if(sendMessage.equals("matching info query successbuffer update")){
-                Intent intent = new Intent(Matching.this, MainActivity.class);
+                Intent intent = new Intent(Matching.this, SplashActivity.class);
+                finish();
                 startActivity(intent);
                 Toast.makeText(Matching.this, "매칭 성공!!!", Toast.LENGTH_SHORT).show();
-                finish();
             }
             else{//매칭실패시...
                 Intent intent = new Intent(Matching.this, MainActivity.class);
+                finish();
                 startActivity(intent);
                 Toast.makeText(Matching.this, sendMessage, Toast.LENGTH_SHORT).show();
-                finish();
+
             }
         }
     };
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(Matching.this, MainActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(Matching.this, SplashActivity.class);
         finish();
+        startActivity(intent);
+
     }
 
 }

@@ -2,7 +2,10 @@ package com.example.lovidence.ui.login;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +18,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.lovidence.Matching;
 import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.R;
+import com.example.lovidence.splash.SplashActivity;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -34,6 +39,7 @@ public class registerActivity extends AppCompatActivity {
     EditText name;
     Button btn;
     RadioButton rg_btn1, rg_btn2;    /*appended it 0425*/
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +72,12 @@ public class registerActivity extends AppCompatActivity {
                 //appended 0425
                 if (_pw.equals(_chk)) {
                     builderSetting(builder);
-                    builder.setTitle("알림");
-                    builder.setMessage("성공적으로 등록되었습니다.");
-                    builder.setCancelable(true);
+
+                    sharedPref = registerActivity.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("USERID",_id);
+                    editor.commit();
+
                     Async_Prepare(_id, _pw, _sex, _name);
                 }
             }
@@ -79,9 +88,30 @@ public class registerActivity extends AppCompatActivity {
     private void builderSetting(AlertDialog.Builder builder) {
         builder.setTitle("가입완료").setMessage("가입이 완료되었습니다.");
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            AlertDialog.Builder builder2
+                    = new AlertDialog.Builder(registerActivity.this);
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
+                builder2.setTitle("상대방 등록");
+                builder2.setMessage("상대방 아이디를 등록하시겠습니까?");
+                builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(registerActivity.this, Matching.class);
+                        finish();
+                        startActivity(intent);
+                    }
+                });
+                builder2.setNegativeButton("다음에 할께요", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(registerActivity.this, SplashActivity.class);
+                        finish();
+                        startActivity(intent);
+                    }
+                });
+                AlertDialog alertDialog2 = builder2.create();
+                alertDialog2.show();
             }
         });
         AlertDialog alertDialog = builder.create();

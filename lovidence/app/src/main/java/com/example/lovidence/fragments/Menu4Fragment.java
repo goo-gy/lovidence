@@ -27,17 +27,21 @@ import java.util.Calendar;
 
 public class Menu4Fragment extends Fragment {
     ViewGroup viewGroup;
+    Context menu4_context;
     Button button1;
     Button logoutBtn;
+    Button mathingBtn;
     WorkManager workManager;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        menu4_context = getActivity();
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_menu4, container, false);
         button1 = (Button)viewGroup.findViewById(R.id.btn1);
         logoutBtn = (Button)viewGroup.findViewById(R.id.logout);
+        mathingBtn = (Button)viewGroup.findViewById(R.id.mtBtn);
         //예약된 work 모두삭제
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +67,14 @@ public class Menu4Fragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.remove("USERID").commit();
                 editor.remove("date").commit();
+                getActivity().finish();
+            }
+        });
+        mathingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(menu4_context, Matching.class);
+                startActivity(intent);
                 getActivity().finish();
             }
         });
