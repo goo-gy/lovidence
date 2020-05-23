@@ -57,9 +57,9 @@ public class PostAsync extends AsyncTask<String, Void, String> {
             httpURLConnection.disconnect();
             return sb.toString();
         } catch (Exception e) {
-            Log.d("ya", "ho", e);
+            Log.d("PostAsync : ", "Exception Occure", e);
             httpURLConnection.disconnect();
-            return new String("Exception Occure" + e.getMessage());
+            return new String("Error");
         }
     }
 }

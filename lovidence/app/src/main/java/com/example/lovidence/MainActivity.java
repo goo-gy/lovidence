@@ -60,10 +60,11 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
 
     BottomNavigationView bottomNavigationView;
-    Menu1Fragment menu1Fragment = new Menu1Fragment();
-    Menu2Fragment menu2Fragment = new Menu2Fragment();
-    Menu3Fragment menu3Fragment = new Menu3Fragment();
-    Menu4Fragment menu4Fragment = new Menu4Fragment();
+    Menu1Fragment menu1Fragment;
+    Menu2Fragment menu2Fragment;
+    Menu3Fragment menu3Fragment;
+    Menu4Fragment menu4Fragment;
+    Menu5Fragment menu5Fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         menu2Fragment = new Menu2Fragment();
         menu3Fragment = new Menu3Fragment();
         menu4Fragment = new Menu4Fragment();
+        menu5Fragment = new Menu5Fragment();
         // 첫 화면 지정
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_layout,menu1Fragment).commitAllowingStateLoss();
@@ -123,6 +125,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case R.id.tab4:{
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_layout,menu4Fragment).commitAllowingStateLoss();
+                        return true;
+                    }
+                    case R.id.tab5:{
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_layout, menu5Fragment).commitAllowingStateLoss();
                         return true;
                     }
                     default: return false;

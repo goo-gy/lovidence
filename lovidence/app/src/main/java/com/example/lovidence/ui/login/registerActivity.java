@@ -59,29 +59,52 @@ public class registerActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                String _id = id.getText().toString();
-                String _pw = pw.getText().toString();
-                String _chk = pw_chk.getText().toString();
-                String _name = name.getText().toString();
-                //appended 0425
-                String _sex = "";
-                if (rg_btn1.isChecked())
-                    _sex = "male";
-                else
-                    _sex = "female";
-                //appended 0425
-                if (_pw.equals(_chk)) {
-                    builderSetting(builder);
-
-                    sharedPref = registerActivity.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("USERID",_id);
-                    editor.commit();
-
-                    Async_Prepare(_id, _pw, _sex, _name);
+                if(textcheck()) {
+                    String _id = id.getText().toString();
+                    String _pw = pw.getText().toString();
+                    String _name = name.getText().toString();
+                    //appended 0425
+                    String _sex = "";
+                    if (rg_btn1.isChecked())
+                        _sex = "male";
+                    else
+                        _sex = "female";
+                    Async_Prepare(_id, _pw, _sex, _name,builder);
                 }
+
             }
         });
+
+    }
+    private boolean textcheck(){
+        boolean result = true;
+        if(id.getText().toString().equals("")){
+            id.requestFocus();
+            id.setError("아이디를 입력해주세요.");
+            result = false;
+        }
+        else if(pw.getText().toString().equals("")){
+            pw.requestFocus();
+            pw.setError("비밀번호를 입력해주세요.");
+            result = false;
+        }
+        else if(pw_chk.getText().toString().equals("")){
+            pw_chk.requestFocus();
+            pw_chk.setError("비밀번호를 한번더 입력하세요.");
+            result = false;
+        }
+        else if(!pw.getText().toString().equals(pw_chk.getText().toString())){
+            pw_chk.requestFocus();
+            pw_chk.setError("비밀번호가 다릅니다. 다시 입력해주세요");
+            result = false;
+        }
+        else if(name.getText().toString().equals("")){
+            name.requestFocus();
+            name.setError("이름을 입력해주세요.");
+            result = false;
+        }
+
+        return result;
 
     }
 
@@ -117,9 +140,14 @@ public class registerActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+    private void idDuplicated(){
+        id.requestFocus();
+        id.setError("이미 존재하는 아이디입니다.");
 
-    public void Async_Prepare(String id, String pw, String sex,String name) {  /*appended 0425 add sex*/
+    }
+    public void Async_Prepare(String id, String pw, String sex,String name,AlertDialog.Builder _builder) {  /*appended 0425 add sex*/
         String data="";
+        AlertDialog.Builder builder = _builder;
         PostAsync registAsync = new PostAsync();
         try {
             data = URLEncoder.encode("u_id", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
@@ -127,7 +155,17 @@ public class registerActivity extends AppCompatActivity {
             data += "&" + URLEncoder.encode("u_sex", "UTF-8") + "=" + URLEncoder.encode(sex, "UTF-8");
             data += "&" + URLEncoder.encode("u_name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8");
 
-            registAsync.execute("userRegist.php",data).get();
+            String result = registAsync.execute("userRegist.php",data).get();
+            if(result.equals("Id exists")){
+                idDuplicated();
+            }
+            else if(result.equals("success")){
+                sharedPref = registerActivity.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("USERID",id);
+                editor.commit();
+                builderSetting(builder);
+            }
         }catch (Exception e){e.printStackTrace();}
     }
 

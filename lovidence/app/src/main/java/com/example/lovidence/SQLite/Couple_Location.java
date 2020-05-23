@@ -11,12 +11,15 @@ import androidx.room.PrimaryKey;
 public class Couple_Location {
     @PrimaryKey(autoGenerate = true) //autoGenerate는 알아서 id를 1씩 증가시켜준다. autoincrement와 똑같
     private int id;
+    @ColumnInfo(name = "time")
+    private long time;
     @ColumnInfo(name = "latitude") //==>컬럼명 변수명과 다르게 사용 가능
     private double locationX;
     @ColumnInfo(name = "longitude") //==>컬럼명 변수명과 다르게 사용 가능
     private double locationY;
 
-    public Couple_Location(double locationX, double locationY) {
+    public Couple_Location(long time ,double locationX, double locationY) {
+        this.time = time;
         this.locationX = locationX;
         this.locationY = locationY;
     }
@@ -28,6 +31,10 @@ public class Couple_Location {
     public void setId(int id) {
         this.id = id;
     }
+
+    public long getTime(){return time;}
+
+    public void setTime(long time) { this.time = time; }
 
     public double getLocationX() {
         return this.locationX;
@@ -45,6 +52,6 @@ public class Couple_Location {
     }
     @Override
     public String toString() {
-        return "\n id=> " + this.id + " , latitude=> " + this.locationX + " , longitude=> "+ this.locationY;
+        return "\n id=> " + this.id +" , time=> " + this.id + " , latitude=> " + this.locationX + " , longitude=> "+ this.locationY;
     }
 }

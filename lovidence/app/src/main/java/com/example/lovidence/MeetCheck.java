@@ -77,8 +77,9 @@ public class MeetCheck extends Worker {
 
                 Log.e("latitude",locations[0]);
                 Log.e("logitude",locations[1]);
+                Log.e("logitude",locations[2]);
                 MyDatabase db = MyDatabase.getAppDatabase(context);
-                db.todoDao().insert(new Couple_Location(Double.parseDouble(locations[0]),Double.parseDouble(locations[1])));
+                db.todoDao().insert(new Couple_Location(Long.parseLong(locations[0]),Double.parseDouble(locations[1]),Double.parseDouble(locations[2])));
                 return Result.success();
             }
         } catch (Exception e) {

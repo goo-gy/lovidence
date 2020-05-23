@@ -26,6 +26,12 @@
     <Button android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
+        android:id="@+id/deleteAccount"
+        android:text="Delete Account"
+        />
+    <Button android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
         android:id="@+id/mtBtn"
         android:text="Matching"
         />

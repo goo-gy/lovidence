@@ -71,9 +71,12 @@ public class Menu1Fragment extends Fragment {
             try {
                 data = URLEncoder.encode("u_usr", "UTF-8") + "=" + URLEncoder.encode(usrId, "UTF-8");
                 sendMessage = checkMatchAsync.execute("IsMatched.php",data).get();
+                String[] args = sendMessage.split("@"); //0 is couple id and 1 is date
                 sharedPref = menu1_context.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);  //입력한 값을저장
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("date", sendMessage);
+                editor.putString("COUPLEID",args[0]);
+                editor.putString("date", args[1]);
+                editor.putLong("LASTUPDATE", 0);
                 editor.commit();
             }catch(Exception e){e.printStackTrace();}
         }

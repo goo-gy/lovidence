@@ -173,6 +173,7 @@ public class Matching extends AppCompatActivity {
             }catch(Exception e){e.printStackTrace();}
             if(sendMessage.equals("matching info query successbuffer update")){
                 Intent intent = new Intent(Matching.this, SplashActivity.class);
+                editor.putString("COUPLEID",myId+partnerId);
                 finish();
                 startActivity(intent);
                 Toast.makeText(Matching.this, "매칭 성공!!!", Toast.LENGTH_SHORT).show();
