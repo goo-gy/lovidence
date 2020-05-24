@@ -61,8 +61,8 @@ public class Menu3Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_menu3, container, false);
+
         menu3_context = getActivity();
-        getListOnServer();
         initialize_map();
         Button button_gps = (Button) viewGroup.findViewById(R.id.btn_get_gps);
         button_gps.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +73,7 @@ public class Menu3Fragment extends Fragment {
                 set_point();
             }
         });
+
         return viewGroup;
     }
 
@@ -99,56 +100,9 @@ public class Menu3Fragment extends Fragment {
             set_focus = true;
         }
     }
-    //현재 받지못한 데이터를 서버에서 가져오는 method
-    //받지못한 데이터를 구분하기위해 마지막으로 받아온 time을 preference에 기록함.
-    private void getListOnServer(){
-        PostAsync getLocations = new PostAsync();
-        SharedPreferences sharedPref;
-        sharedPref = menu3_context.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
-        String couple_id  = sharedPref.getString("COUPLEID","");
-        Long   lastUpdate = sharedPref.getLong("LASTUPDATE",0);
-        Long   current    = Calendar.getInstance().getTime().getTime();
-        String data="";
-        try {
-            data = URLEncoder.encode("u_couple", "UTF-8") + "=" + URLEncoder.encode(couple_id, "UTF-8");
-            data += "&" + URLEncoder.encode("u_last", "UTF-8") + "=" + URLEncoder.encode(Long.toString(lastUpdate), "UTF-8");
-            data += "&" + URLEncoder.encode("u_current", "UTF-8") + "=" + URLEncoder.encode(Long.toString(current), "UTF-8");
-            //마지막 업데이트 시간부터 현재시간까지 모든 location을 가져오는 php 필요
-            String result = getLocations.execute("userRegist.php",data).get();  //result는 좌표들과 시간임.(구분자로 구분해주던지 해야함.)
-            if(true){   //성공
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putLong("LASTUPDATE",current);   //마지막시간을 현재시간으로.
-               //TODO::                                         //여기서 받은 String을 array로 바꿔서 넣도록
-            }
-            else{   //실패시
-                Log.e("update fail..","fail");
-            }
-        }catch (Exception e){e.printStackTrace();}
+    //서버에서 저장된 커플의 모든 좌표는 database에 저장됨.
+    //이것을 불러와서 사용
 
-    }
-    public static class putDBAsync extends AsyncTask<ArrayList<String>, Void, Void> {
-        private Couple_LocationDao mTodoDao;
 
-        public  putDBAsync(Couple_LocationDao todoDao){
-            this.mTodoDao = todoDao;
-        }
-
-        @Override //백그라운드작업(메인스레드 X)
-        protected Void doInBackground(ArrayList<String> ...params) {
-            int size = params[0].size();
-
-            for(int i=0; i<size; i++){
-                String line = params[0].get(i);
-                String[] args = line.split("!"); //TODO:: split어떻게할지.   //한개의 라인(element)에는 시간, latitude, longitude값이 들어있음 그것을 구분해줘야함
-                long time = Long.parseLong(args[0]);
-                Double latitude = Double.parseDouble(args[1]);
-                Double longitude = Double.parseDouble(args[2]);
-                Couple_Location value = new Couple_Location(time,latitude,longitude);   //database에 insert
-                mTodoDao.insert(value);
-            }
-
-            return null;
-        }
-    }
 
 }

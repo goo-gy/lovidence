@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,8 @@ public class Menu2Fragment extends Fragment {
     PieChart pieChart; //원형차트
     private getAsyncTask getDB;
     private MyDatabase db;
+    private TextView text;
+    private static int elements;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,17 +64,21 @@ public class Menu2Fragment extends Fragment {
         db = MyDatabase.getAppDatabase(getActivity());
         getDB = new getAsyncTask(getActivity(),db.todoDao());
         pieChart= view.findViewById(R.id.piechart);
+        text = view.findViewById(R.id.elementsNum);
 
 
         try {
             setPieChart(getDB.execute().get());
         }catch (Exception e){e.printStackTrace();}
+        text.setText("현재 표본 갯수 : " + elements);
+        Log.e("elements","현재 표본 갯수 : " + elements);
 
         return view;
     }
-    public static class getAsyncTask extends AsyncTask<Void, Void, ArrayList<String>> {
+    private static class getAsyncTask extends AsyncTask<Void, Void, ArrayList<String>> {
         private Couple_LocationDao mTodoDao;
         private Context context;
+
 
         public  getAsyncTask(Context context, Couple_LocationDao todoDao){
             this.mTodoDao = todoDao;
@@ -84,8 +91,10 @@ public class Menu2Fragment extends Fragment {
             ArrayList<String> locations = new ArrayList<String>();
             Geocoder geo;
             geo = new Geocoder(context, Locale.getDefault());
+            elements = mTodoDao.getAll().size();
 
-            for(int i=0; i<mTodoDao.getAll().size(); i++){
+
+            for(int i=0; i<elements; i++){
                 Couple_Location location = mTodoDao.getAll().get(i);
                 try{locations.add(geo.getFromLocation(location.getLocationX(),location.getLocationY(),1).get(0).getAdminArea());}
                 catch (Exception e){Log.e(Double.toString(location.getLocationX()),Double.toString(location.getLocationX()));}

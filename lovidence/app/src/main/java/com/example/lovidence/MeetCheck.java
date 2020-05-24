@@ -41,6 +41,7 @@ public class MeetCheck extends Worker {
         String myId = getInputData().getString("myId");
         Double latitude = getInputData().getDouble("latitude",-1);
         Double longitude = getInputData().getDouble("longitude",-1);
+        Long   lastUpdate = getInputData().getLong("lastUpdate",-1);
         HttpURLConnection httpURLConnection = null;
         String data="";
         String link="";
@@ -50,6 +51,7 @@ public class MeetCheck extends Worker {
             data +="&" +  URLEncoder.encode("u_usr", "UTF-8") + "=" + URLEncoder.encode(myId, "UTF-8");
             data +="&" +  URLEncoder.encode("u_x", "UTF-8") + "=" + URLEncoder.encode(Double.toString(latitude), "UTF-8");
             data +="&" +  URLEncoder.encode("u_y", "UTF-8") + "=" + URLEncoder.encode(Double.toString(longitude), "UTF-8");
+            data +="&" +  URLEncoder.encode("u_lasttime", "UTF-8") + "=" + URLEncoder.encode(Long.toString(lastUpdate), "UTF-8");
             Log.e("myworker",data);
             link = "https://test-yetvm.run.goorm.io/test/"+"updateLocation2.php";
             URL url = new URL(link);
@@ -73,13 +75,24 @@ public class MeetCheck extends Worker {
                 return Result.failure();
             }
             else {
-                String[] locations = sb.toString().split("-");
-
-                Log.e("latitude",locations[0]);
-                Log.e("logitude",locations[1]);
-                Log.e("logitude",locations[2]);
+                //Last Update time
+                SharedPreferences sharedPref = context.getSharedPreferences("USERINFO",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putLong("LASTUPDATE",time);
+                editor.commit();
+                Log.e("lastupdate",""+time);
+                //결과는 time, latitude,logitude 의 array형태 , 2개의 delimeter필요
+                String[] locations = sb.toString().split("@");  //각 정보는 @로 구분함.
+//수정필요.. 중간값 받을필요없을듯. 지금 15분마다 자기위치보내고 고 수행하면됨. 왜냐하면 중간값은 3에갔을때만 받아오도록 되어있기때문.
+                //아니면 여기서 그냥 여태까지 읽은거 다받아와도 됨.
+                //바로 데이터베이스에 저장시키고 frag3에가면 그냥 불러오는것으로.
                 MyDatabase db = MyDatabase.getAppDatabase(context);
-                db.todoDao().insert(new Couple_Location(Long.parseLong(locations[0]),Double.parseDouble(locations[1]),Double.parseDouble(locations[2])));
+                for(String e: locations){
+                    Log.e("line : ",e);
+                    String[] elements = e.split("-"); // 각 element는 -로 구분
+                    db.todoDao().insert(new Couple_Location(Long.parseLong(elements[0]),Double.parseDouble(elements[1]),Double.parseDouble(elements[2])));
+                }
+
                 return Result.success();
             }
         } catch (Exception e) {

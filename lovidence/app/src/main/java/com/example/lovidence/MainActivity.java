@@ -30,6 +30,7 @@ import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -70,16 +71,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         address_vector = new Vector(100);
         sharedPref = MainActivity.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
         String myId = sharedPref.getString("USERID","");
+        long lastUpdate = sharedPref.getLong("LASTUPDATE",0);
         if(!myId.equals("")) {
             get_GPS();
             Log.e("??","GPS");
             Data workData = new Data.Builder()
                     .putDouble("latitude", gpsTracker.getLatitude())
                     .putDouble("longitude", gpsTracker.getLongitude())
+                    .putLong("lastUpdate",lastUpdate)
                     .putString("myId", myId)
                     .build();
 

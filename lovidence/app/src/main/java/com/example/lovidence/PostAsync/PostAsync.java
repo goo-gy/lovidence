@@ -1,7 +1,10 @@
 package com.example.lovidence.PostAsync;
 
+import android.app.ProgressDialog;
+import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,7 +18,7 @@ import java.net.URLEncoder;
 //      data = URLEncoder.encode("u_id1", "UTF-8") + "=" + URLEncoder.encode(usr1, "UTF-8");
 //      data += "&" + URLEncoder.encode("u_id2", "UTF-8") + "=" + URLEncoder.encode(usr2, "UTF-8");
 public class PostAsync extends AsyncTask<String, Void, String> {
-
+    ProgressBar loading;
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -33,6 +36,7 @@ public class PostAsync extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
+
         HttpURLConnection httpURLConnection = null;
         String data="";
         String link="";

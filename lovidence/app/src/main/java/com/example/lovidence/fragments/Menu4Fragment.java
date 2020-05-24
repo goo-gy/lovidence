@@ -44,6 +44,7 @@ public class Menu4Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         menu4_context = getActivity();
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_menu4, container, false);
+
         button1 = (Button) viewGroup.findViewById(R.id.btn1);
         logoutBtn = (Button) viewGroup.findViewById(R.id.logout);
         mathingBtn = (Button) viewGroup.findViewById(R.id.mtBtn);
