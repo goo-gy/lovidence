@@ -29,7 +29,7 @@
         android:gravity="center"
         android:textColor="#55e0c5"
         android:textSize="27sp"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/namu"
         android:textFontWeight="@android:integer/config_mediumAnimTime"
         android:text="Lovidence Register"/>
     <ImageView
@@ -44,7 +44,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="- Id"
-        android:textColorHint="@color/colorPrimary"
         android:layout_marginBottom="16dp"
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -53,6 +52,7 @@
             android:layout_height="50dp"
             android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
+            android:fontFamily="@font/namu"
             >
             <requestFocus />
         </com.google.android.material.textfield.TextInputEditText>
@@ -61,14 +61,15 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="- Password(must be > 5 character)"
-        android:textColorHint="@color/colorPrimary"
+        android:hint="- Password (must be > 5 character)"
+        android:fontFamily="@font/namu"
         android:layout_marginBottom="16dp"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_Password"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:fontFamily="@font/namu"
             android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             >
@@ -79,13 +80,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="- Password Check"
-        android:textColorHint="@color/colorPrimary"
         android:layout_marginBottom="16dp"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_Password_chk"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:fontFamily="@font/namu"
             android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             >
@@ -95,13 +96,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="- Name"
-        android:textColorHint="@color/colorPrimary"
         android:layout_marginBottom="16dp"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_Name"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:fontFamily="@font/namu"
             android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             >
@@ -116,8 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:textColor="@color/colorPrimary"
-            android:fontFamily="sans-serif-condensed"
+            android:fontFamily="@font/namu"
             android:layout_marginBottom="5dp"
             android:text=" - Sex"/>
         <RadioGroup
@@ -128,6 +128,7 @@
             <RadioButton
                 android:layout_weight="1"
                 android:text="Male"
+                android:fontFamily="@font/namu"
                 android:id="@+id/rg_btn1"
                 android:layout_width="0dp"
                 android:checked="true"
@@ -135,6 +136,7 @@
             <RadioButton
                 android:layout_weight="1"
                 android:text="Female"
+                android:fontFamily="@font/namu"
                 android:id="@+id/rg_btn2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
@@ -144,13 +146,14 @@
 
     <Button
         android:text="Join"
-        android:fontFamily="sans-serif-condensed"
-        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/namu"
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:id="@+id/bt_Join"
         android:clickable="true"
+
+        android:textColor="#77807f"
         android:background="@drawable/join"
         android:onClick="bt_Join"
         android:textAlignment="center"
