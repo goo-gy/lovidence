@@ -34,6 +34,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.example.lovidence.SQLite.Couple_Location;
+import com.example.lovidence.SQLite.MyDatabase;
 import com.example.lovidence.fragments.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -45,18 +47,6 @@ import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
-
-    public class Address_gps
-    {
-        public double latitude;
-        public double longitude;
-        Address_gps(double _latitude, double _longitude)
-        {
-            latitude = _latitude;
-            longitude = _longitude;
-        }
-    }
-    public Vector<Address_gps> address_vector;
     PeriodicWorkRequest periodicRequest;
     SharedPreferences sharedPref;
 
@@ -71,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        address_vector = new Vector(100);
         sharedPref = MainActivity.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
         String myId = sharedPref.getString("USERID","");
         long lastUpdate = sharedPref.getLong("LASTUPDATE",0);
@@ -307,14 +296,30 @@ public class MainActivity extends AppCompatActivity {
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
+    private class Thread_insert extends Thread {
+        private int thread_number;
+        private Couple_Location couple_location;
+
+        public Thread_insert(int number, Couple_Location location) {
+            this.thread_number = number;
+            this.couple_location = location;
+        }
+        public void run() {
+            MyDatabase db = MyDatabase.getAppDatabase(MainActivity.this);
+            db.todoDao().insert(couple_location);
+        }
+    }
+
     public void get_GPS()
     {
         gpsTracker = new GpsTracker(MainActivity.this);
         double latitude = gpsTracker.getLatitude();
         double longitude = gpsTracker.getLongitude();
-        String address = getCurrentAddress(latitude, longitude);
-        address_vector.addElement(new Address_gps(latitude, longitude));
-        //주소와는별개로 위도값과 경도값 표시
-        //Toast.makeText(MainActivity.this, "현재위치 \n위도 " + latitude + "\n경도 " + longitude, Toast.LENGTH_LONG).show();
+        //String address = getCurrentAddress(latitude, longitude);
+
+        Couple_Location new_location= new Couple_Location(0, latitude, longitude);
+        Thread_insert thread_insert = new Thread_insert(0, new_location);
+        thread_insert.start();
+        Toast.makeText(this, Double.toString(latitude) + ", " + Double.toString(longitude), Toast.LENGTH_SHORT).show();
     }
 }
