@@ -31,6 +31,7 @@
         android:gravity="center"
         android:textColor="#55e0c5"
         android:textSize="24sp"
+        android:fontFamily="@font/namu"
         android:textFontWeight="@android:integer/config_mediumAnimTime"
         android:text="LOGIN"/>
     <ImageView
@@ -50,6 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/prompt_email"
+        android:fontFamily="@font/namu"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         >
@@ -67,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/prompt_password"
+        android:fontFamily="@font/namu"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
@@ -81,7 +84,7 @@
         android:layout_marginBottom="15dp"
         android:gravity="center"
         android:layout_height="wrap_content"
-        android:background="@drawable/heart_back"
+        android:background="@drawable/heart_back2"
         android:textColor="#ffffff"
         android:text="Sign in" />
     <Button
@@ -91,7 +94,7 @@
         android:gravity="center"
         android:clickable="true"
         android:layout_height="wrap_content"
-        android:background="@drawable/heart_back"
+        android:background="@drawable/heart_back2"
         android:textColor="#ffffff"
         android:text="Register" />
     <ProgressBar

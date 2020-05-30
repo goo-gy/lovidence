@@ -6,31 +6,122 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Matching">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="domatching"
-        android:id="@+id/domatching"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="generate QRCode"
-        android:id="@+id/gQR"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scan QRCode"
-        android:id="@+id/sQR"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="exit"
-        android:id="@+id/exit"/>
-    <EditText
-        android:id="@+id/loveperson"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="매칭할 아이디"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        android:fillViewport="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/namu"
+                android:gravity="center"
+                android:text="Lovidence Matching"
+                android:textColor="#55e0c5"
+                android:textFontWeight="@android:integer/config_mediumAnimTime"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@null"
+                android:src="@drawable/main_map" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/namu"
+                android:text="- 상대방 아이디를 알고 계신가요 ?  "
+                android:textSize="23dp"></TextView>
+
+            <EditText
+                android:id="@+id/loveperson"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:fontFamily="@font/namu"
+                android:hint="ID를 입력해주세요 "></EditText>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/namu"
+                android:text="- 상대방 QR 코드를 알고 계신가요 ?  "
+                android:textSize="23dp"></TextView>
+
+            <Button
+                android:id="@+id/sQR"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="250dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#77807f"
+                android:background="@drawable/heart_back"
+                android:fontFamily="@font/namu"
+                android:text="Scan" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/namu"
+                android:text="- 본인 QR Code 를 보고 싶으신가요 ?  "
+                android:textSize="23dp"></TextView>
+            <Button
+                android:id="@+id/gQR"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="250dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#77807f"
+                android:background="@drawable/heart_back"
+                android:fontFamily="@font/namu"
+                android:text="Click" />
+            <Button
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:id="@+id/domatching"
+                android:background="@drawable/heart_back"
+                android:textSize="20dp"
+                android:textColor="#77807f"
+                android:fontFamily="@font/namu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="연결하기" />
+
+
+
+            <Button
+                android:textSize="20dp"
+                android:layout_marginTop="250dp"
+                android:layout_gravity="right"
+                android:id="@+id/exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:fontFamily="@font/namu"
+                android:text="돌아가기" />
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>
