@@ -14,7 +14,7 @@ public abstract class MyDatabase extends RoomDatabase {
     public abstract Couple_LocationDao todoDao();
 
 
-    //디비객체생성 가져오기
+    //디비객체생성 가져오기`
     public static MyDatabase getAppDatabase(Context context){
         if(INSTANCE == null){
             INSTANCE = Room.databaseBuilder(context, MyDatabase.class , "Location-db")
