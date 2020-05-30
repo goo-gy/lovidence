@@ -27,6 +27,7 @@ import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
+import androidx.work.Operation;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     .build();
             WorkManager.getInstance(MainActivity.this)
                     .enqueueUniquePeriodicWork("transfer Location", ExistingPeriodicWorkPolicy.REPLACE, periodicRequest);
+            //나중에 해야할것, worker내부에 또다른 worker?(alarm써도무관)을 사용하여 만남이 감지되었을시 유저에게 알람보내도록
         }
 
         //현재 서비스 상태 check,GPS와network연결

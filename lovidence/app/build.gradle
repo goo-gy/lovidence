@@ -22,6 +22,27 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        buildTypes.each {
+            //it.buildConfigField 'String', 'API_KEY', ApiKey
+            it.buildConfigField('String','API_KEY','"AIzaSyBuYli1pya7ueNQp6NKXhUHx1KaKiCVDbc"')
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
     }
 
 }
@@ -39,19 +60,33 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.google.gms:google-services:4.3.3'
-    implementation 'com.google.firebase:firebase-core:17.4.0'
+    implementation 'com.google.firebase:firebase-core:17.4.2'
     implementation 'com.google.firebase:firebase-functions:19.0.2'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'com.android.support:design:29.0.3'
+
     implementation('androidx.work:work-runtime:2.3.4') {
-        exclude group: 'com.google.guava', module: 'listenablefuture'
+       exclude group: 'com.google.guava', module: 'listenablefuture'
     }
-    implementation 'android.arch.work:work-runtime:1.0.1'
+    //implementation 'android.arch.work:work-runtime:1.0.1'
     implementation 'com.google.guava:guava:27.0.1-android'
+    //implementation 'com.google.guava:guava-jdk5:17.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha01'
+    implementation 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
     implementation files('libs\\libDaumMapAndroid.jar')
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
+    implementation 'com.google.api-client:google-api-client-android:1.23.0' exclude module: 'httpclient' exclude group: 'com.google.guava'//불가
+    implementation 'com.google.http-client:google-http-client-gson:1.23.0' exclude module: 'httpclient'
+
+    implementation 'com.google.apis:google-api-services-vision:v1-rev369-1.23.0' exclude group: 'com.google.guava'
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
+    implementation 'com.google.firebase:firebase-analytics:17.4.2'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+
 }
+apply plugin: 'com.google.gms.google-services'

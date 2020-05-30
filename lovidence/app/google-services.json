@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "84313218344",
+    "firebase_url": "https://sharp-maker-275609.firebaseio.com",
+    "project_id": "sharp-maker-275609",
+    "storage_bucket": "sharp-maker-275609.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84313218344:android:a174437ab5e1617df0041d",
+        "android_client_info": {
+          "package_name": "com.example.lovidence"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84313218344-ji3e5qdalqrkjcolhc8m61gs8ui0t9jk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOEBChZMKSz4yaGOKML_aH9567hdryhVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84313218344-ji3e5qdalqrkjcolhc8m61gs8ui0t9jk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

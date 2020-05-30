@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.work.WorkManager;
 
+import com.example.lovidence.LandMark.LandmarkActivity;
 import com.example.lovidence.MainActivity;
 import com.example.lovidence.Matching;
 import com.example.lovidence.PostAsync.PostAsync;
@@ -36,6 +37,7 @@ public class Menu4Fragment extends Fragment {
     Button logoutBtn;
     Button mathingBtn;
     Button deleteBtn;
+    Button LandmarkBtn;
     WorkManager workManager;
 
 
@@ -49,6 +51,7 @@ public class Menu4Fragment extends Fragment {
         logoutBtn = (Button) viewGroup.findViewById(R.id.logout);
         mathingBtn = (Button) viewGroup.findViewById(R.id.mtBtn);
         deleteBtn = (Button) viewGroup.findViewById(R.id.deleteAccount);
+        LandmarkBtn = (Button) viewGroup.findViewById(R.id.LMBtn);
         //예약된 work 모두삭제
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +67,14 @@ public class Menu4Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 LogOutAction();
+            }
+        });
+        LandmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(menu4_context, LandmarkActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
         mathingBtn.setOnClickListener(new View.OnClickListener() {

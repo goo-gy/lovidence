@@ -3,6 +3,7 @@ package com.example.lovidence.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Geocoder;
@@ -23,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.lovidence.*;
+import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.R;
 import com.example.lovidence.SQLite.Couple_Location;
 import com.example.lovidence.SQLite.Couple_LocationDao;
@@ -40,6 +42,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.lang.reflect.Array;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -70,7 +73,17 @@ public class Menu2Fragment extends Fragment {
         try {
             setPieChart(getDB.execute().get());
         }catch (Exception e){e.printStackTrace();}
-        text.setText("현재 표본 갯수 : " + elements);
+        PostAsync checkMatchAsync = new PostAsync();
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("USERINFO",Context.MODE_PRIVATE);
+        String couple_id = sharedPref.getString("COUPLEID","");
+        String data="";
+        String sendMessage="";
+        try{
+            data = URLEncoder.encode("u_coupleId", "UTF-8") + "=" + URLEncoder.encode(couple_id, "UTF-8");
+            sendMessage = checkMatchAsync.execute("type_request.php",data).get();
+            Log.e("유형",sendMessage);
+        }catch (Exception e){e.printStackTrace();}
+        text.setText(sendMessage);
         Log.e("elements","현재 표본 갯수 : " + elements);
 
         return view;
@@ -135,8 +148,8 @@ public class Menu2Fragment extends Fragment {
         PieData data = new PieData((dataSet));
         data.setValueTextSize(10f);
         data.setValueTextColor(Color.YELLOW);
-
         pieChart.setData(data);
+
 
     }
 }

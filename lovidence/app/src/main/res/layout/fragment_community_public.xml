@@ -6,9 +6,10 @@
     tools:context=".fragments.communityfrags.community_public">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/public_community"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="public page" />
+        />
 
 </FrameLayout>

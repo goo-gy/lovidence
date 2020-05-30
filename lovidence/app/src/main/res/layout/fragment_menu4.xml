@@ -35,4 +35,10 @@
         android:id="@+id/mtBtn"
         android:text="Matching"
         />
+    <Button android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/LMBtn"
+        android:text="LandMark"
+        />
 </LinearLayout>

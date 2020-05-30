@@ -80,7 +80,7 @@ public class Menu5Fragment extends Fragment {
             int index = position;
             switch(index){
                 case 0: return community_private.newInstance("private","start");
-                case 1 : return community_public.newInstance("public","start");
+                case 1 : return community_public.newInstance();
                 default: return null;
             }
         }
