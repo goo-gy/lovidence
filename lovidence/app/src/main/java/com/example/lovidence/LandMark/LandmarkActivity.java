@@ -21,7 +21,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -54,13 +53,11 @@ import com.google.api.services.vision.v1.Vision;
 import com.google.api.services.vision.v1.VisionRequest;
 import com.google.api.services.vision.v1.VisionRequestInitializer;
 import com.google.api.services.vision.v1.model.AnnotateImageRequest;
-import com.google.api.services.vision.v1.model.AnnotateImageResponse;
 import com.google.api.services.vision.v1.model.BatchAnnotateImagesRequest;
 import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
-import com.google.api.services.vision.v1.model.LocationInfo;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.cloud.landmark.FirebaseVisionCloudLandmark;
@@ -69,9 +66,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -165,10 +160,10 @@ public class LandmarkActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {      //현재 리퀘스트가있고 결과 ok일시 업로드
-            uploadImage(data.getData(),true);
+            uploadImage(data.getData());
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {                //Intent가 null인경우
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-            uploadImage(photoUri,false);
+            uploadImage(photoUri);
         }
     }
 
@@ -191,7 +186,7 @@ public class LandmarkActivity extends AppCompatActivity {
         }
     }
 
-    public void uploadImage(Uri uri,boolean isCamera) {
+    public void uploadImage(Uri uri) {
         if (uri != null) {
             try {
                 // scale the image to save on bandwidth
@@ -199,32 +194,6 @@ public class LandmarkActivity extends AppCompatActivity {
                         scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
                                 MAX_DIMENSION);
-                if(isCamera) {
-                    File f = new File(String.valueOf(uri));
-                    ExifInterface ei = new ExifInterface(f.getPath());
-                    int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                            ExifInterface.ORIENTATION_UNDEFINED);
-
-                    switch (orientation) {
-
-                        case ExifInterface.ORIENTATION_ROTATE_90:
-                            bitmap = rotateImage(bitmap, 90);
-                            break;
-
-                        case ExifInterface.ORIENTATION_ROTATE_180:
-                            bitmap = rotateImage(bitmap, 180);
-                            break;
-
-                        case ExifInterface.ORIENTATION_ROTATE_270:
-                            bitmap = rotateImage(bitmap, 270);
-                            break;
-
-                        case ExifInterface.ORIENTATION_NORMAL:
-                        default:
-                            bitmap = bitmap;
-                    }
-                }
-
                 callCloudVision(bitmap);
                 FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
                 FirebaseVisionCloudLandmarkDetector detector = FirebaseVision.getInstance()

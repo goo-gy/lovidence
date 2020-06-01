@@ -1,11 +1,7 @@
 package com.example.lovidence.fragments;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,47 +9,34 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.lovidence.*;
 import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.R;
 import com.example.lovidence.SQLite.Couple_Location;
 import com.example.lovidence.SQLite.Couple_LocationDao;
 import com.example.lovidence.SQLite.MyDatabase;
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
-import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class Menu2Fragment extends Fragment {
-    PieChart pieChart; //원형차트
+    BarChart barChart; //원형차트
     private getAsyncTask getDB;
     private MyDatabase db;
     private TextView text;
     private static int elements;
+    private SharedPreferences sharedPref;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,21 +49,27 @@ public class Menu2Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_menu2, container, false);
         db = MyDatabase.getAppDatabase(getActivity());
         getDB = new getAsyncTask(getActivity(),db.todoDao());
-        pieChart= view.findViewById(R.id.piechart);
+        //barChart= view.findViewById(R.id.barchart);
         text = view.findViewById(R.id.elementsNum);
+        sharedPref = getActivity().getSharedPreferences("USERINFO",Context.MODE_PRIVATE);
+        //--------------------------------------------
+        BarChart chart = view.findViewById(R.id.barchart);
+        ArrayList<BarEntry> NoOfEmp = new ArrayList();
 
+        NoOfEmp.add(new BarEntry(1f, Float.parseFloat(sharedPref.getString("COUPLERANK_dist",""))));
+        NoOfEmp.add(new BarEntry(2f, Float.parseFloat(sharedPref.getString("COUPLERANK_time",""))));
+        NoOfEmp.add(new BarEntry(3f, Float.parseFloat(sharedPref.getString("COUPLERANK_all",""))));
+        setBarChart(NoOfEmp,chart);
 
-        try {
-            setPieChart(getDB.execute().get());
-        }catch (Exception e){e.printStackTrace();}
+        //--------------------------------------------
         PostAsync checkMatchAsync = new PostAsync();
         SharedPreferences sharedPref = getActivity().getSharedPreferences("USERINFO",Context.MODE_PRIVATE);
         String couple_id = sharedPref.getString("COUPLEID","");
-        String data="";
+        String data2="";
         String sendMessage="";
         try{
-            data = URLEncoder.encode("u_coupleId", "UTF-8") + "=" + URLEncoder.encode(couple_id, "UTF-8");
-            sendMessage = checkMatchAsync.execute("type_request.php",data).get();
+            data2 = URLEncoder.encode("u_coupleId", "UTF-8") + "=" + URLEncoder.encode(couple_id, "UTF-8");
+            sendMessage = checkMatchAsync.execute("type_request.php",data2).get();
             Log.e("유형",sendMessage);
         }catch (Exception e){e.printStackTrace();}
         text.setText(sendMessage);
@@ -115,8 +104,27 @@ public class Menu2Fragment extends Fragment {
             return locations;
         }
     }
-    void setPieChart(ArrayList<String> locations){
-        pieChart.setUsePercentValues(true);             //percent사용
+
+    void setBarChart(ArrayList<BarEntry> list, BarChart chart){
+
+        BarDataSet bardataset = new BarDataSet(list, "No Of Employee");
+        chart.animateY(5000);
+        //그래프 격자 없애기
+        chart.getAxisLeft().setDrawGridLines(false);
+        chart.getXAxis().setDrawGridLines(false);
+        chart.getAxisRight().setDrawGridLines(false);
+        //밑의 최소값 최대값설정
+        chart.getXAxis().setAxisMinimum(0);
+        chart.getXAxis().setAxisMaximum(4);
+        BarData data = new BarData(bardataset);      // MPAndroidChart v3.X 오류 발생
+        data.setBarWidth(0.5f);
+        bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
+        chart.setData(data);
+
+    }
+    /*void setBarChart(ArrayList<String> locations){
+        barChart.
+        barChart.setUsePercentValues(true);             //percent사용
         pieChart.getDescription().setEnabled(false);    //descript사용 안함(default는 사용, 왼쪽하단면에 설명표시)
         pieChart.setExtraOffsets(5,10,5,5); //offset
 
@@ -151,5 +159,7 @@ public class Menu2Fragment extends Fragment {
         pieChart.setData(data);
 
 
-    }
+    }*/
+
+
 }

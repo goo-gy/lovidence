@@ -14,8 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lovidence.MainActivity;
+import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.ui.login.LoginActivity;
 
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 
 public class SplashActivity extends AppCompatActivity {
@@ -31,7 +33,32 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
-        else{
+        else{   //USERINFO에 ranking update 됐는지 확인, 그후 받아오거나무시, udate는 1주일마다 초기화되도록.TODO..
+                if(!sharedPref.contains("RANKING_UPDATE")){
+                    String data="";
+                    PostAsync rankingAsync = new PostAsync();
+                    try {
+                        data = URLEncoder.encode("u_coupleId", "UTF-8") + "=" + URLEncoder.encode(sharedPref.getString("COUPLEID",""), "UTF-8");
+
+                        String result = rankingAsync.execute("type_request.php",data).get();
+                        Log.e("result",result);
+                        if(result.equals("type search fail")){
+                            //failed...
+                            Log.e("get data fail... ","network error?");
+                        }
+                        else{
+                            String[] rankData =result.split("-");
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("COUPLERANK_type",rankData[0]);
+                            editor.putString("COUPLERANK_dist",rankData[1]);
+                            editor.putString("COUPLERANK_time",rankData[2]);
+                            editor.putString("COUPLERANK_all",rankData[3]);
+                            editor.commit();
+                        }
+                    }catch (Exception e){e.printStackTrace();}
+
+                }
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
