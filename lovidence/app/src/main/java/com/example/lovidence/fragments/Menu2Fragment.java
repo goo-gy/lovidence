@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,9 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -82,18 +86,15 @@ public class Menu2Fragment extends Fragment {
         Log.e("elements","현재 표본 갯수 : " + elements);
          */
         //-------------------------------------------- time char
-        /*
         Thread_DB db_thread = new Thread_DB(0);
         db_thread.start();
-        List<Couple_Location> location_list = null;
+        List<Couple_Location> location_list = new ArrayList<Couple_Location>();
         try {
             db_thread.join();
             location_list = db_thread.get_location_data();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-         */
-        List<Couple_Location> location_list = new ArrayList<Couple_Location>();
         ScatterChart time_chart = view.findViewById(R.id.time_chart);
         setTimeChart(location_list, time_chart);
         return view;
@@ -203,15 +204,20 @@ public class Menu2Fragment extends Fragment {
         time_chart.getXAxis().setAxisMaximum(24);
 
         List<Entry> entries = new ArrayList<Entry>();
-        entries.add(new Entry((int)19, (int)1));
-        entries.add(new Entry((int)18, (int)7));
-        entries.add(new Entry((int)18, (int)3));
-        entries.add(new Entry((int)12, (int)4));
+        Iterator iterator = locations.iterator();
+        while(iterator.hasNext())
+        {
+            Couple_Location location = (Couple_Location)iterator.next();
+            Date date = new Date(location.getTime());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            Toast.makeText(getContext(), date.toString(), Toast.LENGTH_SHORT).show();
+            entries.add(new Entry(cal.get(Calendar.HOUR), (int)cal.get(Calendar.DAY_OF_WEEK)));
+        }
 
         ScatterDataSet time_data_set = new ScatterDataSet(entries, "timeline");
         ScatterData time_data = new ScatterData(time_data_set);
         time_chart.setData(time_data);
         time_chart.invalidate();
     }
-
 }
