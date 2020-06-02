@@ -21,14 +21,20 @@ import com.example.lovidence.SQLite.Couple_Location;
 import com.example.lovidence.SQLite.Couple_LocationDao;
 import com.example.lovidence.SQLite.MyDatabase;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class Menu2Fragment extends Fragment {
     BarChart barChart; //원형차트
@@ -47,6 +53,7 @@ public class Menu2Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu2, container, false);
+        /*
         db = MyDatabase.getAppDatabase(getActivity());
         getDB = new getAsyncTask(getActivity(),db.todoDao());
         //barChart= view.findViewById(R.id.barchart);
@@ -60,7 +67,6 @@ public class Menu2Fragment extends Fragment {
         NoOfEmp.add(new BarEntry(2f, Float.parseFloat(sharedPref.getString("COUPLERANK_time",""))));
         NoOfEmp.add(new BarEntry(3f, Float.parseFloat(sharedPref.getString("COUPLERANK_all",""))));
         setBarChart(NoOfEmp,chart);
-
         //--------------------------------------------
         PostAsync checkMatchAsync = new PostAsync();
         SharedPreferences sharedPref = getActivity().getSharedPreferences("USERINFO",Context.MODE_PRIVATE);
@@ -74,9 +80,42 @@ public class Menu2Fragment extends Fragment {
         }catch (Exception e){e.printStackTrace();}
         text.setText(sendMessage);
         Log.e("elements","현재 표본 갯수 : " + elements);
-
+         */
+        //-------------------------------------------- time char
+        /*
+        Thread_DB db_thread = new Thread_DB(0);
+        db_thread.start();
+        List<Couple_Location> location_list = null;
+        try {
+            db_thread.join();
+            location_list = db_thread.get_location_data();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+         */
+        List<Couple_Location> location_list = new ArrayList<Couple_Location>();
+        ScatterChart time_chart = view.findViewById(R.id.time_chart);
+        setTimeChart(location_list, time_chart);
         return view;
     }
+    private class Thread_DB extends Thread {
+        private int thread_number;
+        private List<Couple_Location> location_list;
+
+        public Thread_DB(int number) {
+            this.thread_number = number;
+        }
+        public void run() {
+            MyDatabase db = MyDatabase.getAppDatabase(getContext());
+            location_list = db.todoDao().getAll();
+        }
+        public List<Couple_Location> get_location_data()
+        {
+            return location_list;
+        }
+    }
+
+
     private static class getAsyncTask extends AsyncTask<Void, Void, ArrayList<String>> {
         private Couple_LocationDao mTodoDao;
         private Context context;
@@ -157,9 +196,22 @@ public class Menu2Fragment extends Fragment {
         data.setValueTextSize(10f);
         data.setValueTextColor(Color.YELLOW);
         pieChart.setData(data);
-
-
     }*/
+    private void setTimeChart(List<Couple_Location> locations, ScatterChart time_chart)
+    {
+        time_chart.getXAxis().setAxisMinimum(0);
+        time_chart.getXAxis().setAxisMaximum(24);
 
+        List<Entry> entries = new ArrayList<Entry>();
+        entries.add(new Entry((int)19, (int)1));
+        entries.add(new Entry((int)18, (int)7));
+        entries.add(new Entry((int)18, (int)3));
+        entries.add(new Entry((int)12, (int)4));
+
+        ScatterDataSet time_data_set = new ScatterDataSet(entries, "timeline");
+        ScatterData time_data = new ScatterData(time_data_set);
+        time_chart.setData(time_data);
+        time_chart.invalidate();
+    }
 
 }
