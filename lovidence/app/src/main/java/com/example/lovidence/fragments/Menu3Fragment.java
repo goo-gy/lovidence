@@ -82,9 +82,9 @@ public class Menu3Fragment extends Fragment {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_menu3, container, false);
 
         initialize_map();
+        update_function();
         Button button_gps = (Button) viewGroup.findViewById(R.id.btn_get_gps);
         Button button_update = (Button) viewGroup.findViewById(R.id.btn_update);
-
         button_gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,42 +95,48 @@ public class Menu3Fragment extends Fragment {
 
         button_update.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Thread_DB db_thread = new Thread_DB(0);
-                db_thread.start();
-                try {
-                    db_thread.join();
-                    List<Couple_Location>location_list = db_thread.get_location_data();
-
-                    Iterator iterator = location_list.iterator();
-                    int circle_count = 0;
-                    double latitude = 0;
-                    double longitude = 0;
-
-                    mapView.removeAllCircles();
-                    while(iterator.hasNext())
-                    {
-                        Couple_Location location = (Couple_Location)iterator.next();
-                        latitude = location.getLocationX();
-                        longitude = location.getLocationY();
-
-                        MapCircle new_circle = new MapCircle(
-                                MapPoint.mapPointWithGeoCoord(latitude, longitude), // center
-                                30, // radius
-                                Color.argb(128, 0xDD, 0xEE, 0), // strokeColor
-                                Color.argb(128, 55, 0xFF, 0xEE) // fillColor
-                        );
-                        new_circle.setTag(circle_count);
-                        mapView.addCircle(new_circle);
-                        circle_count++;
-                    }
-                    mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(latitude, longitude), true);
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            public void onClick(View view)
+            {
+                update_function();
             }
         });
         return viewGroup;
     }
+    private void update_function()
+    {
+        Thread_DB db_thread = new Thread_DB(0);
+        db_thread.start();
+        try {
+            db_thread.join();
+            List<Couple_Location>location_list = db_thread.get_location_data();
+
+            Iterator iterator = location_list.iterator();
+            int circle_count = 0;
+            double latitude = 0;
+            double longitude = 0;
+
+            mapView.removeAllCircles();
+            while(iterator.hasNext())
+            {
+                Couple_Location location = (Couple_Location)iterator.next();
+                latitude = location.getLocationX();
+                longitude = location.getLocationY();
+
+                MapCircle new_circle = new MapCircle(
+                        MapPoint.mapPointWithGeoCoord(latitude, longitude), // center
+                        30, // radius
+                        Color.argb(128, 0xDD, 0xEE, 0), // strokeColor
+                        Color.argb(128, 55, 0xFF, 0xEE) // fillColor
+                );
+                new_circle.setTag(circle_count);
+                mapView.addCircle(new_circle);
+                circle_count++;
+            }
+            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(latitude, longitude), true);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
