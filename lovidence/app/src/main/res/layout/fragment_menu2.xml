@@ -16,8 +16,8 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="400dp"
+            android:layout_width="400dp"
+            android:layout_height="600dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:orientation="vertical">
@@ -25,15 +25,18 @@
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barchart"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
+                android:layout_height="400dp"/>
 
             <TextView
                 android:id="@+id/elementsNum"
                 android:layout_width="match_parent"
                 android:layout_height="90dp" />
 
-        </LinearLayout>
+            <com.github.mikephil.charting.charts.ScatterChart
+                android:id="@+id/time_chart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"/>
 
+        </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -42,6 +42,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.security.MessageDigest;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
@@ -314,14 +316,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void get_GPS()
     {
+        Calendar calendar = Calendar.getInstance();
+        Long time_now = calendar.getTime().getTime();
+        Date date = new Date(time_now);
+
         gpsTracker = new GpsTracker(MainActivity.this);
         double latitude = gpsTracker.getLatitude();
         double longitude = gpsTracker.getLongitude();
         //String address = getCurrentAddress(latitude, longitude);
 
-        Couple_Location new_location= new Couple_Location(0, latitude, longitude);
+        Couple_Location new_location= new Couple_Location(time_now, latitude, longitude);
         Thread_insert thread_insert = new Thread_insert(0, new_location);
+
         thread_insert.start();
-        Toast.makeText(this, Double.toString(latitude) + ", " + Double.toString(longitude), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, date.toString() + ", " + Double.toString(latitude) + ", " + Double.toString(longitude), Toast.LENGTH_SHORT).show();
     }
 }
