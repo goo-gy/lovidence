@@ -23,6 +23,8 @@ import com.example.lovidence.SQLite.Couple_LocationDao;
 import com.example.lovidence.SQLite.MyDatabase;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -57,7 +59,7 @@ public class Menu2Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu2, container, false);
-        /*
+
         db = MyDatabase.getAppDatabase(getActivity());
         getDB = new getAsyncTask(getActivity(),db.todoDao());
         //barChart= view.findViewById(R.id.barchart);
@@ -84,7 +86,7 @@ public class Menu2Fragment extends Fragment {
         }catch (Exception e){e.printStackTrace();}
         text.setText(sendMessage);
         Log.e("elements","현재 표본 갯수 : " + elements);
-         */
+
         //-------------------------------------------- time char
         Thread_DB db_thread = new Thread_DB(0);
         db_thread.start();
@@ -200,19 +202,35 @@ public class Menu2Fragment extends Fragment {
     }*/
     private void setTimeChart(List<Couple_Location> locations, ScatterChart time_chart)
     {
-        time_chart.getXAxis().setAxisMinimum(0);
-        time_chart.getXAxis().setAxisMaximum(24);
+        XAxis xAxis = time_chart.getXAxis();
+        xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(24);
+        xAxis.setLabelCount(12);
+        //xAxis.setValueFormatter(new Formatter());
+
+        YAxis yAxis_left = time_chart.getAxisLeft();
+        yAxis_left.setAxisMinimum(1);
+        yAxis_left.setAxisMaximum(7);
+
+        YAxis yAxis_right = time_chart.getAxisRight();
+        yAxis_right.setAxisMinimum(1);
+        yAxis_right.setAxisMaximum(7);
 
         List<Entry> entries = new ArrayList<Entry>();
         Iterator iterator = locations.iterator();
+
+        long divider = 24*60*60*1000;
+        float divider_f = 60*60*1000;
         while(iterator.hasNext())
         {
             Couple_Location location = (Couple_Location)iterator.next();
-            Date date = new Date(location.getTime());
+            Long time = location.getTime();
+            time = time%divider;
+            Date date = new Date(time);
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            Toast.makeText(getContext(), date.toString(), Toast.LENGTH_SHORT).show();
-            entries.add(new Entry(cal.get(Calendar.HOUR), (int)cal.get(Calendar.DAY_OF_WEEK)));
+            //Toast.makeText(getContext(), date.toString(), Toast.LENGTH_SHORT).show();
+            entries.add(new Entry(time/divider_f + 9, (int)cal.get(Calendar.DAY_OF_WEEK)));
         }
 
         ScatterDataSet time_data_set = new ScatterDataSet(entries, "timeline");
