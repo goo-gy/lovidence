@@ -1,52 +1,42 @@
 package com.example.lovidence;
-import com.example.lovidence.*;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.Operation;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.Toast;
-
 import com.example.lovidence.SQLite.Couple_Location;
 import com.example.lovidence.SQLite.MyDatabase;
-import com.example.lovidence.fragments.*;
+import com.example.lovidence.fragments.Menu1Fragment;
+import com.example.lovidence.fragments.Menu2Fragment;
+import com.example.lovidence.fragments.Menu3Fragment;
+import com.example.lovidence.fragments.Menu4Fragment;
+import com.example.lovidence.fragments.Menu5Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -63,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("");
         setContentView(R.layout.activity_main);
         sharedPref = MainActivity.this.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
         String myId = sharedPref.getString("USERID","");

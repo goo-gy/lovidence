@@ -2,6 +2,7 @@ package com.example.lovidence.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,13 +22,18 @@ import com.example.lovidence.SQLite.Couple_Location;
 import com.example.lovidence.SQLite.Couple_LocationDao;
 import com.example.lovidence.SQLite.MyDatabase;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -36,14 +41,15 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 public class Menu2Fragment extends Fragment {
-    BarChart barChart; //원형차트
+    private static PieChart  pieChart; //원형차트
     private getAsyncTask getDB;
     private MyDatabase db;
     private TextView text;
@@ -62,8 +68,12 @@ public class Menu2Fragment extends Fragment {
 
         db = MyDatabase.getAppDatabase(getActivity());
         getDB = new getAsyncTask(getActivity(),db.todoDao());
-        //barChart= view.findViewById(R.id.barchart);
-        text = view.findViewById(R.id.elementsNum);
+
+        pieChart = view.findViewById(R.id.piechart);
+        try {
+            ArrayList<String> locationLists = getDB.execute().get();
+            setPieChart(locationLists);
+        }catch(Exception e){e.printStackTrace();}
         sharedPref = getActivity().getSharedPreferences("USERINFO",Context.MODE_PRIVATE);
         //--------------------------------------------
         BarChart chart = view.findViewById(R.id.barchart);
@@ -84,7 +94,7 @@ public class Menu2Fragment extends Fragment {
             sendMessage = checkMatchAsync.execute("type_request.php",data2).get();
             Log.e("유형",sendMessage);
         }catch (Exception e){e.printStackTrace();}
-        text.setText(sendMessage);
+        //text.setText(sendMessage);
         Log.e("elements","현재 표본 갯수 : " + elements);
 
         //-------------------------------------------- time char
@@ -164,9 +174,8 @@ public class Menu2Fragment extends Fragment {
         chart.setData(data);
 
     }
-    /*void setBarChart(ArrayList<String> locations){
-        barChart.
-        barChart.setUsePercentValues(true);             //percent사용
+    void setPieChart(ArrayList<String> locations){
+        pieChart.setUsePercentValues(true);             //percent사용
         pieChart.getDescription().setEnabled(false);    //descript사용 안함(default는 사용, 왼쪽하단면에 설명표시)
         pieChart.setExtraOffsets(5,10,5,5); //offset
 
@@ -177,7 +186,8 @@ public class Menu2Fragment extends Fragment {
         pieChart.setTransparentCircleRadius(61f);       //그리고 공간크기
 
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();    //차트의 값의 array
-        ArrayList<String> distinct = Lists.newArrayList(Sets.newHashSet(locations));
+        HashSet<String> distinct = new HashSet<String>(locations);
+
         for(String e: distinct){
             int count = Collections.frequency(locations,e);
             yValues.add(new PieEntry(count,e));
@@ -199,7 +209,7 @@ public class Menu2Fragment extends Fragment {
         data.setValueTextSize(10f);
         data.setValueTextColor(Color.YELLOW);
         pieChart.setData(data);
-    }*/
+    }
     private void setTimeChart(List<Couple_Location> locations, ScatterChart time_chart)
     {
         XAxis xAxis = time_chart.getXAxis();

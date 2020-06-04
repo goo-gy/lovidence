@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -14,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.lovidence.R;
@@ -34,6 +39,7 @@ public class community_public extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
     }
     public static community_private newInstance() {
@@ -47,6 +53,17 @@ public class community_public extends Fragment {
     public ViewGroup onCreateView(LayoutInflater inflater, ViewGroup container,
                                   Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_community_public, container, false);
+
+        Toolbar toolbar = (Toolbar) viewGroup.findViewById(R.id.toolbar_public);
+        toolbar.setTitle("");
+        toolbar.setTitleTextAppearance(getActivity(),0);
+        AppCompatActivity compat =  ((AppCompatActivity)getActivity());
+        compat.setSupportActionBar(toolbar);
+        compat.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        compat.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        compat.getSupportActionBar().setTitle("ll");
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Currentpage = 0;
         this.InitializeMovieData();
 
@@ -80,6 +97,7 @@ public class community_public extends Fragment {
         read(listView);
         return viewGroup;
     }
+
     public void InitializeMovieData()
     {
        /* movieDataList = new ArrayList<SampleData>();
@@ -159,6 +177,24 @@ public class community_public extends Fragment {
                 return null;
             }
         }
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+        // If you don't have res/menu, just create a directory named "menu" inside res
+        inflater.inflate(R.menu.menu_bottom2, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menuBtn) {
+            // do something here
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

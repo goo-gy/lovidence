@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.Menu5Fragment">
+
     <androidx.viewpager2.widget.ViewPager2
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"
@@ -11,9 +12,5 @@
         android:id="@+id/pager"
         android:orientation="horizontal" />
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="fragment5" />
 
 </FrameLayout>

@@ -14,7 +14,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.lovidence.R;
-import com.example.lovidence.fragments.communityfrags.*;
+import com.example.lovidence.fragments.communityfrags.community_private;
+import com.example.lovidence.fragments.communityfrags.community_public;
 
 import java.lang.reflect.Field;
 
@@ -39,7 +40,6 @@ public class Menu5Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_menu5, container, false);
-
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = viewGroup.findViewById(R.id.pager);
         reduceDragSensitivity();
@@ -47,6 +47,9 @@ public class Menu5Fragment extends Fragment {
         mPager.setAdapter(pagerAdapter);
         return viewGroup;
     }
+
+
+
     private void reduceDragSensitivity(){
         try{
             Field ff = ViewPager2.class.getDeclaredField("mRecyclerView");
