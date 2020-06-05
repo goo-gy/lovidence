@@ -16,16 +16,23 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="400dp"
-            android:layout_height="600dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:orientation="vertical">
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="우리 커플의 유형은"
+                android:paddingTop="10dp"
+                android:textSize="25dp"
+                android:fontFamily="@font/namu"
+                ></TextView>
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barchart"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"/>
+                android:layout_width="220dp"
+                android:layout_height="300dp"/>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/piechart"
