@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +39,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 public class Menu2Fragment extends Fragment {
     BarChart barChart; //원형차트
@@ -149,7 +147,7 @@ public class Menu2Fragment extends Fragment {
 
     void setBarChart(ArrayList<BarEntry> list, BarChart chart){
 
-        BarDataSet bardataset = new BarDataSet(list, "No Of Employee");
+        BarDataSet bardataset = new BarDataSet(list, "Time(rate) Distance(rate) Ranking ");
         chart.animateY(5000);
         //그래프 격자 없애기
         chart.getAxisLeft().setDrawGridLines(false);

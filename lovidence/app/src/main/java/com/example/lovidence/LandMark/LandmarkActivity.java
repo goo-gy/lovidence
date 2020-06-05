@@ -368,7 +368,7 @@ public class LandmarkActivity extends AppCompatActivity {
 
 
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
-        StringBuilder message = new StringBuilder("I found these things:\n\n");
+        StringBuilder message = new StringBuilder("해당 사진의 인식 결과 입니다. \n\n");
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
         if (labels != null) {
