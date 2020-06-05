@@ -34,10 +34,10 @@
                 android:layout_width="220dp"
                 android:layout_height="300dp"/>
 
-            <TextView
-                android:id="@+id/elementsNum"
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/piechart"
                 android:layout_width="match_parent"
-                android:layout_height="90dp" />
+                android:layout_height="400dp"/>
 
             <com.github.mikephil.charting.charts.ScatterChart
                 android:id="@+id/time_chart"

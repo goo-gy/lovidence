@@ -4,11 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.communityfrags.community_private">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar_private"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="사진을 등록해 주세요 이곳은 우리 커플의 사진이 저장됩니다." />
+        android:layout_height="wrap_content"
+        android:background="@color/pinky"/>
+    <!-- TODO: Update blank fragment layout -->
 
 </FrameLayout>
