@@ -73,7 +73,7 @@ public class community_edit extends Fragment {
                     data += URLEncoder.encode("u_text", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(str.getText()), "UTF-8");
                     data += URLEncoder.encode("u_img", "UTF-8") + "=" + URLEncoder.encode(getBase64String(sendImg), "UTF-8");
                     Log.e("send Community",data);
-                    sendMessage = send.execute("hhh",data).get();
+                    sendMessage = send.execute("upload.php",data).get();
                 }catch(Exception e){e.printStackTrace();}
                 if(sendMessage == "success"){
                     str.setText("");
