@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="#faf8e0"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/back"
+            android:layout_marginRight="110dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/namu"
+            android:layout_marginTop="5dp"
+            android:textSize="25dp"
+            android:text="글 쓰기"
+            />
+        <Button
+            android:id="@+id/uploadBtn"
+            android:layout_marginLeft="110dp"
+            android:layout_width="wrap_content"
+            android:background="#faf8e0"
+            android:layout_height="match_parent"
+            android:text="완료" >
+        </Button>
+    </androidx.appcompat.widget.LinearLayoutCompat>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:id="@+id/community_text"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="send"
-        android:id="@+id/uploadBtn"/>
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:hint="무슨 일이 있었나요 ?"
+        android:fontFamily="@font/namu"
+        android:id="@+id/community_text">
+    </EditText>
+</LinearLayout>
