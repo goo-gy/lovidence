@@ -65,8 +65,8 @@ public class community_public extends Fragment {
         //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Currentpage = 0;
+        Toast.makeText(getContext(), "List", Toast.LENGTH_SHORT).show();
         this.InitializeMovieData();
-
         ListView listView = (ListView)viewGroup.findViewById(R.id.public_community);
         final CommunityAdapter myAdapter = new CommunityAdapter(getActivity(),movieDataList);
 
@@ -100,12 +100,12 @@ public class community_public extends Fragment {
 
     public void InitializeMovieData()
     {
-       /* movieDataList = new ArrayList<SampleData>();
+        movieDataList = new ArrayList<SampleData>();
 
-        movieDataList.add(new SampleData(R.drawable.movieposter1, "미션임파서블","15세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.movieposter2, "아저씨","19세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.movieposter3, "어벤져스","12세 이상관람가"));
-    */
+        movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
+        //movieDataList.add(new SampleData(R.drawable.movieposter2, "아저씨","19세 이상관람가"));
+        //movieDataList.add(new SampleData(R.drawable.movieposter3, "어벤져스","12세 이상관람가"));
+
     }
 
     //show first 10 page...

@@ -27,7 +27,7 @@
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
         android:layout_gravity="bottom"
-        android:background="#faf8be"
+        android:background="#f2eded"
         app:menu="@menu/menu_bottom"
         app:labelVisibilityMode="labeled"
         app:itemIconTint="@drawable/item_color"

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lovidence.R;
 
@@ -43,12 +44,13 @@ public class CommunityAdapter extends BaseAdapter {
         View view = mLayoutInflater.inflate(R.layout.community_base, null);
 
         ImageView imageView = (ImageView)view.findViewById(R.id.img);
-        TextView movieName = (TextView)view.findViewById(R.id.ctitle);
-        TextView grade = (TextView)view.findViewById(R.id.input);
+        //TextView movieName = (TextView)view.findViewById(R.id.ctitle);
+        //TextView grade = (TextView)view.findViewById(R.id.input);
 
+        //Toast.makeText(mContext, Integer.toString(position), Toast.LENGTH_SHORT).show();
         imageView.setImageResource(sample.get(position).getPoster());
-        movieName.setText(sample.get(position).getMovieName());
-        grade.setText(sample.get(position).getGrade());
+        //movieName.setText(sample.get(position).getMovieName());
+        //grade.setText(sample.get(position).getGrade());
 
         return view;
     }
