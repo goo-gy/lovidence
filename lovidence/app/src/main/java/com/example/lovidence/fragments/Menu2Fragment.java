@@ -263,6 +263,7 @@ public class Menu2Fragment extends Fragment {
 
         ScatterDataSet time_data_set = new ScatterDataSet(entries, "timeline");
         ScatterData time_data = new ScatterData(time_data_set);
+        time_data.setDrawValues(false);
         time_chart.setData(time_data);
         time_chart.invalidate();
     }
