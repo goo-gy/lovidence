@@ -52,7 +52,7 @@ public class Menu2Fragment extends Fragment {
     private static PieChart  pieChart; //원형차트
     private getAsyncTask getDB;
     private MyDatabase db;
-    private TextView text;
+    private TextView text_type;
     private static int elements;
     private SharedPreferences sharedPref;
 
@@ -68,13 +68,16 @@ public class Menu2Fragment extends Fragment {
 
         db = MyDatabase.getAppDatabase(getActivity());
         getDB = new getAsyncTask(getActivity(),db.todoDao());
-
+        text_type = view.findViewById(R.id.typetext);
         pieChart = view.findViewById(R.id.piechart);
         try {
             ArrayList<String> locationLists = getDB.execute().get();
             setPieChart(locationLists);
         }catch(Exception e){e.printStackTrace();}
         sharedPref = getActivity().getSharedPreferences("USERINFO",Context.MODE_PRIVATE);
+        text_type.append(sharedPref.getString("COUPLERANK_type",""));
+
+
         //--------------------------------------------
         BarChart chart = view.findViewById(R.id.barchart);
         ArrayList<BarEntry> NoOfEmp = new ArrayList();
@@ -111,6 +114,22 @@ public class Menu2Fragment extends Fragment {
         setTimeChart(location_list, time_chart);
         return view;
     }
+
+    private String getType(String type) {
+        if(type.equals("1")){
+            return "type1";
+        }
+        else if(type.equals("2")){
+            return "유형2";
+        }
+        else if(type.equals("2")){
+            return "유형3";
+        }
+        else{
+            return "유형4";
+        }
+    }
+
     private class Thread_DB extends Thread {
         private int thread_number;
         private List<Couple_Location> location_list;

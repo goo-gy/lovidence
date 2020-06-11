@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
 import com.example.lovidence.BuildConfig;
+import com.example.lovidence.MainActivity;
 import com.example.lovidence.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -98,8 +100,10 @@ public class LandmarkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_landmark);
 
         FirebaseApp.initializeApp(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);   //툴바생성
+        Toolbar toolbar = findViewById(R.id.toolbar_land);   //툴바생성
         setSupportActionBar(toolbar);                   //적용
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         fab = (FloatingActionButton) findViewById(R.id.faBtn);  //떠다니는 버튼
         mImageDetails = findViewById(R.id.image_details);
@@ -119,6 +123,31 @@ public class LandmarkActivity extends AppCompatActivity {
         });                                                 //버튼눌렀을때 Gallery 나 camera촬영가능
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(LandmarkActivity.this, MainActivity.class);
+        finish();
+        startActivity(intent);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // todo: goto back activity from here
+                Intent intent = new Intent(LandmarkActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     //about button(get camera and gallery
     public void startGalleryChooser() {             //floating action button 에서 갤러리 서낵시
         if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {  //허가 없을시 요청
