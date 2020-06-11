@@ -118,8 +118,8 @@ public class community_private extends Fragment {
         movieDataList = new ArrayList<SampleData>();
 
         movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
-        //movieDataList.add(new SampleData(R.drawable.movieposter2, "아저씨","19세 이상관람가"));
+        movieDataList.add(new SampleData(R.drawable.man, "아저씨","19세 이상관람가"));
+        movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
         //movieDataList.add(new SampleData(R.drawable.movieposter3, "어벤져스","12세 이상관람가"));
-
     }
 }

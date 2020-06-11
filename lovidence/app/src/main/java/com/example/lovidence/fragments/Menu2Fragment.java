@@ -236,6 +236,7 @@ public class Menu2Fragment extends Fragment {
         YAxis yAxis_left = time_chart.getAxisLeft();
         yAxis_left.setAxisMinimum(1);
         yAxis_left.setAxisMaximum(7);
+        yAxis_left.setGranularity(1f);
 
         YAxis yAxis_right = time_chart.getAxisRight();
         yAxis_right.setDrawLabels(false);
