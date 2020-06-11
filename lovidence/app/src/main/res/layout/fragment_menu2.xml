@@ -28,6 +28,7 @@
                 android:paddingTop="10dp"
                 android:textSize="25dp"
                 android:fontFamily="@font/namu"
+                android:id="@+id/texttype"
                 ></TextView>
             <LinearLayout
                 android:layout_width="match_parent"

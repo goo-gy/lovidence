@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,17 +38,13 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -76,7 +71,7 @@ public class Menu2Fragment extends Fragment {
 
         db = MyDatabase.getAppDatabase(getActivity());
         getDB = new getAsyncTask(getActivity(),db.todoDao());
-        text_type = view.findViewById(R.id.typetext);
+        text_type = view.findViewById(R.id.texttype);
         pieChart = view.findViewById(R.id.piechart);
         try {
             ArrayList<String> locationLists = getDB.execute().get();
