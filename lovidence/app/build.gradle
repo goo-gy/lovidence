@@ -74,7 +74,7 @@ dependencies {
     //implementation 'android.arch.work:work-runtime:1.0.1'
     implementation 'com.google.guava:guava:27.0.1-android'
     //implementation 'com.google.guava:guava-jdk5:17.0'
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
     implementation files('libs\\libDaumMapAndroid.jar')
     implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
