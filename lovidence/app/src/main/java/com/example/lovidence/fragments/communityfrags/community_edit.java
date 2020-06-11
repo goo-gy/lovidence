@@ -23,13 +23,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.lovidence.LandMark.PermissionUtils;
 import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.R;
-import com.example.lovidence.fragments.Menu5Fragment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -45,8 +42,8 @@ public class community_edit extends Fragment {
     public static final int CAMERA_IMAGE_REQUEST = 3;
     private static final int MAX_DIMENSION = 1200;
 
-   // private static ImageView mMainImage;
-    private static Bitmap sendImg;
+    // private static ImageView mMainImage;
+    private static String sendImg;
     private Button btn;
     private SharedPreferences sharedPref;
     private EditText str;
@@ -60,29 +57,32 @@ public class community_edit extends Fragment {
         Init();
 
         //uploading
+
         btn.setOnClickListener(new View.OnClickListener(){
+            PostAsync sending;
+            //Bitmap resized = compressBitmap(sendImg);
+            //Bitmap resized = Bitmap.createScaledBitmap(sendImg,(int)(sendImg.getWidth()*0.8), (int)(sendImg.getHeight()*0.8), true);
             public void onClick(View v) {
-                PostAsync send = new PostAsync();
+                sending = new PostAsync();
                 String data="";
                 String sendMessage="";
                 String couple_id = sharedPref.getString("COUPLEID","");
                 String time = Long.toString(Calendar.getInstance().getTime().getTime());
+
                 try {
                     data = URLEncoder.encode("u_cp", "UTF-8") + "=" + URLEncoder.encode(couple_id, "UTF-8");
-                    data += URLEncoder.encode("u_time", "UTF-8") + "=" + URLEncoder.encode(time, "UTF-8");
-                    data += URLEncoder.encode("u_text", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(str.getText()), "UTF-8");
-                    data += URLEncoder.encode("u_img", "UTF-8") + "=" + URLEncoder.encode(getBase64String(sendImg), "UTF-8");
+                    data += "&" + URLEncoder.encode("u_time", "UTF-8") + "=" + URLEncoder.encode(time, "UTF-8");
+                    data += "&" + URLEncoder.encode("u_text", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(str.getText()), "UTF-8");
+                    data += "&" + URLEncoder.encode("u_img", "UTF-8") + "=" + URLEncoder.encode(sendImg, "UTF-8");
+                    //data += "&" + URLEncoder.encode("u_img2", "UTF-8") + "=" + URLEncoder.encode(getBase64String(sendImg).substring(bitmapLength/2), "UTF-8");
                     Log.e("send Community",data);
-                    sendMessage = send.execute("upload.php",data).get();
+                    sendMessage = sending.execute("contentupload.php",data).get();
+                    Log.e("result community",sendMessage);
                 }catch(Exception e){e.printStackTrace();}
-                if(sendMessage == "success"){
+                if(sendMessage.equals("upload success")){
                     str.setText("");
-                    Fragment fragment = new Menu5Fragment();
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.main_layout, fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    getActivity().onBackPressed();
+
                 }
             }
 
@@ -120,7 +120,7 @@ public class community_edit extends Fragment {
                 Manifest.permission.CAMERA)) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             Uri photoUri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getPackageName()
-                                                        + ".provider", getCameraFile());
+                    + ".provider", getCameraFile());
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
@@ -140,10 +140,13 @@ public class community_edit extends Fragment {
         if (uri != null) {
             try {
                 // scale the image to save on bandwidth
-                sendImg =
+                Bitmap bitmapImg =
                         scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri),
                                 MAX_DIMENSION);
+                sendImg = getBase64String(bitmapImg);
+                //PostAsync uploadImage = new PostAsync();
+                //String data= = URLEncoder.encode("u_cp", "UTF-8") + "=" + URLEncoder.encode(couple_id, "UTF-8");
                 //mMainImage.setImageBitmap(sendImg);
 
             } catch (IOException e) {
@@ -195,7 +198,7 @@ public class community_edit extends Fragment {
     public String getBase64String(Bitmap bitmap)
     {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, byteArrayOutputStream);
         byte[] imageBytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(imageBytes, Base64.NO_WRAP);
     }
