@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ import com.example.lovidence.SQLite.MyDatabase;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -36,13 +38,18 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +62,7 @@ public class Menu2Fragment extends Fragment {
     private TextView text;
     private static int elements;
     private SharedPreferences sharedPref;
+    private String[] Days = {"dd", "M", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -218,13 +226,22 @@ public class Menu2Fragment extends Fragment {
         xAxis.setLabelCount(12);
         //xAxis.setValueFormatter(new Formatter());
 
+        //-----------------------------
+        final ArrayList<String> yEntrys = new ArrayList<>();
+        for(int i = 0; i < Days.length; i++)
+        {
+            yEntrys.add(Days[i]);
+        }
+
         YAxis yAxis_left = time_chart.getAxisLeft();
         yAxis_left.setAxisMinimum(1);
         yAxis_left.setAxisMaximum(7);
+        yAxis_left.setGranularity(1f);
 
         YAxis yAxis_right = time_chart.getAxisRight();
-        yAxis_right.setAxisMinimum(1);
-        yAxis_right.setAxisMaximum(7);
+        yAxis_right.setDrawLabels(false);
+        yAxis_right.setDrawAxisLine(false);
+        yAxis_right.setDrawGridLines(false);
 
         List<Entry> entries = new ArrayList<Entry>();
         Iterator iterator = locations.iterator();
@@ -235,17 +252,30 @@ public class Menu2Fragment extends Fragment {
         {
             Couple_Location location = (Couple_Location)iterator.next();
             Long time = location.getTime();
-            time = time%divider;
             Date date = new Date(time);
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            //Toast.makeText(getContext(), date.toString(), Toast.LENGTH_SHORT).show();
-            entries.add(new Entry(time/divider_f + 9, (int)cal.get(Calendar.DAY_OF_WEEK)));
+            int day_of_week = (int)cal.get(Calendar.DAY_OF_WEEK);
+            time = time%divider;
+            //Toast.makeText(getContext(), Integer.toString(day_of_week), Toast.LENGTH_SHORT).show();
+            entries.add(new Entry(time/divider_f + 9, day_of_week));
         }
 
         ScatterDataSet time_data_set = new ScatterDataSet(entries, "timeline");
         ScatterData time_data = new ScatterData(time_data_set);
         time_chart.setData(time_data);
         time_chart.invalidate();
+    }
+    public class GraphAxisValueFormatter implements IAxisValueFormatter {
+        private String[] mValues;
+        // 생성자 초기화
+        GraphAxisValueFormatter(String[] values){
+            this.mValues = values;
+        }
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis){
+            return mValues[(int) value];
+        }
     }
 }
