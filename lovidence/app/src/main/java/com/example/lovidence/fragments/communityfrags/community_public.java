@@ -90,7 +90,7 @@ public class community_public extends Fragment {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
                 Toast.makeText(getActivity(),
-                        myAdapter.getItem(position).getMovieName(),
+                        Long.toString(myAdapter.getItem(position).getTime()),
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -102,7 +102,7 @@ public class community_public extends Fragment {
     {
         movieDataList = new ArrayList<SampleData>();
 
-        movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
+        //movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
         //movieDataList.add(new SampleData(R.drawable.movieposter2, "아저씨","19세 이상관람가"));
         //movieDataList.add(new SampleData(R.drawable.movieposter3, "어벤져스","12세 이상관람가"));
 
@@ -121,7 +121,7 @@ public class community_public extends Fragment {
             String[] element = e.split("-");
 
             Bitmap bm = StrToBitMap(element[2]);//element[2];//image
-            movieDataList.add(new SampleData(0,element[0],element[1]));
+            //movieDataList.add(new SampleData(0,element[0],element[1]));
             //MyPhoto.setImageBitmap(bm);
 
         }

@@ -5,20 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".fragments.communityfrags.community_private">
 
-    <androidx.appcompat.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/toolbar_private"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/pinky"/>
+
     <!-- TODO: Update blank fragment layout -->
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/toolbar_private"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/pinky"/>
         <ListView
             android:id="@+id/private_community"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </RelativeLayout>
+    </LinearLayout>
 </FrameLayout>

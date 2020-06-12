@@ -1,28 +1,30 @@
 package com.example.lovidence.fragments.communityfrags;
 
+import android.graphics.Bitmap;
+
 public class SampleData {
-    private int poster;
-    private String movieName;
-    private String grade;
+    private Bitmap img;
+    private String content;
+    private long time;
 
-    public SampleData(int poster, String movieName, String grade){
-        this.poster = poster;
-        this.movieName = movieName;
-        this.grade = grade;
+    public SampleData(Bitmap _img, String _content, long _time){
+        this.img = _img;
+        this.content = _content;
+        this.time = _time;
     }
 
-    public int getPoster()
+    public Bitmap getImg()
     {
-        return this.poster;
+        return this.img;
     }
 
-    public String getMovieName()
+    public String getContent()
     {
-        return this.movieName;
+        return this.content;
     }
 
-    public String getGrade()
+    public long getTime()
     {
-        return this.grade;
+        return this.time;
     }
 }

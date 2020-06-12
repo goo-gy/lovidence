@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -80,7 +79,7 @@ public class community_private extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        this.InitializeMovieData();
+        //this.InitializeMovieData();
 
         ListView listView = (ListView)view.findViewById(R.id.private_community);
         final CommunityAdapter myAdapter = new CommunityAdapter(getActivity(),movieDataList);
@@ -113,7 +112,7 @@ public class community_private extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void InitializeMovieData()
+    /*public void InitializeMovieData()
     {
         movieDataList = new ArrayList<SampleData>();
 
@@ -121,5 +120,5 @@ public class community_private extends Fragment {
         movieDataList.add(new SampleData(R.drawable.man, "아저씨","19세 이상관람가"));
         movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
         //movieDataList.add(new SampleData(R.drawable.movieposter3, "어벤져스","12세 이상관람가"));
-    }
+    }*/
 }
