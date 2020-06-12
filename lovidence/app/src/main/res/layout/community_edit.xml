@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#faf7f7"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -13,6 +14,7 @@
         <Button
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_gravity="center"
             android:background="@drawable/back"
             android:layout_marginRight="110dp"
             />
@@ -20,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:fontFamily="@font/namu"
-            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
             android:textSize="25dp"
             android:text="글 쓰기"
             />
@@ -35,9 +37,10 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:hint="무슨 일이 있었나요 ?"
         android:fontFamily="@font/namu"
+        android:outlineProvider="none"
         android:id="@+id/community_text">
     </EditText>
 </LinearLayout>
