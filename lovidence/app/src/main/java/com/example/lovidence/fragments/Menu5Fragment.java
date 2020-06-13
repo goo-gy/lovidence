@@ -31,6 +31,7 @@ import com.example.lovidence.R;
 import com.example.lovidence.fragments.communityfrags.CommunityAdapter;
 import com.example.lovidence.fragments.communityfrags.SampleData;
 import com.example.lovidence.fragments.communityfrags.community_edit;
+import com.example.lovidence.fragments.communityfrags.community_public;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 
 public class Menu5Fragment extends Fragment {
     ViewGroup viewGroup;
-    ArrayList<SampleData> movieDataList;
+    ArrayList<SampleData> datalist;
     boolean lastitemVisibleFlag = false;
     private static long lastTime;
     private static Context context;
@@ -52,7 +53,7 @@ public class Menu5Fragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        movieDataList = new ArrayList<SampleData>();
+        datalist = new ArrayList<SampleData>();
         setHasOptionsMenu(true);
     }
 
@@ -72,7 +73,7 @@ public class Menu5Fragment extends Fragment {
         read();
 
         ListView listView = (ListView)viewGroup.findViewById(R.id.private_community);
-        final CommunityAdapter myAdapter = new CommunityAdapter(getActivity(),movieDataList);
+        final CommunityAdapter myAdapter = new CommunityAdapter(getActivity(),datalist);
         listView.setAdapter(myAdapter);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -116,24 +117,26 @@ public class Menu5Fragment extends Fragment {
         if (id == R.id.menuBtn) {
             Fragment fragment = new community_edit();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(this);
             fragmentTransaction.replace(R.id.main_layout, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+        else if(id == android.R.id.home){   //press back arrow button,  go  public page
+            Fragment fragment = new community_public();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(this);
+            fragmentTransaction.replace(R.id.main_layout,fragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
         return super.onOptionsItemSelected(item);
     }
-   /* public void InitializeMovieData()
-    {
-        movieDataList = new ArrayList<SampleData>();
 
-        movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.man, "아저씨","19세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.man, "아저씨","19세 이상관람가"));
-
-        //movieDataList.add(new SampleData(R.drawable.movieposter3, "어벤져스","12세 이상관람가"));
-    }*/
     private void read() {
 
         communityAsyncTask task = new communityAsyncTask(context);
@@ -151,7 +154,7 @@ public class Menu5Fragment extends Fragment {
             updatedTime = Long.parseLong(element[2]);
             Bitmap bm = StrToBitMap(element[1]);//element[2];//image
             SampleData sample = new SampleData(bm,element[0],updatedTime);
-            movieDataList.add(sample);
+            datalist.add(sample);
             //MyPhoto.setImageBitmap(bm);
         }
         //lasttiem be last element time.
@@ -189,7 +192,7 @@ public class Menu5Fragment extends Fragment {
                 data = URLEncoder.encode("u_cp", "UTF-8") + "=" + URLEncoder.encode(couple_id, "UTF-8");
                 data += "&" + URLEncoder.encode("u_lastUpdate", "UTF-8") + "=" + URLEncoder.encode(Long.toString(lastTime), "UTF-8");
                 link = "https://test-yetvm.run.goorm.io/test/"+"show2.php";
-                Log.e("??",data);
+                //Log.e("??",data);
                 URL url = new URL(link);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");

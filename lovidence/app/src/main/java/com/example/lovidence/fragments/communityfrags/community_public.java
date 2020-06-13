@@ -1,5 +1,7 @@
 package com.example.lovidence.fragments.communityfrags;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -20,10 +22,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.lovidence.R;
+import com.example.lovidence.fragments.Menu5Fragment;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -32,51 +38,46 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class community_public extends Fragment {
-    private static int Currentpage;
-    ArrayList<SampleData> movieDataList;
+    ViewGroup viewGroup;
+    ArrayList<SampleData> datalist;
     boolean lastitemVisibleFlag = false;
+    private static long lastTime;
+    private static Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        datalist = new ArrayList<SampleData>();
         setHasOptionsMenu(true);
 
-    }
-    public static community_private newInstance() {
-        community_private fragment = new community_private();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public ViewGroup onCreateView(LayoutInflater inflater, ViewGroup container,
                                   Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_community_public, container, false);
+        viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_community_private, container, false);
+        setHasOptionsMenu(true);
+        context = getActivity();
+        lastTime = Long.MAX_VALUE;
+        Toolbar toolbar = (Toolbar) viewGroup.findViewById(R.id.toolbar_private);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Toolbar toolbar = (Toolbar) viewGroup.findViewById(R.id.toolbar_public);
-        toolbar.setTitle("");
-        toolbar.setTitleTextAppearance(getActivity(),0);
-        AppCompatActivity compat =  ((AppCompatActivity)getActivity());
-        compat.setSupportActionBar(toolbar);
-        compat.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        compat.getSupportActionBar().setDisplayShowHomeEnabled(false);
-        compat.getSupportActionBar().setTitle("ll");
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Currentpage = 0;
-        Toast.makeText(getContext(), "List", Toast.LENGTH_SHORT).show();
-        this.InitializeMovieData();
-        ListView listView = (ListView)viewGroup.findViewById(R.id.public_community);
-        final CommunityAdapter myAdapter = new CommunityAdapter(getActivity(),movieDataList);
+        //this.InitializeMovieData();
+        read();
 
+        ListView listView = (ListView)viewGroup.findViewById(R.id.private_community);
+        final CommunityAdapter myAdapter = new CommunityAdapter(getActivity(),datalist);
         listView.setAdapter(myAdapter);
-// 클릭시 발생하는 event
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastitemVisibleFlag) {
-                    // 데이터 로드(마지막 element가 보이는경우 )
+                    Log.e("updated check",Long.toString(lastTime));
+                    read();// 데이터 로드(마지막 element가 보이는경우 )
                 }
 
             }
@@ -90,41 +91,59 @@ public class community_public extends Fragment {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
                 Toast.makeText(getActivity(),
-                        Long.toString(myAdapter.getItem(position).getTime()),
+                        myAdapter.getItem(position).getContent(),
                         Toast.LENGTH_LONG).show();
             }
         });
-        read(listView);
+
         return viewGroup;
     }
 
-    public void InitializeMovieData()
-    {
-        movieDataList = new ArrayList<SampleData>();
 
-        //movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
-        //movieDataList.add(new SampleData(R.drawable.movieposter2, "아저씨","19세 이상관람가"));
-        //movieDataList.add(new SampleData(R.drawable.movieposter3, "어벤져스","12세 이상관람가"));
-
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+        // If you don't have res/menu, just create a directory named "menu" inside res
+        super.onCreateOptionsMenu(menu,inflater);
     }
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-    //show first 10 page...
-    private void read(ListView view) {
-        communityAsyncTask task = new communityAsyncTask();
+        if (id == android.R.id.home) {
+            Fragment fragment = new Menu5Fragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.main_layout,fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    private void read() {
+
+        communityAsyncTask task = new communityAsyncTask(context);
         ArrayList<String> list = new ArrayList<>();
         try {
-            list = task.execute(Currentpage).get();
+            list = task.execute(lastTime).get();
             if(list ==null){throw new Exception();}
         }catch(Exception e){e.printStackTrace();}
-
+        long updatedTime = 0;
         for(String e: list){
+            if(e.equals("FILENOTFOUND")){return;}
+            //Log.e("frag5",e);
             String[] element = e.split("-");
-
-            Bitmap bm = StrToBitMap(element[2]);//element[2];//image
-            //movieDataList.add(new SampleData(0,element[0],element[1]));
+            //img - 1, content - 0, time - 2
+            updatedTime = Long.parseLong(element[2]);
+            Bitmap bm = StrToBitMap(element[1]);//element[2];//image
+            SampleData sample = new SampleData(bm,element[0],updatedTime);
+            datalist.add(sample);
             //MyPhoto.setImageBitmap(bm);
-
         }
+        //lasttiem be last element time.
+        lastTime = updatedTime;
     }
     private Bitmap StrToBitMap(String str){
         try{
@@ -139,16 +158,26 @@ public class community_public extends Fragment {
 
     //list의 끝에 닿은경우 새로운 page를 불러와야함
 
-    private static class communityAsyncTask extends AsyncTask<Integer, Void, ArrayList<String>> {
+    private static class communityAsyncTask extends AsyncTask<Long, Void, ArrayList<String>> {
+        Context context;
+        String couple_id;
+        public communityAsyncTask(Context con){
+            context = con;
+            SharedPreferences sharedPref = context.getSharedPreferences("USERINFO",Context.MODE_PRIVATE);
+            couple_id = sharedPref.getString("COUPLEID","");
+
+        }
 
         @Override //백그라운드작업(메인스레드 X)
-        protected ArrayList<String> doInBackground(Integer... args) {
+        protected ArrayList<String> doInBackground(Long... args) {
             HttpURLConnection httpURLConnection = null;
             String data="";
             String link="";
             try {
-                data = URLEncoder.encode("u_position", "UTF-8") + "=" + URLEncoder.encode(Integer.toString(args[0]), "UTF-8");
-                link = "https://test-yetvm.run.goorm.io/test/"+"링크위치";
+                //data = URLEncoder.encode("u_cp", "UTF-8") + "=" + URLEncoder.encode("public", "UTF-8");
+                data = URLEncoder.encode("u_lastUpdate", "UTF-8") + "=" + URLEncoder.encode(Long.toString(lastTime), "UTF-8");
+                link = "https://test-yetvm.run.goorm.io/test/"+"show3.php";
+                Log.e("??",data);
                 URL url = new URL(link);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -158,7 +187,7 @@ public class community_public extends Fragment {
                 wr.write(data); //data 전송
                 wr.flush();
                 //결과 받음
-                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream(), "UTF-8"));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream(), "UTF-8"));
                 StringBuilder sb = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -171,30 +200,20 @@ public class community_public extends Fragment {
                     result.add(list[i]);
                 }
                 return result;
-            } catch (Exception e) {
+            }catch (FileNotFoundException e) {
+                Log.e("filenotfoundexception","occured",e);
+                httpURLConnection.disconnect();
+                ArrayList<String> result = new ArrayList<>();
+                result.add("FILENOTFOUND");
+                return result;
+            }
+            catch (Exception e) {
                 Log.d("public_community : ", "Exception Occure", e);
                 httpURLConnection.disconnect();
                 return null;
             }
         }
     }
-    @Override
-    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
-        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
-        // If you don't have res/menu, just create a directory named "menu" inside res
-        inflater.inflate(R.menu.menu_bottom2, menu);
-        super.onCreateOptionsMenu(menu,inflater);
-    }
 
-    // handle button activities
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.menuBtn) {
-            // do something here
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 }
