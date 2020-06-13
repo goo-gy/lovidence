@@ -48,12 +48,16 @@ public class Menu5Fragment extends Fragment {
     boolean lastitemVisibleFlag = false;
     private static long lastTime;
     private static Context context;
+    private boolean first;
+    private static CommunityAdapter myAdapter;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         datalist = new ArrayList<SampleData>();
+        myAdapter = new CommunityAdapter(getActivity(),datalist);
+        first = true;
         setHasOptionsMenu(true);
     }
 
@@ -69,17 +73,17 @@ public class Menu5Fragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+
         //this.InitializeMovieData();
-        read();
+        if(first){read();first=false;}
 
         ListView listView = (ListView)viewGroup.findViewById(R.id.private_community);
-        final CommunityAdapter myAdapter = new CommunityAdapter(getActivity(),datalist);
         listView.setAdapter(myAdapter);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastitemVisibleFlag) {
-                    Log.e("updated check",Long.toString(lastTime));
+                    //Log.e("updated check",Long.toString(lastTime));
                     read();// 데이터 로드(마지막 element가 보이는경우 )
                 }
 
@@ -146,19 +150,23 @@ public class Menu5Fragment extends Fragment {
             if(list ==null){throw new Exception();}
         }catch(Exception e){e.printStackTrace();}
         long updatedTime = 0;
+        Log.e("tlqkf",Integer.toString(list.size()));
+        Log.e("time",Long.toString(lastTime));
         for(String e: list){
             if(e.equals("FILENOTFOUND")){return;}
-            Log.e("frag5",e);
             String[] element = e.split("-");
             //img - 1, content - 0, time - 2
             updatedTime = Long.parseLong(element[2]);
+            Log.e("frag5",Long.toString(updatedTime));
+
             Bitmap bm = StrToBitMap(element[1]);//element[2];//image
             SampleData sample = new SampleData(bm,element[0],updatedTime);
-            datalist.add(sample);
-            //MyPhoto.setImageBitmap(bm);
+            if(lastTime > updatedTime){lastTime = updatedTime;Log.e("???","????z");}
+            myAdapter.add(sample);
+            myAdapter.notifyDataSetChanged();//???
+
         }
         //lasttiem be last element time.
-        lastTime = updatedTime;
     }
     private Bitmap StrToBitMap(String str){
         try{
@@ -192,7 +200,7 @@ public class Menu5Fragment extends Fragment {
                 data = URLEncoder.encode("u_cp", "UTF-8") + "=" + URLEncoder.encode(couple_id, "UTF-8");
                 data += "&" + URLEncoder.encode("u_lastUpdate", "UTF-8") + "=" + URLEncoder.encode(Long.toString(lastTime), "UTF-8");
                 link = "https://test-yetvm.run.goorm.io/test/"+"show2.php";
-                //Log.e("??",data);
+                Log.e("dksk",Long.toString(lastTime));
                 URL url = new URL(link);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");

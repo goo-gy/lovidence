@@ -22,6 +22,10 @@ public class CommunityAdapter extends BaseAdapter {
         mLayoutInflater = LayoutInflater.from(mContext);
     }
 
+    public void add(SampleData data){
+        sample.add(data);
+    }
+
     @Override
     public int getCount() {
         return sample.size();

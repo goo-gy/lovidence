@@ -17,11 +17,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -29,6 +29,7 @@ import com.example.lovidence.R;
 import com.example.lovidence.fragments.Menu5Fragment;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -43,12 +44,17 @@ public class community_public extends Fragment {
     boolean lastitemVisibleFlag = false;
     private static long lastTime;
     private static Context context;
+    private static Fragment myfragment;
+    private boolean first;
+    private static CommunityAdapter myAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         datalist = new ArrayList<SampleData>();
+        myAdapter = new CommunityAdapter(getActivity(),datalist);
+        first = true;
         setHasOptionsMenu(true);
 
     }
@@ -60,17 +66,16 @@ public class community_public extends Fragment {
         setHasOptionsMenu(true);
         context = getActivity();
         lastTime = Long.MAX_VALUE;
+        myfragment = this;
         Toolbar toolbar = (Toolbar) viewGroup.findViewById(R.id.toolbar_private);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         //this.InitializeMovieData();
-        read();
+        if(first){read();first = false;}
 
         ListView listView = (ListView)viewGroup.findViewById(R.id.private_community);
-        final CommunityAdapter myAdapter = new CommunityAdapter(getActivity(),datalist);
         listView.setAdapter(myAdapter);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -90,9 +95,10 @@ public class community_public extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
-                Toast.makeText(getActivity(),
-                        myAdapter.getItem(position).getContent(),
-                        Toast.LENGTH_LONG).show();
+                //transfer img and string
+                contentAsyncTask loadContent = new contentAsyncTask(myAdapter,getActivity());
+                loadContent.execute(position);
+                //myAdapter.notifyDataSetChanged();
             }
         });
 
@@ -139,11 +145,15 @@ public class community_public extends Fragment {
             updatedTime = Long.parseLong(element[2]);
             Bitmap bm = StrToBitMap(element[1]);//element[2];//image
             SampleData sample = new SampleData(bm,element[0],updatedTime);
-            datalist.add(sample);
+            myAdapter.add(sample);
+            //datalist.add(sample);
+            myAdapter.notifyDataSetChanged();//???
             //MyPhoto.setImageBitmap(bm);
+            Log.e(Long.toString(lastTime),Long.toString(updatedTime));
+            if(lastTime > updatedTime){lastTime = updatedTime;}
         }
         //lasttiem be last element time.
-        lastTime = updatedTime;
+
     }
     private Bitmap StrToBitMap(String str){
         try{
@@ -214,6 +224,33 @@ public class community_public extends Fragment {
             }
         }
     }
+    private static class contentAsyncTask extends AsyncTask<Integer, Void, Integer> {
+        FragmentActivity FA;
+        CommunityAdapter myAdapter;
+        public contentAsyncTask(CommunityAdapter adapter,FragmentActivity FA) {
+            this.myAdapter = adapter;
+            this.FA = FA;
+        }
 
+        @Override //백그라운드작업(메인스레드 X)
+        protected Integer doInBackground(Integer... args) {
+            Fragment fragment = new community_content();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            myAdapter.getItem(args[0]).getImg().compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            Bundle b = new Bundle();
+            b.putByteArray("image",byteArray);
+            b.putString("text",myAdapter.getItem(args[0]).getContent());
+            fragment.setArguments(b);
+            //datalist.clear();
+            FragmentManager fragmentManager = FA.getSupportFragmentManager();
+            //fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.main_layout,fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            return 0;
+        }
+    }
 
 }
