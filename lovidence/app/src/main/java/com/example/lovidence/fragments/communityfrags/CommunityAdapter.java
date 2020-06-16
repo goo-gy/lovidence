@@ -1,6 +1,7 @@
 package com.example.lovidence.fragments.communityfrags;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,16 +45,9 @@ public class CommunityAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View converView, ViewGroup parent) {
         View view = mLayoutInflater.inflate(R.layout.community_base, null);
-
         ImageView imageView = (ImageView)view.findViewById(R.id.img);
-        //TextView movieName = (TextView)view.findViewById(R.id.ctitle);
-        //TextView grade = (TextView)view.findViewById(R.id.input);
-
-        //Toast.makeText(mContext, Integer.toString(position), Toast.LENGTH_SHORT).show();
-        imageView.setImageBitmap(sample.get(position).getImg());
-        //imageView.setImageResource(sample.get(position).getPoster());
-        //movieName.setText(sample.get(position).getMovieName());
-        //grade.setText(sample.get(position).getGrade());
+        Bitmap bitmap = sample.get(position).getImg();
+        imageView.setImageBitmap(bitmap);
 
         return view;
     }

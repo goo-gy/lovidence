@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/img"
@@ -24,19 +24,13 @@
                 android:layout_weight="1"
                 android:scaleType="fitXY"
                 tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />
-
             <!--
-    <TextView
-        android:id="@+id/ctitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-    <TextView
-        android:id="@+id/input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="TextView" />-->
+<TextView
+android:id="@+id/input"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginTop="20dp"
+android:text="TextView" />-->
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
@@ -16,7 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -46,45 +52,47 @@ public class community_public extends Fragment {
     private static Context context;
     private static Fragment myfragment;
     private boolean first;
-    private static CommunityAdapter myAdapter;
+    private static CommunityGridAdapter myAdapter;
+
+    ArrayList<SampleData> post_list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         datalist = new ArrayList<SampleData>();
-        myAdapter = new CommunityAdapter(getActivity(),datalist);
+        myAdapter = new CommunityGridAdapter(getActivity(), R.layout.community_base ,datalist);
         first = true;
         setHasOptionsMenu(true);
-
     }
 
     @Override
     public ViewGroup onCreateView(LayoutInflater inflater, ViewGroup container,
                                   Bundle savedInstanceState) {
-        viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_community_private, container, false);
+        viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_community_public, container, false);
         setHasOptionsMenu(true);
         context = getActivity();
         lastTime = Long.MAX_VALUE;
         myfragment = this;
-        Toolbar toolbar = (Toolbar) viewGroup.findViewById(R.id.toolbar_private);
+        Toolbar toolbar = (Toolbar) viewGroup.findViewById(R.id.toolbar_public);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //this.InitializeMovieData();
+        Toast.makeText(context, "Public", Toast.LENGTH_SHORT).show();
         if(first){read();first = false;}
 
-        ListView listView = (ListView)viewGroup.findViewById(R.id.private_community);
-        listView.setAdapter(myAdapter);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        //ListView listView = (ListView)viewGroup.findViewById(R.id.public_community);
+        GridView gridView = (GridView)viewGroup.findViewById(R.id.public_community);
+        gridView.setAdapter(myAdapter);
+
+        gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastitemVisibleFlag) {
                     Log.e("updated check",Long.toString(lastTime));
                     read();// 데이터 로드(마지막 element가 보이는경우 )
                 }
-
             }
 
             @Override
@@ -92,7 +100,7 @@ public class community_public extends Fragment {
                 lastitemVisibleFlag = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount);
             }
         });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
                 //transfer img and string
@@ -226,8 +234,8 @@ public class community_public extends Fragment {
     }
     private static class contentAsyncTask extends AsyncTask<Integer, Void, Integer> {
         FragmentActivity FA;
-        CommunityAdapter myAdapter;
-        public contentAsyncTask(CommunityAdapter adapter,FragmentActivity FA) {
+        CommunityGridAdapter myAdapter;
+        public contentAsyncTask(CommunityGridAdapter adapter,FragmentActivity FA) {
             this.myAdapter = adapter;
             this.FA = FA;
         }
@@ -252,5 +260,60 @@ public class community_public extends Fragment {
             return 0;
         }
     }
+}
 
+class CommunityGridAdapter extends BaseAdapter {
+    Context mContext = null;
+    LayoutInflater mLayoutInflater = null;
+    ArrayList<SampleData> sample;
+    int mylayout;
+
+    public CommunityGridAdapter(Context context, int layout, ArrayList<SampleData> data) {
+        mContext = context;
+        mylayout = layout;
+        sample = data;
+        mLayoutInflater = LayoutInflater.from(mContext);
+    }
+
+    public void add(SampleData data){
+        sample.add(data);
+    }
+
+
+    @Override
+    public int getCount()  {
+        return sample.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public SampleData getItem(int position) {
+        return sample.get(position);
+    }
+
+    @Override
+    public View getView(int position, View converView, ViewGroup parent) {
+        View view = mLayoutInflater.inflate(R.layout.community_base, null);
+        ImageView imageView = (ImageView)view.findViewById(R.id.img);
+        Bitmap bitmap = sample.get(position).getImg();
+        imageView.setImageBitmap(bitmap);
+
+        return view;
+    }
+
+    /*
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView==null)
+            convertView = inf.inflate(layout, null);
+        //ImageView iv = (ImageView)convertView.findViewById(R.id.imageView1);
+        //iv.setImageResource(img[position]);
+
+        return convertView;
+    }
+     */
 }

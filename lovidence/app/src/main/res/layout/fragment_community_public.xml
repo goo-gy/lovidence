@@ -17,10 +17,11 @@
             app:menu="@menu/menu_bottom2"
             android:layout_height="wrap_content"
             android:background="#f2eded"/>
-        <ListView
-            android:id="@+id/private_community"
+        <GridView
+            android:id="@+id/public_community"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:numColumns="2"/>
     </LinearLayout>
 
 </FrameLayout>

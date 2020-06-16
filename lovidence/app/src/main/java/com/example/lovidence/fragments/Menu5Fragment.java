@@ -142,7 +142,6 @@ public class Menu5Fragment extends Fragment {
     }
 
     private void read() {
-
         communityAsyncTask task = new communityAsyncTask(context);
         ArrayList<String> list = new ArrayList<>();
         try {

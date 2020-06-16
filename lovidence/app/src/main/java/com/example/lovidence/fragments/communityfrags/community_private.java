@@ -1,5 +1,9 @@
 package com.example.lovidence.fragments.communityfrags;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.lovidence.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,7 +85,8 @@ public class community_private extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        //this.InitializeMovieData();
+        Toast.makeText(getContext(), "Private", Toast.LENGTH_SHORT).show();
+        this.InitializeMovieData();
 
         ListView listView = (ListView)view.findViewById(R.id.private_community);
         final CommunityAdapter myAdapter = new CommunityAdapter(getActivity(),movieDataList);
@@ -112,13 +119,20 @@ public class community_private extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    /*public void InitializeMovieData()
+    public void InitializeMovieData()
     {
         movieDataList = new ArrayList<SampleData>();
 
-        movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.man, "아저씨","19세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
+        Calendar calendar = Calendar.getInstance();
+        Long time_now = calendar.getTime().getTime();
+
+        Context context = getContext();
+        Drawable drawable = getResources().getDrawable(R.drawable.mission);
+        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+
+        movieDataList.add(new SampleData(bitmap, "미션임파서블", time_now));
+        //movieDataList.add(new SampleData(R.drawable.man, "아저씨","19세 이상관람가"));
+        //movieDataList.add(new SampleData(R.drawable.mission, "미션임파서블","15세 이상관람가"));
         //movieDataList.add(new SampleData(R.drawable.movieposter3, "어벤져스","12세 이상관람가"));
-    }*/
+    }
 }
