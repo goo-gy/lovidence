@@ -48,7 +48,7 @@ public class Menu5Fragment extends Fragment {
     boolean lastitemVisibleFlag = false;
     private static long lastTime;
     private static Context context;
-    private boolean first;
+    private static boolean first;
     private static CommunityAdapter myAdapter;
 
 
@@ -75,7 +75,10 @@ public class Menu5Fragment extends Fragment {
 
 
         //this.InitializeMovieData();
-        if(first){read();first=false;}
+        if(first){
+            read();
+            first=false;
+        }
 
         ListView listView = (ListView)viewGroup.findViewById(R.id.private_community);
         listView.setAdapter(myAdapter);

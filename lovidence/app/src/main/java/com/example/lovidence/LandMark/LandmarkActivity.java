@@ -20,6 +20,7 @@ package com.example.lovidence.LandMark;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -121,6 +122,15 @@ public class LandmarkActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });                                                 //버튼눌렀을때 Gallery 나 camera촬영가능
+        Intent intent = getIntent();
+        byte[] bpmbytes = intent.getByteArrayExtra("fromCommunity");
+        if(bpmbytes != null){
+            Bitmap com = BitmapFactory.decodeByteArray(bpmbytes, 0, bpmbytes.length);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            com.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            String path = MediaStore.Images.Media.insertImage(LandmarkActivity.this.getContentResolver(), com, "Title", null);
+            uploadImage(Uri.parse(path));
+        }
 
     }
 

@@ -4,12 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +51,7 @@ public class community_public extends Fragment {
     private static Fragment myfragment;
     private boolean first;
     private static CommunityGridAdapter myAdapter;
+    private static GridView gridView;
 
     ArrayList<SampleData> post_list;
 
@@ -83,7 +82,7 @@ public class community_public extends Fragment {
         if(first){read();first = false;}
 
         //ListView listView = (ListView)viewGroup.findViewById(R.id.public_community);
-        GridView gridView = (GridView)viewGroup.findViewById(R.id.public_community);
+        gridView = (GridView)viewGroup.findViewById(R.id.public_community);
         gridView.setAdapter(myAdapter);
 
         gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -100,19 +99,42 @@ public class community_public extends Fragment {
                 lastitemVisibleFlag = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount);
             }
         });
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id){
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
                 //transfer img and string
-                contentAsyncTask loadContent = new contentAsyncTask(myAdapter,getActivity());
+                contentAsyncTask loadContent = new contentAsyncTask(myAdapter, getActivity());
                 loadContent.execute(position);
+                //Log.e("count",Integer.toString(new FragmentManager.getBackStackEntryCount()));
                 //myAdapter.notifyDataSetChanged();
+                gridView.setEnabled(false);
             }
         });
+
 
         return viewGroup;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewGroup.setFocusableInTouchMode(true);
+        viewGroup.requestFocus();
+        viewGroup.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    Log.e("??", "sibal");
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    fm.popBackStack();
+                    gridView.setEnabled(true);
+                    // handle back button
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -128,6 +150,7 @@ public class community_public extends Fragment {
         if (id == android.R.id.home) {
             Fragment fragment = new Menu5Fragment();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
             fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.main_layout,fragment);
@@ -252,58 +275,58 @@ public class community_public extends Fragment {
             fragment.setArguments(b);
             //datalist.clear();
             FragmentManager fragmentManager = FA.getSupportFragmentManager();
+
             //fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.main_layout,fragment);
             fragmentTransaction.addToBackStack(null);
+
             fragmentTransaction.commit();
             return 0;
         }
     }
-}
+    class CommunityGridAdapter extends BaseAdapter {
+        Context mContext = null;
+        LayoutInflater mLayoutInflater = null;
+        ArrayList<SampleData> sample;
+        int mylayout;
 
-class CommunityGridAdapter extends BaseAdapter {
-    Context mContext = null;
-    LayoutInflater mLayoutInflater = null;
-    ArrayList<SampleData> sample;
-    int mylayout;
+        public CommunityGridAdapter(Context context, int layout, ArrayList<SampleData> data) {
+            mContext = context;
+            mylayout = layout;
+            sample = data;
+            mLayoutInflater = LayoutInflater.from(mContext);
+        }
 
-    public CommunityGridAdapter(Context context, int layout, ArrayList<SampleData> data) {
-        mContext = context;
-        mylayout = layout;
-        sample = data;
-        mLayoutInflater = LayoutInflater.from(mContext);
-    }
-
-    public void add(SampleData data){
-        sample.add(data);
-    }
+        public void add(SampleData data){
+            sample.add(data);
+        }
 
 
-    @Override
-    public int getCount()  {
-        return sample.size();
-    }
+        @Override
+        public int getCount()  {
+            return sample.size();
+        }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
 
-    @Override
-    public SampleData getItem(int position) {
-        return sample.get(position);
-    }
+        @Override
+        public SampleData getItem(int position) {
+            return sample.get(position);
+        }
 
-    @Override
-    public View getView(int position, View converView, ViewGroup parent) {
-        View view = mLayoutInflater.inflate(R.layout.community_base, null);
-        ImageView imageView = (ImageView)view.findViewById(R.id.img);
-        Bitmap bitmap = sample.get(position).getImg();
-        imageView.setImageBitmap(bitmap);
+        @Override
+        public View getView(int position, View converView, ViewGroup parent) {
+            View view = mLayoutInflater.inflate(R.layout.community_base, null);
+            ImageView imageView = (ImageView)view.findViewById(R.id.img);
+            Bitmap bitmap = sample.get(position).getImg();
+            imageView.setImageBitmap(bitmap);
 
-        return view;
-    }
+            return view;
+        }
 
     /*
     @Override
@@ -316,4 +339,6 @@ class CommunityGridAdapter extends BaseAdapter {
         return convertView;
     }
      */
+    }
 }
+

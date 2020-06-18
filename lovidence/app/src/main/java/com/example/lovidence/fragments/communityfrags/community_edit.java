@@ -2,6 +2,7 @@ package com.example.lovidence.fragments.communityfrags;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -96,7 +97,10 @@ public class community_edit extends Fragment {
                 .setMessage("Choose a picture")
                 .setPositiveButton("Gallery", (dialog, which) -> startGalleryChooser())
                 .setNegativeButton("Camera", (dialog, which) -> startCamera());
-        builder.create().show();
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        //builder.create().show();
     }
     public void startGalleryChooser() {             //floating action button 에서 갤러리 서낵시
         if (PermissionUtils.requestPermission(getActivity(), GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {  //허가 없을시 요청
@@ -107,10 +111,12 @@ public class community_edit extends Fragment {
                     GALLERY_IMAGE_REQUEST);
         }
     }
+
     public File getCameraFile() {
         File dir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return new File(dir, FILE_NAME);
     }
+
     public void startCamera() {
 
         if (PermissionUtils.requestPermission(
@@ -126,6 +132,7 @@ public class community_edit extends Fragment {
             startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -136,6 +143,7 @@ public class community_edit extends Fragment {
             uploadImage(photoUri);
         }
     }
+
     public void uploadImage(Uri uri) {
         if (uri != null) {
             try {
@@ -158,6 +166,7 @@ public class community_edit extends Fragment {
             Toast.makeText(getActivity(), "Something is wrong with that image. Pick a different one please.", Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -202,6 +211,5 @@ public class community_edit extends Fragment {
         byte[] imageBytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(imageBytes, Base64.NO_WRAP);
     }
-
 
 }

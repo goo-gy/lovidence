@@ -1,4 +1,5 @@
 package com.example.lovidence;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -321,5 +322,10 @@ public class MainActivity extends AppCompatActivity {
 
         thread_insert.start();
         Toast.makeText(this, date.toString() + ", " + Double.toString(latitude) + ", " + Double.toString(longitude), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
