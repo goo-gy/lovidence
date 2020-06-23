@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,13 +28,17 @@ import com.example.lovidence.SQLite.Couple_LocationDao;
 import com.example.lovidence.SQLite.MyDatabase;
 
 import net.daum.mf.map.api.MapCircle;
+import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,6 +52,8 @@ public class Menu3Fragment extends Fragment {
     MapView mapView;
     MapPolyline polyline;
     boolean set_focus;
+
+    DateFormat date_format;
 
     private class Thread_DB extends Thread {
         private int thread_number;
@@ -74,6 +81,22 @@ public class Menu3Fragment extends Fragment {
         polyline = new MapPolyline();
         polyline.setTag(1000);
         polyline.setLineColor(Color.argb(128, 255, 51, 0)); // Polyline 컬러 지정
+
+        date_format = new SimpleDateFormat("MM/dd");
+    }
+
+    private void set_marker(int number, double latitude, double longitude, Date date)
+    {
+        String str_date = date_format.format(date);
+
+        MapPOIItem marker = new MapPOIItem();
+        marker.setItemName(str_date);
+        marker.setTag(0);
+        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(latitude, longitude));
+        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+
+        mapView.addPOIItem(marker);
     }
 
     @Nullable
@@ -122,6 +145,10 @@ public class Menu3Fragment extends Fragment {
                 latitude = location.getLocationX();
                 longitude = location.getLocationY();
 
+                long time = location.getTime();
+                Date date = new Date(time);
+
+                set_marker(circle_count, latitude, longitude, date);
                 MapCircle new_circle = new MapCircle(
                         MapPoint.mapPointWithGeoCoord(latitude, longitude), // center
                         30, // radius

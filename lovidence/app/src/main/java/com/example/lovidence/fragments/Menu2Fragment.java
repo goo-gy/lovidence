@@ -57,7 +57,7 @@ public class Menu2Fragment extends Fragment {
     private TextView text_type;
     private static int elements;
     private SharedPreferences sharedPref;
-    private String[] Days = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+    private String[] Days = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", ""};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -248,8 +248,8 @@ public class Menu2Fragment extends Fragment {
         }
 
         YAxis yAxis_left = time_chart.getAxisLeft();
-        yAxis_left.setAxisMinimum(1);
-        yAxis_left.setAxisMaximum(7);
+        yAxis_left.setAxisMinimum(0);
+        yAxis_left.setAxisMaximum(8);
         yAxis_left.setGranularity(1f);
         yAxis_left.setValueFormatter(new IAxisValueFormatter(){
             @Override
