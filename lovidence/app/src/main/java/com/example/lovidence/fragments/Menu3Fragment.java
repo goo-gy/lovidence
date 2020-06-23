@@ -106,15 +106,16 @@ public class Menu3Fragment extends Fragment {
 
         initialize_map();
         update_function();
-        Button button_gps = (Button) viewGroup.findViewById(R.id.btn_get_gps);
+        //Button button_gps = (Button) viewGroup.findViewById(R.id.btn_get_gps);
         Button button_update = (Button) viewGroup.findViewById(R.id.btn_update);
+        /*
         button_gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MainActivity main_activity = (MainActivity) getActivity();
                 main_activity.get_GPS();
             }
-        });
+        });*/
 
         button_update.setOnClickListener(new View.OnClickListener() {
             @Override
