@@ -150,8 +150,8 @@ public class community_public extends Fragment {
         if (id == android.R.id.home) {
             Fragment fragment = new Menu5Fragment();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-            fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            Log.e("stack!!!",Integer.toString(fragmentManager.getBackStackEntryCount()));
+            fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.main_layout,fragment);
             fragmentTransaction.addToBackStack(null);
@@ -275,7 +275,7 @@ public class community_public extends Fragment {
             fragment.setArguments(b);
             //datalist.clear();
             FragmentManager fragmentManager = FA.getSupportFragmentManager();
-
+            Log.e("stack!!!",Integer.toString(fragmentManager.getBackStackEntryCount()));
             //fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.main_layout,fragment);

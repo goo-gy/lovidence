@@ -124,22 +124,31 @@ public class Menu5Fragment extends Fragment {
         if (id == R.id.menuBtn) {
             Fragment fragment = new community_edit();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            Log.e("stack!!!",Integer.toString(fragmentManager.getBackStackEntryCount()));
+            //getSupportFragmentManager().beginTransaction().replace(R.id.main_layout,menu1Fragment);
+            fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(this);
             fragmentTransaction.replace(R.id.main_layout, fragment);
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            fragmentTransaction.commitAllowingStateLoss();
         }
-        else if(id == android.R.id.home){   //press back arrow button,  go  public page
+        else if(id == android.R.id.home) {   //press back arrow button,  go  public page
             Fragment fragment = new community_public();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+            /*if (fragmentManager.getBackStackEntryCount() > 0) {
+                for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {fragmentManager.popBackStack();
+                }
+            }*/
+            Log.e("stack!!!", Integer.toString(fragmentManager.getBackStackEntryCount()));
+            fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.remove(this);
-            fragmentTransaction.replace(R.id.main_layout,fragment);
+            //fragmentTransaction.remove(this);
+            fragmentTransaction.replace(R.id.main_layout, fragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+
         }
         return super.onOptionsItemSelected(item);
     }

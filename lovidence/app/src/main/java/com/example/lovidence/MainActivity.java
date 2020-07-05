@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem){
                 switch (menuItem.getItemId()){
                     case R.id.tab1:{
+                        //getSupportFragmentManager().beginTransaction().re
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_layout,menu1Fragment).commitAllowingStateLoss();
                         return true;
                     }
@@ -115,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                     case R.id.tab5:{
+                        for(int i=0; i<getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                            getSupportFragmentManager().popBackStack();
+                        }
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_layout, menu5Fragment).commitAllowingStateLoss();
                         return true;
                     }
@@ -325,7 +329,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
+        Log.e("야...","아나..");
         super.onBackPressed();
     }
 }
