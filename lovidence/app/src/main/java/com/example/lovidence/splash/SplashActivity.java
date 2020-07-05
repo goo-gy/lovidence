@@ -53,6 +53,7 @@ public class SplashActivity extends AppCompatActivity {
                             editor.putString("COUPLERANK_dist",rankData[1]);
                             editor.putString("COUPLERANK_time",rankData[2]);
                             editor.putString("COUPLERANK_all",rankData[3]);
+                            editor.putString("COUPLERANK_temp",rankData[4]);
                             editor.commit();
                         }
                     }catch (Exception e){e.printStackTrace();}

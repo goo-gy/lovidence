@@ -1,10 +1,7 @@
 package com.example.lovidence.fragments;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,20 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.lovidence.Matching;
 import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.R;
 
-import java.net.URI;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,6 +59,8 @@ public class Menu1Fragment extends Fragment {
         {
             PostAsync checkMatchAsync = new PostAsync();
             String usrId = sharedPref.getString("USERID","IDError");
+            /********************************************/
+            String coupleTemp = sharedPref.getString("COUPLERANK_temp"," ");    //TODO.......!!!!
             String data;
             try {
                 data = URLEncoder.encode("u_usr", "UTF-8") + "=" + URLEncoder.encode(usrId, "UTF-8");
