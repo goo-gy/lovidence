@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:fontFamily="@font/namu"
-            android:inputType="textEmailAddress"
+            android:inputType="textPassword"
             android:selectAllOnFocus="true"
             >
         </com.google.android.material.textfield.TextInputEditText>
@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:fontFamily="@font/namu"
-            android:inputType="textEmailAddress"
+            android:inputType="textPassword"
             android:selectAllOnFocus="true"
             >
         </com.google.android.material.textfield.TextInputEditText>

@@ -18,7 +18,16 @@
         android:layout_marginLeft="220dp"
         android:fontFamily="@font/namu"
         android:textSize="15dp"
-        android:text="우리의 현재 온도는 36.5 "></TextView>
+        android:text="우리의 현재 온도는 "></TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="450dp"
+            android:layout_marginLeft="303dp"
+            android:fontFamily="@font/namu"
+            android:textSize="15dp"
+            android:text="36.0"
+            ></TextView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
