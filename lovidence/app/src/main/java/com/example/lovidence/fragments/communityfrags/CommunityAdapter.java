@@ -26,6 +26,9 @@ public class CommunityAdapter extends BaseAdapter {
     public void add(SampleData data){
         sample.add(data);
     }
+    public void clear(){
+        sample.clear();
+    }
 
     @Override
     public int getCount() {

@@ -1,6 +1,7 @@
 package com.example.lovidence.fragments.communityfrags;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,16 +20,20 @@ import androidx.fragment.app.Fragment;
 
 import com.example.lovidence.LandMark.LandmarkActivity;
 import com.example.lovidence.R;
+import com.example.lovidence.SQLite.CommunityDatabase;
+import com.example.lovidence.SQLite.Community_Scrap;
 
 import java.io.ByteArrayOutputStream;
 
 public class community_content extends Fragment {
     private View view;
-    private Bitmap bmp;
-    private String str;
+    static private Bitmap bmp;
+    static private String str;
     private ImageView imageview;
     private ImageView search;
+    private ImageView scrap;
     private TextView textview;
+    private static Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,8 @@ public class community_content extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_community_content, container, false);
         search = view.findViewById(R.id.search_landmark);
+        scrap = view.findViewById(R.id.scrap_content);
+        context = getActivity();
         Bundle bundle = getArguments();
         byte[] byteArray = bundle.getByteArray("image");
         bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
@@ -68,6 +75,19 @@ public class community_content extends Fragment {
                 getActivity().finish();
             }
         });
+        scrap.setOnClickListener(new View.OnClickListener(){
+           @Override
+           public void onClick(View v){
+               Thread_DB scraping = new Thread_DB(bmp,str);
+               scraping.start();
+               try {
+                   scraping.join();
+                   Toast.makeText(context, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
+           }
+        });
 
         return view;
     }
@@ -91,7 +111,23 @@ public class community_content extends Fragment {
         }
     }
 
+    private class Thread_DB extends Thread {
+        CommunityDatabase db;
+        byte[] content_img;
+        String content_str;
 
-
+        public Thread_DB(Bitmap _img, String _str) {
+            db = CommunityDatabase.getAppDatabase(context);
+            content_str = _str;
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            _img.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            _img.recycle();
+            content_img = byteArray;
+        }
+        public void run() {
+            db.todoDao().insert(new Community_Scrap(0,content_img,content_str));
+        }
+    }
 
 }

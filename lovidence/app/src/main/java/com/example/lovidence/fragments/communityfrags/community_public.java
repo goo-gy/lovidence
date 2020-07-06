@@ -125,12 +125,16 @@ public class community_public extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    Log.e("??", "sibal");
+                    Log.e("??1", "sibal");
                     FragmentManager fm = getActivity().getSupportFragmentManager();
-                    fm.popBackStack();
-                    gridView.setEnabled(true);
-                    ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-                    // handle back button
+                    if(fm.getBackStackEntryCount() > 1){
+                        fm.popBackStack();
+                        gridView.setEnabled(true);
+                        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+                    }
+                    else{
+                        getActivity().onBackPressed();
+                    }
                     return true;
                 }
                 return false;

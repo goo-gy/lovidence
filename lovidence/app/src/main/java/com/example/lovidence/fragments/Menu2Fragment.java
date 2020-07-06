@@ -151,6 +151,7 @@ public class Menu2Fragment extends Fragment {
     }
 
 
+    //just change location to address
     private static class getAsyncTask extends AsyncTask<Void, Void, ArrayList<String>> {
         private Couple_LocationDao mTodoDao;
         private Context context;

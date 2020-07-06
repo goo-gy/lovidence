@@ -1,58 +1,40 @@
-package com.example.lovidence.fragments;
+package com.example.lovidence.fragments.communityfrags;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.lovidence.R;
-import com.example.lovidence.fragments.communityfrags.CommunityAdapter;
-import com.example.lovidence.fragments.communityfrags.SampleData;
-import com.example.lovidence.fragments.communityfrags.community_content;
-import com.example.lovidence.fragments.communityfrags.community_edit;
-import com.example.lovidence.fragments.communityfrags.community_public;
-import com.example.lovidence.fragments.communityfrags.community_scrap;
+import com.example.lovidence.SQLite.CommunityDatabase;
+import com.example.lovidence.SQLite.Community_Scrap;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Menu5Fragment extends Fragment {
+public class community_scrap extends Fragment {
     ViewGroup viewGroup;
     ArrayList<SampleData> datalist;
     boolean lastitemVisibleFlag = false;
-    private static long lastTime;
+    //private static long lastTime;
     private static Context context;
-    private static boolean first;
+    //private static boolean first;
     private static CommunityAdapter myAdapter;
     private static ListView listView;
 
@@ -62,45 +44,50 @@ public class Menu5Fragment extends Fragment {
         super.onCreate(savedInstanceState);
         datalist = new ArrayList<SampleData>();
         myAdapter = new CommunityAdapter(getActivity(),datalist);
-        first = true;
-        lastTime = Long.MAX_VALUE;
-        setHasOptionsMenu(true);
+        //first = true;
+        //setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_community_private, container, false);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         context = getActivity();
-        Toolbar toolbar = (Toolbar) viewGroup.findViewById(R.id.toolbar_private);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //lastTime = Long.MAX_VALUE;
+        //Toolbar toolbar = (Toolbar) viewGroup.findViewById(R.id.toolbar_private);
+        //((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
         //this.InitializeMovieData();
-        if(first){
-            Log.e("not first...","??");
+        /*if(first){
             read();
             first=false;
         }
-
+        */
+        read();
         listView = (ListView)viewGroup.findViewById(R.id.private_community);
         listView.setAdapter(myAdapter);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        /*listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastitemVisibleFlag) {
-                    Log.e("updated check",Long.toString(lastTime));
+                    //Log.e("updated check",Long.toString(lastTime));
                     read();// 데이터 로드(마지막 element가 보이는경우 )
                 }
+
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 lastitemVisibleFlag = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount);
             }
-        });
+        });*/
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
                 contentAsyncTask loadContent = new contentAsyncTask(myAdapter, getActivity());
@@ -108,7 +95,7 @@ public class Menu5Fragment extends Fragment {
                 //Log.e("count",Integer.toString(new FragmentManager.getBackStackEntryCount()));
                 //myAdapter.notifyDataSetChanged();
                 listView.setEnabled(false);
-                ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+                //((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
                 /*Toast.makeText(getActivity(),
                         myAdapter.getItem(position).getContent(),
@@ -129,16 +116,11 @@ public class Menu5Fragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    Log.e("??1", "sibal");
+                    Log.e("??", "sibal");
                     FragmentManager fm = getActivity().getSupportFragmentManager();
-                    if(fm.getBackStackEntryCount() > 0){
-                        fm.popBackStack();
-                        listView.setEnabled(true);
-                        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-                    }
-                    else{
-                        getActivity().onBackPressed();
-                    }
+                    fm.popBackStack();
+                    listView.setEnabled(true);
+                    //((AppCompatActivity)getActivity()).getSupportActionBar().show();
                     // handle back button
                     return true;
                 }
@@ -146,30 +128,19 @@ public class Menu5Fragment extends Fragment {
             }
         });
     }
-    @Override
+    /*@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
         // If you don't have res/menu, just create a directory named "menu" inside res
         inflater.inflate(R.menu.menu_bottom2, menu);
         super.onCreateOptionsMenu(menu,inflater);
     }
-
+*/
     // handle button activities
-    @Override
+ /*   @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.show_scrap){
-            Fragment fragment = new community_scrap();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            Log.e("stack!!!",Integer.toString(fragmentManager.getBackStackEntryCount()));
-            //getSupportFragmentManager().beginTransaction().replace(R.id.main_layout,menu1Fragment);
-            fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.remove(this);
-            fragmentTransaction.replace(R.id.main_layout, fragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commitAllowingStateLoss();
-        }
+
         if (id == R.id.menuBtn) {
             Fragment fragment = new community_edit();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -186,49 +157,42 @@ public class Menu5Fragment extends Fragment {
             Fragment fragment = new community_public();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-            /*if (fragmentManager.getBackStackEntryCount() > 0) {
-                for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {fragmentManager.popBackStack();
-                }
-            }*/
+            //if (fragmentManager.getBackStackEntryCount() > 0) {
+            //    for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {fragmentManager.popBackStack();
+            //    }
+            //}
             Log.e("stack!!!", Integer.toString(fragmentManager.getBackStackEntryCount()));
             fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             //fragmentTransaction.remove(this);
             fragmentTransaction.replace(R.id.main_layout, fragment);
             fragmentTransaction.addToBackStack(null);
-            if(fragmentManager.getBackStackEntryCount() >0){fragmentManager.popBackStack();}
             fragmentTransaction.commit();
 
         }
         return super.onOptionsItemSelected(item);
     }
-
+*/
     private void read() {
-        communityAsyncTask task = new communityAsyncTask(context);
-        ArrayList<String> list = new ArrayList<>();
+        //get stored page by thread
+        Thread_DB db_thread = new Thread_DB();
+        db_thread.start();
+        List<Community_Scrap> page_list = new ArrayList<Community_Scrap>();
         try {
-            list = task.execute(lastTime).get();
-            if(list ==null){throw new Exception();}
-        }catch(Exception e){e.printStackTrace();}
-        long updatedTime = 0;
-        Log.e("tlqkf",Integer.toString(list.size()));
-        Log.e("time",Long.toString(lastTime));
-        for(String e: list){
-            if(e.equals("FILENOTFOUND")){return;}
-            String[] element = e.split("-");
-            //img - 1, content - 0, time - 2
-            updatedTime = Long.parseLong(element[2]);
-            Log.e("frag5",Long.toString(updatedTime));
-
-            Bitmap bm = StrToBitMap(element[1]);//element[2];//image
-            SampleData sample = new SampleData(bm,element[0],updatedTime);
-            if(lastTime > updatedTime){lastTime = updatedTime;Log.e("???",Long.toString(lastTime));}
-            myAdapter.add(sample);
-            myAdapter.notifyDataSetChanged();//???
-
+            db_thread.join();
+            page_list = db_thread.get_location_data();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        for(Community_Scrap c : page_list){
+            Bitmap bitmap = BitmapFactory.decodeByteArray(c.getImg(),0,c.getImg().length);
+            SampleData scraps = new SampleData(bitmap,c.getStr(),c.getTime());
+            myAdapter.add(scraps);
+        }
+
         //lasttiem be last element time.
     }
+    /*
     private Bitmap StrToBitMap(String str){
         try{
             byte[] encodeByte = Base64.decode(str,Base64.DEFAULT);
@@ -238,11 +202,11 @@ public class Menu5Fragment extends Fragment {
             e.getMessage();
             return null;
         }
-    }
+    }*/
 
     //list의 끝에 닿은경우 새로운 page를 불러와야함
 
-    private static class communityAsyncTask extends AsyncTask<Long, Void, ArrayList<String>> {
+    /*private static class communityAsyncTask extends AsyncTask<Long, Void, ArrayList<String>> {
         Context context;
         String couple_id;
         public communityAsyncTask(Context con){
@@ -298,6 +262,8 @@ public class Menu5Fragment extends Fragment {
             }
         }
     }
+    */
+    //item click...
     private static class contentAsyncTask extends AsyncTask<Integer, Void, Integer> {
         FragmentActivity FA;
         CommunityAdapter myAdapter;
@@ -328,7 +294,20 @@ public class Menu5Fragment extends Fragment {
             return 0;
         }
     }
+    //get scraped page by thread
+    private class Thread_DB extends Thread {
+//        private int thread_number;
+        private List<Community_Scrap> location_list;
+
+        public void run() {
+            CommunityDatabase db = CommunityDatabase.getAppDatabase(getContext());
+            location_list = db.todoDao().getAll();
+        }
+        public List<Community_Scrap> get_location_data()
+        {
+            return location_list;
+        }
+    }
 
 
 }
-    
