@@ -108,6 +108,7 @@ public class community_public extends Fragment {
                 //Log.e("count",Integer.toString(new FragmentManager.getBackStackEntryCount()));
                 //myAdapter.notifyDataSetChanged();
                 gridView.setEnabled(false);
+                ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
             }
         });
 
@@ -128,6 +129,7 @@ public class community_public extends Fragment {
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     fm.popBackStack();
                     gridView.setEnabled(true);
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().show();
                     // handle back button
                     return true;
                 }
