@@ -19,19 +19,24 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.lovidence.LandMark.LandmarkActivity;
+import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.R;
 import com.example.lovidence.SQLite.CommunityDatabase;
 import com.example.lovidence.SQLite.Community_Scrap;
 
 import java.io.ByteArrayOutputStream;
+import java.net.URLEncoder;
 
 public class community_content extends Fragment {
     private View view;
     static private Bitmap bmp;
     static private String str;
+    static private long   time;
+    static private int flag;
     private ImageView imageview;
     private ImageView search;
     private ImageView scrap;
+    private ImageView shared;
     private TextView textview;
     private static Context context;
 
@@ -47,13 +52,19 @@ public class community_content extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_community_content, container, false);
+        //dundle로 값받은후에 확인하고
         search = view.findViewById(R.id.search_landmark);
         scrap = view.findViewById(R.id.scrap_content);
+        shared = view.findViewById(R.id.share_content);
         context = getActivity();
         Bundle bundle = getArguments();
         byte[] byteArray = bundle.getByteArray("image");
         bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         str = bundle.getString("text");
+        time = bundle.getLong("time");
+        //"flag" : 0 - private, 1 - public, 2- scrap
+        //private : search,share /// public : scrap, search /// scrap : only search
+        flag = bundle.getInt("flag",-1);
 
 
         imageview = (ImageView)view.findViewById(R.id.comm_cont_img);
@@ -75,20 +86,47 @@ public class community_content extends Fragment {
                 getActivity().finish();
             }
         });
-        scrap.setOnClickListener(new View.OnClickListener(){
-           @Override
-           public void onClick(View v){
-               Thread_DB scraping = new Thread_DB(bmp,str);
-               scraping.start();
-               try {
-                   scraping.join();
-                   Toast.makeText(context, "저장되었습니다.", Toast.LENGTH_SHORT).show();
-               } catch (InterruptedException e) {
-                   e.printStackTrace();
-               }
-           }
-        });
+        if(flag == 0){
+            shared.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    PostAsync sharing = new PostAsync();
+                    String data = "";
+                    String coupleId = context.getSharedPreferences("USERINFO",Context.MODE_PRIVATE).getString("COUPLEID","");
+                    try {
+                        data = URLEncoder.encode("c_id", "UTF-8") + "=" + URLEncoder.encode(coupleId, "UTF-8");
+                        data += "&" + URLEncoder.encode("c_time", "UTF-8") + "=" + URLEncoder.encode(Long.toString(time), "UTF-8");
+                        /*******************************공유 링크 초기화해야함.*******************************/
+                        //sharing.execute("matching.php",data).get();
+                        Toast.makeText(context, "공유되었습니다.", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        else{
+            shared.setVisibility(View.INVISIBLE);
+        }
 
+        if(flag == 1) {
+            scrap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Thread_DB scraping = new Thread_DB(bmp, str,time);
+                    scraping.start();
+                    try {
+                        scraping.join();
+                        Toast.makeText(context, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        else{
+            scrap.setVisibility(View.INVISIBLE);
+        }
         return view;
     }
 
@@ -115,10 +153,12 @@ public class community_content extends Fragment {
         CommunityDatabase db;
         byte[] content_img;
         String content_str;
+        long   content_time;
 
-        public Thread_DB(Bitmap _img, String _str) {
+        public Thread_DB(Bitmap _img, String _str, long _time) {
             db = CommunityDatabase.getAppDatabase(context);
             content_str = _str;
+            content_time = _time;
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             _img.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] byteArray = stream.toByteArray();
@@ -126,7 +166,7 @@ public class community_content extends Fragment {
             content_img = byteArray;
         }
         public void run() {
-            db.todoDao().insert(new Community_Scrap(0,content_img,content_str));
+            db.todoDao().insert(new Community_Scrap(content_time,content_img,content_str));
         }
     }
 

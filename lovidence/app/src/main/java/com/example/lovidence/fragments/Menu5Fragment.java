@@ -129,8 +129,9 @@ public class Menu5Fragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    Log.e("??1", "sibal");
                     FragmentManager fm = getActivity().getSupportFragmentManager();
+                    Log.e("??0", Integer.toString(fm.getBackStackEntryCount()));
+                    Log.e("private",Boolean.toString(first == true));
                     if(fm.getBackStackEntryCount() > 0){
                         fm.popBackStack();
                         listView.setEnabled(true);
@@ -183,18 +184,13 @@ public class Menu5Fragment extends Fragment {
             fragmentTransaction.commitAllowingStateLoss();
         }
         else if(id == android.R.id.home) {   //press back arrow button,  go  public page
-            Fragment fragment = new community_public();
+            Fragment fragment1 = new community_public();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-            /*if (fragmentManager.getBackStackEntryCount() > 0) {
-                for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {fragmentManager.popBackStack();
-                }
-            }*/
             Log.e("stack!!!", Integer.toString(fragmentManager.getBackStackEntryCount()));
             fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             //fragmentTransaction.remove(this);
-            fragmentTransaction.replace(R.id.main_layout, fragment);
+            fragmentTransaction.replace(R.id.main_layout, fragment1);
             fragmentTransaction.addToBackStack(null);
             if(fragmentManager.getBackStackEntryCount() >0){fragmentManager.popBackStack();}
             fragmentTransaction.commit();
@@ -241,7 +237,7 @@ public class Menu5Fragment extends Fragment {
     }
 
     //list의 끝에 닿은경우 새로운 page를 불러와야함
-
+    //현재 서버에서 불러옴 , local DB에 저장하도록.
     private static class communityAsyncTask extends AsyncTask<Long, Void, ArrayList<String>> {
         Context context;
         String couple_id;
@@ -249,7 +245,6 @@ public class Menu5Fragment extends Fragment {
             context = con;
             SharedPreferences sharedPref = context.getSharedPreferences("USERINFO",Context.MODE_PRIVATE);
             couple_id = sharedPref.getString("COUPLEID","");
-
         }
 
         @Override //백그라운드작업(메인스레드 X)
@@ -298,6 +293,7 @@ public class Menu5Fragment extends Fragment {
             }
         }
     }
+
     private static class contentAsyncTask extends AsyncTask<Integer, Void, Integer> {
         FragmentActivity FA;
         CommunityAdapter myAdapter;
@@ -315,6 +311,8 @@ public class Menu5Fragment extends Fragment {
             Bundle b = new Bundle();
             b.putByteArray("image",byteArray);
             b.putString("text",myAdapter.getItem(args[0]).getContent());
+            b.putLong("time",myAdapter.getItem(args[0]).getTime());
+            b.putInt("flag",0);
             fragment.setArguments(b);
             //datalist.clear();
             FragmentManager fragmentManager = FA.getSupportFragmentManager();

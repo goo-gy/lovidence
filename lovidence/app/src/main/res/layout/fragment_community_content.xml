@@ -56,6 +56,14 @@
                 android:src="@drawable/scrap"
                 android:id="@+id/scrap_content"
                 />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/share_icon"
+                android:id="@+id/share_content"
+                />
+
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"

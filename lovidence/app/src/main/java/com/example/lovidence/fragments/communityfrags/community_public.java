@@ -30,7 +30,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.lovidence.R;
-import com.example.lovidence.fragments.Menu5Fragment;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -125,9 +124,10 @@ public class community_public extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    Log.e("??1", "sibal");
+
                     FragmentManager fm = getActivity().getSupportFragmentManager();
-                    if(fm.getBackStackEntryCount() > 1){
+                    Log.e("??1", Integer.toString(fm.getBackStackEntryCount()));
+                    if(fm.getBackStackEntryCount() > 0){
                         fm.popBackStack();
                         gridView.setEnabled(true);
                         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
@@ -154,14 +154,15 @@ public class community_public extends Fragment {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            Fragment fragment = new Menu5Fragment();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            Log.e("stack!!!",Integer.toString(fragmentManager.getBackStackEntryCount()));
-            fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.main_layout,fragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            //Fragment fragment = new Menu5Fragment();
+            //FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            getActivity().onBackPressed();
+            //Log.e("stack!!!",Integer.toString(fragmentManager.getBackStackEntryCount()));
+            //fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            //fragmentTransaction.replace(R.id.main_layout,fragment);
+            //fragmentTransaction.addToBackStack(null);
+            //fragmentTransaction.commit();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -278,6 +279,8 @@ public class community_public extends Fragment {
             Bundle b = new Bundle();
             b.putByteArray("image",byteArray);
             b.putString("text",myAdapter.getItem(args[0]).getContent());
+            b.putLong("time",myAdapter.getItem(args[0]).getTime());
+            b.putInt("flag",1);
             fragment.setArguments(b);
             //datalist.clear();
             FragmentManager fragmentManager = FA.getSupportFragmentManager();

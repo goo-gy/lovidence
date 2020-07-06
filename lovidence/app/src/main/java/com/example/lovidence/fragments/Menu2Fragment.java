@@ -125,7 +125,7 @@ public class Menu2Fragment extends Fragment {
         else if(type.equals("2")){
             return "유형2";
         }
-        else if(type.equals("2")){
+        else if(type.equals("3")){
             return "유형3";
         }
         else{

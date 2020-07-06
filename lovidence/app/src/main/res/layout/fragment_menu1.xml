@@ -20,6 +20,7 @@
         android:textSize="15dp"
         android:text="우리의 현재 온도는 "></TextView>
         <TextView
+            android:id="@+id/couple_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="450dp"
