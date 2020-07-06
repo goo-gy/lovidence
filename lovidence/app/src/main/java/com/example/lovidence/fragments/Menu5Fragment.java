@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,23 +18,25 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.lovidence.R;
 import com.example.lovidence.fragments.communityfrags.CommunityAdapter;
 import com.example.lovidence.fragments.communityfrags.SampleData;
+import com.example.lovidence.fragments.communityfrags.community_content;
 import com.example.lovidence.fragments.communityfrags.community_edit;
 import com.example.lovidence.fragments.communityfrags.community_public;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -50,6 +53,7 @@ public class Menu5Fragment extends Fragment {
     private static Context context;
     private static boolean first;
     private static CommunityAdapter myAdapter;
+    private static ListView listView;
 
 
     @Override
@@ -80,7 +84,7 @@ public class Menu5Fragment extends Fragment {
             first=false;
         }
 
-        ListView listView = (ListView)viewGroup.findViewById(R.id.private_community);
+        listView = (ListView)viewGroup.findViewById(R.id.private_community);
         listView.setAdapter(myAdapter);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -100,13 +104,43 @@ public class Menu5Fragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
-                Toast.makeText(getActivity(),
+                contentAsyncTask loadContent = new contentAsyncTask(myAdapter, getActivity());
+                loadContent.execute(position);
+                //Log.e("count",Integer.toString(new FragmentManager.getBackStackEntryCount()));
+                //myAdapter.notifyDataSetChanged();
+                listView.setEnabled(false);
+                ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
+                /*Toast.makeText(getActivity(),
                         myAdapter.getItem(position).getContent(),
                         Toast.LENGTH_LONG).show();
+
+                 */
             }
         });
 
         return viewGroup;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewGroup.setFocusableInTouchMode(true);
+        viewGroup.requestFocus();
+        viewGroup.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    Log.e("??", "sibal");
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    fm.popBackStack();
+                    listView.setEnabled(true);
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+                    // handle back button
+                    return true;
+                }
+                return false;
+            }
+        });
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -246,6 +280,36 @@ public class Menu5Fragment extends Fragment {
                 httpURLConnection.disconnect();
                 return null;
             }
+        }
+    }
+    private static class contentAsyncTask extends AsyncTask<Integer, Void, Integer> {
+        FragmentActivity FA;
+        CommunityAdapter myAdapter;
+        public contentAsyncTask(CommunityAdapter adapter,FragmentActivity FA) {
+            this.myAdapter = adapter;
+            this.FA = FA;
+        }
+
+        @Override //백그라운드작업(메인스레드 X)
+        protected Integer doInBackground(Integer... args) {
+            Fragment fragment = new community_content();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            myAdapter.getItem(args[0]).getImg().compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            Bundle b = new Bundle();
+            b.putByteArray("image",byteArray);
+            b.putString("text",myAdapter.getItem(args[0]).getContent());
+            fragment.setArguments(b);
+            //datalist.clear();
+            FragmentManager fragmentManager = FA.getSupportFragmentManager();
+            Log.e("stack!!!",Integer.toString(fragmentManager.getBackStackEntryCount()));
+            //fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.main_layout,fragment);
+            fragmentTransaction.addToBackStack(null);
+
+            fragmentTransaction.commit();
+            return 0;
         }
     }
 
