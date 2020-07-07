@@ -58,6 +58,7 @@ public class Menu2Fragment extends Fragment {
     private static int elements;
     private SharedPreferences sharedPref;
     private String[] Days = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", ""};
+    private String[] Types = {"Time", "Distance", "Total"};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -235,13 +236,16 @@ public class Menu2Fragment extends Fragment {
     }
     private void setTimeChart(List<Couple_Location> locations, ScatterChart time_chart)
     {
+        if(locations.size() == 0)
+            return;
+
         XAxis xAxis = time_chart.getXAxis();
         xAxis.setAxisMinimum(0);
         xAxis.setAxisMaximum(24);
         xAxis.setLabelCount(12);
         //xAxis.setValueFormatter(new Formatter());
-
         //-----------------------------
+
         final ArrayList<String> yEntrys = new ArrayList<>();
         for(int i = 0; i < Days.length; i++)
         {
@@ -288,6 +292,7 @@ public class Menu2Fragment extends Fragment {
         time_chart.setData(time_data);
         time_chart.invalidate();
     }
+
     public class GraphAxisValueFormatter implements IAxisValueFormatter {
         private String[] mValues;
         // 생성자 초기화
