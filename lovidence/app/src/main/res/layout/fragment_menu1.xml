@@ -1,90 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#5559b4"
+    android:id="@+id/drawer_layout"
+    tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:id="@+id/main_layout"
+    <!-- 안에 자유롭게 꾸며보세요 ㅎㅎ -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#faf8be">
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="450dp"
-        android:layout_marginLeft="220dp"
-        android:fontFamily="@font/namu"
-        android:textSize="15dp"
-        android:text="우리의 현재 온도는 "></TextView>
-        <TextView
-            android:id="@+id/couple_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="450dp"
-            android:layout_marginLeft="303dp"
-            android:fontFamily="@font/namu"
-            android:textSize="15dp"
-            android:text="36.0"
-            ></TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="450dp"
-            android:layout_marginLeft="325dp"
-            android:fontFamily="@font/namu"
-            android:textSize="15dp"
-            android:text="°"></TextView>
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
 
-        <ImageView
+        <RelativeLayout
+            android:id="@+id/main_layout"
             android:layout_width="match_parent"
-            android:layout_height="440dp"
-            android:layout_marginBottom="135dp"
-            android:background="@drawable/test"></ImageView>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_height="50dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp"
-            android:textSize="35dp"
-            android:fontFamily="@font/namu"
-            android:text="우리의 "
-            ></TextView>
-        <TextView
-            android:id="@+id/main_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp"
-            android:textSize="35dp"
-            android:fontFamily="@font/namu"
-            android:textColor="#ff8fd4"
-            android:text="Date" />
+            android:layout_height="match_parent"
+            android:background="#faf8be">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="10dp"
-                android:textSize="35dp"
+                android:layout_marginTop="450dp"
+                android:layout_marginLeft="220dp"
                 android:fontFamily="@font/namu"
-                android:text=" 일간의 lovidence  "
+                android:textSize="15dp"
+                android:text="우리의 현재 온도는 "></TextView>
+            <TextView
+                android:id="@+id/couple_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="450dp"
+                android:layout_marginLeft="303dp"
+                android:fontFamily="@font/namu"
+                android:textSize="15dp"
+                android:text="36.0"
                 ></TextView>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="400dp"
-            android:src="@drawable/main_back22">
-        </ImageView>
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="450dp"
+                android:layout_marginLeft="325dp"
+                android:fontFamily="@font/namu"
+                android:textSize="15dp"
+                android:text="°"></TextView>
 
-    <!--@color is in colors.. or default-->
-    <!--This bottom bar is no margin so, u wanna change color modify itemBackground!!-->
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="440dp"
+                android:layout_marginBottom="135dp"
+                android:background="@drawable/test"></ImageView>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_height="50dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:textSize="35dp"
+                    android:fontFamily="@font/namu"
+                    android:text="우리의 "
+                    ></TextView>
+                <TextView
+                    android:id="@+id/main_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:textSize="35dp"
+                    android:fontFamily="@font/namu"
+                    android:textColor="#ff8fd4"
+                    android:text="Date" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:textSize="35dp"
+                    android:fontFamily="@font/namu"
+                    android:text=" 일간의 lovidence  "
+                    ></TextView>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="400dp"
+                android:src="@drawable/main_back22">
+            </ImageView>
+        </RelativeLayout>
+
+        <!--@color is in colors.. or default-->
+        <!--This bottom bar is no margin so, u wanna change color modify itemBackground!!-->
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <include layout="@layout/config"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>
+
+
