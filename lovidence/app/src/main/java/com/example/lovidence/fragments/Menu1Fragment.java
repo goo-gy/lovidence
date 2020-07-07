@@ -1,6 +1,5 @@
 package com.example.lovidence.fragments;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -130,7 +129,6 @@ public class Menu1Fragment extends Fragment {
             text_date.setText("솔로");
         }
     }
-
 
     public long get_love_day(){
         Calendar today = Calendar.getInstance();

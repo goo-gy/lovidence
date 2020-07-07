@@ -321,11 +321,12 @@ public class MainActivity extends AppCompatActivity {
         double longitude = gpsTracker.getLongitude();
         //String address = getCurrentAddress(latitude, longitude);
 
+        /*
         Couple_Location new_location= new Couple_Location(time_now, latitude, longitude);
         Thread_insert thread_insert = new Thread_insert(0, new_location);
-
         thread_insert.start();
         Toast.makeText(this, date.toString() + ", " + Double.toString(latitude) + ", " + Double.toString(longitude), Toast.LENGTH_SHORT).show();
+         */
     }
 
     @Override

@@ -10,9 +10,9 @@
         android:title="Home" />
     <item android:id="@+id/tab2"
         app:showAsAction="always"
-        android:icon="@drawable/main_land"
+        android:icon="@drawable/main_record_icon"
         android:enabled="true"
-        android:title="Landmark"/>
+        android:title="Statistic"/>
     <item android:id="@+id/tab3"
         app:showAsAction="always"
         android:icon="@drawable/main_map"
@@ -21,13 +21,13 @@
     <item android:id="@+id/tab4"
         app:showAsAction="always"
         android:enabled="true"
-        android:icon="@drawable/main_community"
-        android:title="Community"/>
+        android:icon="@drawable/main_land"
+        android:title="Landmark"/>
     <item android:id="@+id/tab5"
         app:showAsAction="always"
         android:enabled="true"
-        android:icon="@drawable/main_record_icon"
-        android:title="Statistic"/>
+        android:icon="@drawable/main_community"
+        android:title="Community"/>
 </menu>
     <!--하단에 텍스트도 넣고싶으면 labelVisibilityMode (labeled)-->
     <!--title is label that show text-->
