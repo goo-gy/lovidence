@@ -11,7 +11,6 @@
     android:id="@+id/drawer_layout"
     tools:context=".MainActivity">
 
-    <!-- 안에 자유롭게 꾸며보세요 ㅎㅎ -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
