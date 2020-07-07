@@ -1,6 +1,7 @@
 package com.example.lovidence.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.work.WorkManager;
 
@@ -71,9 +73,47 @@ public class Menu1Fragment extends Fragment {
 
         Button btn_delete = (Button)view.findViewById(R.id.config_delete_account);
         btn_delete.setOnClickListener(new View.OnClickListener() {
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(getActivity());
+            boolean confirmDelete = false;
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Delete!", Toast.LENGTH_SHORT).show();
+                builder.setTitle("계정삭제")
+                        .setMessage("계정을 삭제하시겠습니까?")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String data = "";
+                                PostAsync deleteAsync = new PostAsync();
+                                SharedPreferences sharedPref = getActivity().getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+                                String id = sharedPref.getString("USERID", "");
+                                if (id.equals("")) {
+                                    Log.e("Error", "user id is not stored");
+                                }
+                                try {
+                                    data = URLEncoder.encode("u_id", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
+
+                                    String result = deleteAsync.execute("userDelete.php", data).get();
+                                    if (result.equals("success")) {
+                                        Log.e("삭제성공", "success");
+                                        Toast.makeText(getActivity(), "삭제완료", Toast.LENGTH_SHORT).show();
+                                        LogOutAction();
+                                    } else {
+                                        Log.e("삭제실패?", result);
+                                        Toast.makeText(getActivity(), "삭제실패", Toast.LENGTH_SHORT).show();
+                                        LogOutAction();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).create().show();
             }
         });
         // ---------------------------------------- googy
