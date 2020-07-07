@@ -79,7 +79,7 @@ public class Menu2Fragment extends Fragment {
             setPieChart(locationLists);
         }catch(Exception e){e.printStackTrace();}
         sharedPref = getActivity().getSharedPreferences("USERINFO",Context.MODE_PRIVATE);
-        text_type.append(sharedPref.getString("COUPLERANK_type",""));
+        text_type.append(" "+getType(sharedPref.getString("COUPLERANK_type","")));
 
 
         //--------------------------------------------
@@ -121,16 +121,20 @@ public class Menu2Fragment extends Fragment {
 
     private String getType(String type) {
         if(type.equals("1")){
-            return "type1";
+            //거리 ㄴ , 시간 ㄴ
+            return "랜선형";
         }
         else if(type.equals("2")){
-            return "유형2";
+            //거리 ㄴ 시간 ㅇ
+            return "동거형";
         }
         else if(type.equals("3")){
-            return "유형3";
+            //거리 ㅇ 시간 ㄴ
+            return "홍길동형";
         }
         else{
-            return "유형4";
+            //거리 ㅇ 시간 ㅇ
+            return "여행형";
         }
     }
 

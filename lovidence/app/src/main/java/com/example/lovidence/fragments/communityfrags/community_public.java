@@ -61,6 +61,7 @@ public class community_public extends Fragment {
         datalist = new ArrayList<SampleData>();
         myAdapter = new CommunityGridAdapter(getActivity(), R.layout.community_base ,datalist);
         first = true;
+        lastTime = Long.MAX_VALUE;
         setHasOptionsMenu(true);
     }
 
@@ -70,7 +71,6 @@ public class community_public extends Fragment {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_community_public, container, false);
         setHasOptionsMenu(true);
         context = getActivity();
-        lastTime = Long.MAX_VALUE;
         myfragment = this;
         Toolbar toolbar = (Toolbar) viewGroup.findViewById(R.id.toolbar_public);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
