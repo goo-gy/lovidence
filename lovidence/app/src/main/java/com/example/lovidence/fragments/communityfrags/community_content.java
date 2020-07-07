@@ -97,8 +97,12 @@ public class community_content extends Fragment {
                         data = URLEncoder.encode("c_id", "UTF-8") + "=" + URLEncoder.encode(coupleId, "UTF-8");
                         data += "&" + URLEncoder.encode("c_time", "UTF-8") + "=" + URLEncoder.encode(Long.toString(time), "UTF-8");
                         /*******************************공유 링크 초기화해야함.*******************************/
-                        //sharing.execute("matching.php",data).get();
-                        Toast.makeText(context, "공유되었습니다.", Toast.LENGTH_SHORT).show();
+                        if(sharing.execute("share.php",data).get().equals("share success")) {
+                            Toast.makeText(context, "공유되었습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Log.e("sharingError!","ERROR..");
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
