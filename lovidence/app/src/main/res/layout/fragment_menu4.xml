@@ -11,34 +11,4 @@
         android:textColor="@android:color/black"
         android:textSize="30sp"
         android:textStyle="bold" />
-    <Button android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/btn1"
-        android:text="all work delete.."
-        />
-    <Button android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/logout"
-        android:text="logOut"
-        />
-    <Button android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/deleteAccount"
-        android:text="Delete Account"
-        />
-    <Button android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/mtBtn"
-        android:text="Matching"
-        />
-    <Button android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/LMBtn"
-        android:text="LandMark"
-        />
 </LinearLayout>
