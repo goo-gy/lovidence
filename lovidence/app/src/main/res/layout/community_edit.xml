@@ -17,6 +17,7 @@
             android:layout_gravity="center"
             android:background="@drawable/back"
             android:layout_marginRight="110dp"
+            android:id="@+id/close_btn"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -36,9 +37,14 @@
             android:text="완료" >
         </Button>
     </androidx.appcompat.widget.LinearLayoutCompat>
-    <EditText
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="270dp"
+        android:id="@+id/edit_img"/>
+    <EditText
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:hint="무슨 일이 있었나요 ?"
         android:fontFamily="@font/namu"
         android:outlineProvider="none"

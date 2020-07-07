@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,9 +43,10 @@ public class community_edit extends Fragment {
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
     private static final int MAX_DIMENSION = 1200;
-
+    private static ImageView edit_img;
     // private static ImageView mMainImage;
     private static String sendImg;
+    private Button closeBtn;
     private Button btn;
     private SharedPreferences sharedPref;
     private EditText str;
@@ -54,11 +56,18 @@ public class community_edit extends Fragment {
         View view = inflater.inflate(R.layout.community_edit, container, false);
         sharedPref = getActivity().getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
         btn = (Button) view.findViewById(R.id.uploadBtn);
+        closeBtn = (Button) view.findViewById(R.id.close_btn);
         str = (EditText) view.findViewById(R.id.community_text);
+        edit_img = (ImageView) view.findViewById(R.id.edit_img);
         Init();
 
         //uploading
-
+        closeBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
         btn.setOnClickListener(new View.OnClickListener(){
             PostAsync sending;
             //Bitmap resized = compressBitmap(sendImg);
@@ -135,20 +144,23 @@ public class community_edit extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bitmap resultImg= null;
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {      //현재 리퀘스트가있고 결과 ok일시 업로드
-            uploadImage(data.getData());
+            resultImg = uploadImage(data.getData());
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {                //Intent가 null인경우
             Uri photoUri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getPackageName() + ".provider", getCameraFile());
-            uploadImage(photoUri);
+            resultImg = uploadImage(photoUri);
         }
+        edit_img.setImageBitmap(resultImg);
     }
 
-    public void uploadImage(Uri uri) {
+    public Bitmap uploadImage(Uri uri) {
+        Bitmap bitmapImg;
         if (uri != null) {
             try {
                 // scale the image to save on bandwidth
-                Bitmap bitmapImg =
+                bitmapImg =
                         scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri),
                                 MAX_DIMENSION);
@@ -156,7 +168,7 @@ public class community_edit extends Fragment {
                 //PostAsync uploadImage = new PostAsync();
                 //String data= = URLEncoder.encode("u_cp", "UTF-8") + "=" + URLEncoder.encode(couple_id, "UTF-8");
                 //mMainImage.setImageBitmap(sendImg);
-
+                return bitmapImg;
             } catch (IOException e) {
                 Log.d("community_edit", "Image picking failed because " + e.getMessage());
                 Toast.makeText(getActivity(), "Something is wrong with that image. Pick a different one please.", Toast.LENGTH_LONG).show();
@@ -165,6 +177,7 @@ public class community_edit extends Fragment {
             Log.d("community_edit", "Image picker gave us a null image.");
             Toast.makeText(getActivity(), "Something is wrong with that image. Pick a different one please.", Toast.LENGTH_LONG).show();
         }
+        return null;
     }
 
     @Override

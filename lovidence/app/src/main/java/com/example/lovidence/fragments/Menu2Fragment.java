@@ -222,13 +222,11 @@ public class Menu2Fragment extends Fragment {
         }
 
         Description description = new Description();
-        description.setText("세계 국가"); //라벨
         description.setTextSize(15);
         pieChart.setDescription(description);
 
-        //pieChart.animateY(1000, Easing.EaseInOutCubic); //애니메이션
 
-        PieDataSet dataSet = new PieDataSet(yValues,"Countries");
+        PieDataSet dataSet = new PieDataSet(yValues,"cities");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
