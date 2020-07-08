@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         long lastUpdate = sharedPref.getLong("LASTUPDATE",0);
         if(!myId.equals("")) {
             get_GPS();
-            Log.e("??","GPS");
             Data workData = new Data.Builder()
                     .putDouble("latitude", gpsTracker.getLatitude())
                     .putDouble("longitude", gpsTracker.getLongitude())
@@ -330,7 +329,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed()
     {
-        Log.e("야...","아나..");
         super.onBackPressed();
     }
 }

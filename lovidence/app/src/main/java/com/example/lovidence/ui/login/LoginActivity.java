@@ -1,22 +1,12 @@
 package com.example.lovidence.ui.login;
 
 import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -26,11 +16,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.lovidence.MainActivity;
 import com.example.lovidence.R;
-import com.example.lovidence.splash.SplashActivity;
-import com.example.lovidence.ui.login.LoginViewModel;
-import com.example.lovidence.ui.login.LoginViewModelFactory;
 
 public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
@@ -81,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPref.edit();
                     //key and value
                     editor.putString("USERID",usernameEditText.getText().toString());
+                    editor.putString("COUPLERANK_temp","36.0");
                     editor.commit();
                     updateUiWithUser(loginResult.getSuccess());
                 }

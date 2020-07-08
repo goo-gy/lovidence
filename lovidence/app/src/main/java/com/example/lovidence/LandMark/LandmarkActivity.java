@@ -113,7 +113,6 @@ public class LandmarkActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Toast.makeText(LandmarkActivity.this, "??", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(LandmarkActivity.this);
                 builder
                         .setMessage("Choose a picture")
@@ -242,11 +241,9 @@ public class LandmarkActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(List<FirebaseVisionCloudLandmark> firebaseVisionCloudLandmarks) {
                                 String landmarkName="";
-                                Log.e("hell","?");
                                 for (FirebaseVisionCloudLandmark landmark: firebaseVisionCloudLandmarks) {
                                     landmarkName = landmark.getLandmark();
                                 }
-                                Log.e("hello",landmarkName);                //랜드마크 이름...
                                 mImageName.setText(landmarkName);
                             }
                         })

@@ -105,16 +105,9 @@ public class Menu5Fragment extends Fragment {
             public void onItemClick(AdapterView parent, View v, int position, long id){
                 contentAsyncTask loadContent = new contentAsyncTask(myAdapter, getActivity());
                 loadContent.execute(position);
-                //Log.e("count",Integer.toString(new FragmentManager.getBackStackEntryCount()));
-                //myAdapter.notifyDataSetChanged();
                 listView.setEnabled(false);
                 ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
-                /*Toast.makeText(getActivity(),
-                        myAdapter.getItem(position).getContent(),
-                        Toast.LENGTH_LONG).show();
-
-                 */
             }
         });
 
@@ -130,7 +123,6 @@ public class Menu5Fragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                     FragmentManager fm = getActivity().getSupportFragmentManager();
-                    Log.e("??0", Integer.toString(fm.getBackStackEntryCount()));
                     Log.e("private",Boolean.toString(first == true));
                     if(fm.getBackStackEntryCount() > 0){
                         fm.popBackStack();
@@ -207,7 +199,6 @@ public class Menu5Fragment extends Fragment {
             if(list ==null){throw new Exception();}
         }catch(Exception e){e.printStackTrace();}
         long updatedTime = 0;
-        Log.e("tlqkf",Integer.toString(list.size()));
         Log.e("time",Long.toString(lastTime));
         for(String e: list){
             if(e.equals("FILENOTFOUND")){return;}
