@@ -1,30 +1,18 @@
 package com.example.lovidence.fragments;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.location.Geocoder;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.room.Room;
 
-import com.example.lovidence.MainActivity;
-import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.R;
 import com.example.lovidence.SQLite.Couple_Location;
-import com.example.lovidence.SQLite.Couple_LocationDao;
 import com.example.lovidence.SQLite.MyDatabase;
 
 import net.daum.mf.map.api.MapCircle;
@@ -33,16 +21,11 @@ import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
-import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import androidx.lifecycle.Observer;
 
 //지도
 //저장된 커플 좌표를 모두 가져옴
@@ -108,14 +91,6 @@ public class Menu3Fragment extends Fragment {
         update_function();
         //Button button_gps = (Button) viewGroup.findViewById(R.id.btn_get_gps);
         Button button_update = (Button) viewGroup.findViewById(R.id.btn_update);
-        /*
-        button_gps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity main_activity = (MainActivity) getActivity();
-                main_activity.get_GPS();
-            }
-        });*/
 
         button_update.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -21,7 +21,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.work.WorkManager;
 
-import com.example.lovidence.MainActivity;
 import com.example.lovidence.Matching;
 import com.example.lovidence.PostAsync.PostAsync;
 import com.example.lovidence.R;
@@ -39,7 +38,7 @@ public class Menu1Fragment extends Fragment {
     public Calendar the_date;
     TextView text_date;
     SharedPreferences sharedPref;
-
+    private static TextView text_temp;
     WorkManager workManager;
     // ---------------------------------------- googy
     @Nullable
@@ -48,6 +47,7 @@ public class Menu1Fragment extends Fragment {
         menu1_context = getContext();
         View view = (View)inflater.inflate(R.layout.fragment_menu1, container, false);
         text_date = (TextView)(view.findViewById(R.id.main_date));
+        text_temp = (TextView) view.findViewById(R.id.couple_temp);
         the_date = Calendar.getInstance();
         update();// update
 
@@ -138,6 +138,7 @@ public class Menu1Fragment extends Fragment {
             String usrId = sharedPref.getString("USERID","IDError");
             /********************************************/
             String coupleTemp = sharedPref.getString("COUPLERANK_temp"," ");    //TODO.......!!!!
+            text_temp.setText(coupleTemp);
             String data;
             try {
                 data = URLEncoder.encode("u_usr", "UTF-8") + "=" + URLEncoder.encode(usrId, "UTF-8");
@@ -190,6 +191,7 @@ public class Menu1Fragment extends Fragment {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.remove("USERID").commit();
         editor.remove("date").commit();
+        editor.clear().commit();//??
         Toast.makeText(getContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
         getActivity().finish();
     }

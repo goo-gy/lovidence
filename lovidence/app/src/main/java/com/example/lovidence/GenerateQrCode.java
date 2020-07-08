@@ -25,7 +25,6 @@ public class GenerateQrCode extends AppCompatActivity {
         text = sharedPref.getString("USERID","sharedPrefError");
 
         iv = (ImageView)findViewById(R.id.hell);
-        //text = "https://park-duck.tistory.com";
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try{
