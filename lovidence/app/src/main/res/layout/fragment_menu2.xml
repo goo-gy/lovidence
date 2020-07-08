@@ -26,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="우리 커플의 유형은"
+                android:layout_marginLeft="10dp"
                 android:textColor="#ff94e8"
                 android:paddingTop="10dp"
                 android:textSize="25dp"
@@ -46,9 +47,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"/>
             </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/namu"
+                android:textColor="#ff94e8"
+                android:textSize="18dp"
+
+                android:layout_marginLeft="10dp"
+                android:text="데이트 타임라인"
+                ></TextView>
             <com.github.mikephil.charting.charts.ScatterChart
                 android:id="@+id/time_chart"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"/>
 

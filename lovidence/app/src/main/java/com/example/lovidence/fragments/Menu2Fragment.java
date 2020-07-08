@@ -190,7 +190,7 @@ public class Menu2Fragment extends Fragment {
     void setBarChart(ArrayList<BarEntry> list, BarChart chart){
 
         BarDataSet bardataset = new BarDataSet(list, "Time(rate) Distance(rate) Ranking ");
-        chart.animateY(5000);
+        chart.animateY(2000);
         //그래프 격자 없애기
         chart.getAxisLeft().setDrawGridLines(false);
         chart.getXAxis().setDrawGridLines(false);
