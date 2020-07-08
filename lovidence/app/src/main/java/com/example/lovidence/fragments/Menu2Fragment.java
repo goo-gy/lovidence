@@ -60,7 +60,7 @@ public class Menu2Fragment extends Fragment {
     private static int elements;
     private SharedPreferences sharedPref;
     private String[] Days = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", ""};
-    private String[] Types = {"Time", "Distance", "Total"};
+    private String[] Types = {"Time", "Distance", "Total", "", ""};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -157,7 +157,6 @@ public class Menu2Fragment extends Fragment {
         }
     }
 
-
     //just change location to address
     private static class getAsyncTask extends AsyncTask<Void, Void, ArrayList<String>> {
         private Couple_LocationDao mTodoDao;
@@ -201,6 +200,19 @@ public class Menu2Fragment extends Fragment {
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setAxisMaximum(100);
         leftAxis.setAxisMinimum(0);
+
+        //
+        XAxis x_axis = chart.getXAxis();
+        x_axis.setDrawLabels(false);
+        x_axis.setDrawAxisLine(false);
+        x_axis.setDrawGridLines(false);
+
+        YAxis yAxis_right = chart.getAxisRight();
+        yAxis_right.setDrawLabels(false);
+        yAxis_right.setDrawAxisLine(false);
+        yAxis_right.setDrawGridLines(false);
+        //
+
         BarData data = new BarData(bardataset);      // MPAndroidChart v3.X 오류 발생
         data.setBarWidth(0.5f);
         bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -312,4 +324,5 @@ public class Menu2Fragment extends Fragment {
             return mValues[(int) value];
         }
     }
+
 }
