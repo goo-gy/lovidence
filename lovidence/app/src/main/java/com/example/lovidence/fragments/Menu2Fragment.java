@@ -50,6 +50,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import javax.xml.namespace.QName;
+
 public class Menu2Fragment extends Fragment {
     private static PieChart  pieChart; //원형차트
     private getAsyncTask getDB;
@@ -196,6 +198,9 @@ public class Menu2Fragment extends Fragment {
         //밑의 최소값 최대값설정
         chart.getXAxis().setAxisMinimum(0);
         chart.getXAxis().setAxisMaximum(4);
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setAxisMaximum(100);
+        leftAxis.setAxisMinimum(0);
         BarData data = new BarData(bardataset);      // MPAndroidChart v3.X 오류 발생
         data.setBarWidth(0.5f);
         bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
